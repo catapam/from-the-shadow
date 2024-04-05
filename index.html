@@ -7,11 +7,30 @@
     <title>Document</title>
 </head>
 <body>
-    <div id="start_area">
-        <img id="logo" src="assets/images/logo.png" alt="logo image">
-        <button class="btn">Start</button>
-        <button class="btn">info</button>
+    <div id="start_area" class="centered">
+        <img id="logo" src="assets/images/logo.png" alt="logo image" class="centered">
+        <button class="btn centered" id="start_button">Start</button>
+        <button class="btn centered" id="info_button">info</button>
     </div>
+    
+
+    <div id="name" class="centered">
+        <h1>Name:</h1>
+        <form class="name-form centered" action="">
+            <label for="id" class="sr-only">Hero's name</label>
+            <input type="text" name="id" id="id" placeholder="Your Hero's Name" required class="centered">
+            <button type="submit" class="btn centered" id="fight_button">fight</button>
+        </form>
+    </div>
+
+    <!-- Info Modal -->
+    <div id="info_modal" class="modal">
+        <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>This game was created by Matheus Andrade, check more details about the project on the repository: <a href="https://github.com/catapam/from-the-shadow" target="_blank">GitHub</a>.</p>
+        </div>
+    </div>
+  
     <script src="assets/js/script.js"></script>
 </body>
 </html>

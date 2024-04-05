@@ -1,24 +1,43 @@
-*{
+* {
     padding: 0;
-    margin:0;
+    margin: 0;
     font-family: 'Comic Sans MS', sans-serif;
+    color: white;
 }
 
 body {
-    background-image:radial-gradient(circle at 50vw 35vh,rgba(0, 0, 0, 1) 0%,rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%),url(/assets/images/game_background.png);
-    background-size: cover; /* Cover the entire area of the parent */
-    background-position: center; /* Center the background image */
+    background-image: radial-gradient(circle at 50vw 35vh, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%), url(/assets/images/game_background.png);
+    height: 100vh;
+    background-size: cover;
+    /* Cover the entire area of the parent */
+    background-position: center;
+    /* Center the background image */
 }
 
-#start_area{
+.centered {
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+.sr-only {
+    border: 0;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    white-space: nowrap;
+}
+
+#start_area {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Center horizontally */
-    text-align: center; /* Center text alignment */
 }
 
-#start_area #logo{
+#start_area #logo {
     height: 40vh;
     width: 40vh;
     max-height: 40vw;
@@ -27,25 +46,92 @@ body {
     margin-right: auto;
 }
 
-.btn{
+.btn {
     width: 30%;
-    align-items: center;
-    justify-content: center; 
     margin: 5vh auto 0 auto;
     height: 10vh;
     font-size: 6vw;
-    font-family: 'Comic Sans MS', sans-serif; 
-    color: #FEFFFF; 
-    background-color: rgba(0, 0, 0, 1); 
-    border-radius: 25px; 
-    border-color:#FEFFFF;
+    font-family: 'Comic Sans MS', sans-serif;
+    color: #FEFFFF;
+    background-color: rgba(0, 0, 0, 1);
+    border-radius: 25px;
+    border-color: #FEFFFF;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: rgba(0, 0, 0, 0.8);
+    margin: 15% auto;
+    /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #FEFFFF;
+    width: 80%;
+    /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#name {
+    display: none;
+}
+
+#name h1 {
+    padding-top: 20vh;
+    padding-bottom: 3vh;
+}
+
+#id {
+    color: black;
+}
+
+.name-form {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 50vw;
 }
 
 @media screen and (min-width: 576px) {
-    #game_area h1{
+    #game_area h1 {
         font-size: 4vw;
     }
-    .btn{
+
+    .btn {
         font-size: 3vw;
         width: 20%;
     }
