@@ -1,0 +1,52 @@
+*{
+    padding: 0;
+    margin:0;
+    font-family: 'Comic Sans MS', sans-serif;
+}
+
+body {
+    background-image:radial-gradient(circle at 50vw 35vh,rgba(0, 0, 0, 1) 0%,rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%),url(/assets/images/game_background.png);
+    background-size: cover; /* Cover the entire area of the parent */
+    background-position: center; /* Center the background image */
+}
+
+#start_area{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center horizontally */
+    text-align: center; /* Center text alignment */
+}
+
+#start_area #logo{
+    height: 40vh;
+    width: 40vh;
+    max-height: 40vw;
+    max-width: 40vw;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn{
+    width: 30%;
+    align-items: center;
+    justify-content: center; 
+    margin: 5vh auto 0 auto;
+    height: 10vh;
+    font-size: 6vw;
+    font-family: 'Comic Sans MS', sans-serif; 
+    color: #FEFFFF; 
+    background-color: rgba(0, 0, 0, 1); 
+    border-radius: 25px; 
+    border-color:#FEFFFF;
+}
+
+@media screen and (min-width: 576px) {
+    #game_area h1{
+        font-size: 4vw;
+    }
+    .btn{
+        font-size: 3vw;
+        width: 20%;
+    }
+}
