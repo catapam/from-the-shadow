@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
     startButton.addEventListener('click', function () {
         startArea.style.display = 'none';
         nameArea.style.display = 'block';
-        body.style.backgroundImage = 'radial-gradient(circle at 85vw 35vh,rgba(0, 0, 0, 1) 0%,rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%),url(/assets/images/game_background.png)';
+        body.style.backgroundImage = 'radial-gradient(circle at 85vw 35vh,rgba(0, 0, 0, 1) 0%,rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%),url(assets/images/game_background.png)';
     });
 
     heroNameInput.addEventListener('blur', function () {
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function start(){
     document.getElementById('fight_area').style.display = 'flex';
     var heroImage = document.getElementById('hero').getElementsByTagName('img')[0];
-    heroImage.src = '/assets/images/wizzard/Run.gif';
+    heroImage.src = 'assets/images/wizzard/Run.gif';
     
     heroImage.style.position = 'relative';
     heroImage.style.left = '-20vw';
@@ -69,7 +69,7 @@ function start(){
         if (progress < duration) {
             requestAnimationFrame(animate);
         } else {
-            element.src = '/assets/images/wizzard/Idle.gif';
+            element.src = 'assets/images/wizzard/Idle.gif';
             element.style.left = '20vw';
             element.style.transform= 'translateX(-50%)';
         }
