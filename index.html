@@ -14,22 +14,43 @@
     </div>
     
 
-    <div id="name" class="centered">
+    <div id="name" class="centered hidden">
         <h1>Name:</h1>
-        <form class="name-form centered" action="">
+        <div class="name-form centered">
             <label for="id" class="sr-only">Hero's name</label>
             <input type="text" name="id" id="id" placeholder="Your Hero's Name" required class="centered">
-            <button type="submit" class="btn centered" id="fight_button">fight</button>
-        </form>
+            <button class="btn centered" id="fight_button">fight</button>
+        </div>
     </div>
 
     <!-- Info Modal -->
-    <div id="info_modal" class="modal">
+    <div id="info_modal" class="modal hidden">
         <div class="modal-content">
         <span class="close">&times;</span>
         <p>This game was created by Matheus Andrade, check more details about the project on the repository: <a href="https://github.com/catapam/from-the-shadow" target="_blank">GitHub</a>.</p>
         </div>
     </div>
+
+    <div id="fight_area" class="hidden">
+        <div id="hero">
+            <img src="assets/images/wizzard/Idle.gif" alt="Hero caracter">
+        </div>
+
+        <div id="enemy">
+            <img src="assets/images/gotoku/Idle.gif" alt="Enemy caracter">
+        </div>
+
+        <div id="stats">
+            <p>stats placeholder</p>
+        </div>
+
+        <div id="control">
+            <button class="btn-fight" id="attack">Attack</button>
+            <button class="btn-fight" id="fire">Fire</button>
+            <button class="btn-fight" id="recharge">recharge</button>
+            <button class="btn-fight" id="item">item</button>
+        </div>
+    </div> 
   
     <script src="assets/js/script.js"></script>
 </body>

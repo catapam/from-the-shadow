@@ -5,6 +5,13 @@
     color: white;
 }
 
+html{
+    height: 100vh;
+    width: 100vw;
+    padding: 0;
+    margin: 0;
+}
+
 body {
     background-image: radial-gradient(circle at 50vw 35vh, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%), url(/assets/images/game_background.png);
     height: 100vh;
@@ -12,6 +19,10 @@ body {
     /* Cover the entire area of the parent */
     background-position: center;
     /* Center the background image */
+}
+
+.hidden {
+    display: none;
 }
 
 .centered {
@@ -48,7 +59,7 @@ body {
 
 .btn {
     width: 30%;
-    margin: 5vh auto 0 auto;
+    margin: 5vh 0 0 0;
     height: 10vh;
     font-size: 6vw;
     font-family: 'Comic Sans MS', sans-serif;
@@ -56,12 +67,12 @@ body {
     background-color: rgba(0, 0, 0, 1);
     border-radius: 25px;
     border-color: #FEFFFF;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 /* The Modal (background) */
 .modal {
-    display: none;
-    /* Hidden by default */
     position: fixed;
     /* Stay in place */
     z-index: 1;
@@ -106,10 +117,6 @@ body {
     cursor: pointer;
 }
 
-#name {
-    display: none;
-}
-
 #name h1 {
     padding-top: 20vh;
     padding-bottom: 3vh;
@@ -126,6 +133,46 @@ body {
     width: 50vw;
 }
 
+#fight_button{
+    width: 50vw;
+}
+
+#fight_area{
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+#hero, #enemy {
+    position: absolute;
+    top: 33%; 
+    height: 33vh;
+}
+
+#hero {
+    bottom:30%;
+    left: 20vw;
+    transform: translateX(-50%);
+}
+
+#enemy {
+    top:30%;
+    right: 20vw;
+    transform: translateX(50%) scaleX(-1);
+}
+
+#fight_area img{
+    height: 100%;
+}
+
+#control{
+    position: absolute;
+    bottom: 0;
+    display: flex; 
+    flex-direction: row;
+    color: black;
+}
+
 @media screen and (min-width: 576px) {
     #game_area h1 {
         font-size: 4vw;
@@ -134,5 +181,11 @@ body {
     .btn {
         font-size: 3vw;
         width: 20%;
+    }
+
+    #hero, #enemy {
+        position: absolute;
+        top: 20%; 
+        height: 60vh;
     }
 }
