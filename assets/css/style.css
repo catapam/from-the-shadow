@@ -165,9 +165,9 @@ body {
     position: fixed;
     display: flex;
     flex-direction: column;
-    max-width: 500px;
-    bottom:75vh;
-    padding: 0;
+    top: 10px;
+    left: 10px;
+    padding: 10px;
     margin: 0;
     z-index: 100;
 }
@@ -177,10 +177,19 @@ body {
     top: 0;
     width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center; 
     justify-content: space-around;
     padding: 10px 0;
+    z-index: 100;
+}
+
+#players-stats {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center; 
+    justify-content: space-around;
     z-index: 100;
 }
 
@@ -195,26 +204,28 @@ body {
 }
 
 #hero-bars p{
-    transform: scaleX(-1);
-    margin-right: auto;
-    margin-left: 5px;
-}
-
-#hero-bars{
-    margin-left: auto;
-    transform: scaleX(-1);
-}
-
-#enemy-bars{
-    justify-content: flex-start;
-    margin-right: auto;
+    margin-left: 10px;
+    font-size: small;
+    align-self: flex-start;
 }
 
 #enemy-bars p{
-    margin-left: 5px;
+    transform: scaleX(-1);
+    font-size: small;
+    margin-right: 10px;
+    align-self: flex-start;
 }
 
-#time{
+#hero-bars{
+    margin-left: 10px;
+}
+
+#enemy-bars{
+    margin-right: 10px;
+    transform: scaleX(-1);
+}
+
+#time, #next{
     z-index: 101; 
     min-width: 15vw;
 }
@@ -223,13 +234,12 @@ body {
     color: red;
 }
 
-#level{
+#level, #score{
     font-size: small;
 }
 
-
 .health-bar,.mana-bar,.xp-bar {
-    width: 70%; 
+    width: 85%; 
     padding: 3px;
     border-radius: 5px;
     background: color(gray);
@@ -261,7 +271,6 @@ body {
 #control{
     position: fixed;
     bottom: 0;
-    display: flex; 
     flex-direction: row;
     width: 100vw;
     justify-content: center;
@@ -297,6 +306,21 @@ body {
     background-color: greenyellow !important; 
 }
 
+@media screen and (max-height: 500px) {
+    .btn-fight{
+        width: 15vh;
+        height: 15vh;
+        min-width: 60px; 
+        min-height: 60px; 
+        max-width: 25vh; 
+        max-height: 25vh;
+    }
+
+    #fight_area img {
+        height: 100%;
+    }
+}
+
 @media screen and (min-width: 576px) {
     *{
         font-size: 110%;
@@ -313,5 +337,10 @@ body {
 
     #hero-bars, #enemy-bars{
         width: 40vw;
+    }
+
+    #game-stats{
+        position: fixed;
+        top:10px;
     }
 }

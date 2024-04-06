@@ -41,37 +41,45 @@
         </div>
 
         <div id="stats" class="hidden">
-            <div id="hero-bars">
-                <p>Name</p>
-                <div class="health-bar" id="hero-health">
-                    <div class="health" style="width: 100%"></div>
+            <div id="players-stats">
+                <div id="hero-bars">
+                    <p id="hero-name">Name</p>
+                    <div class="health-bar" id="hero-health">
+                        <div class="health" style="width: 100%"></div>
+                    </div>
+                    <div class="mana-bar" id="hero-mana">
+                        <div class="mana" style="width: 100%"></div>
+                    </div>
+                    <div class="xp-bar" id="hero-xp">
+                        <div class="xp" style="width: 100%"></div>
+                    </div>
                 </div>
-                <div class="mana-bar" id="hero-mana">
-                    <div class="mana" style="width: 100%"></div>
-                </div>
-                <div class="xp-bar" id="hero-xp">
-                    <div class="xp" style="width: 100%"></div>
-                </div>
-            </div>
-            <div id="time" class="centered">
-                <h1 class="centered" id="timer">10s</h1>
-                <p class="centered" id="level">level 01</p>
-            </div>
-            <div id="enemy-bars">
-                <p>Name</p>
-                <div class="health-bar" id="enemy-health">
-                    <div class="health" style="width: 100%"></div>
-                </div>
-                <div class="mana-bar" id="enemy-mana">
-                    <div class="mana" style="width: 100%"></div>
-                </div>  
-                <div class="xp-bar" id="enemy-xp">
-                    <div class="xp" style="width: 100%"></div>
+                <div id="enemy-bars">
+                    <p id="enemy-name">Name</p>
+                    <div class="health-bar" id="enemy-health">
+                        <div class="health" style="width: 100%"></div>
+                    </div>
+                    <div class="mana-bar" id="enemy-mana">
+                        <div class="mana" style="width: 100%"></div>
+                    </div>  
+                    <div class="xp-bar" id="enemy-xp">
+                        <div class="xp" style="width: 100%"></div>
+                    </div>
                 </div> 
+            </div>
+            <div id="game-stats" class="centered">
+                <div id="time" class="centered">
+                    <p class="centered" id="score">score 0</p>
+                    <p class="centered" id="level">round 01</p>
+                    <h1 class="centered" id="timer">10s</h1>
+                </div>
+                <div id="next" class="centered hidden">
+                </div>
+            </div>
         </div>
     </div> 
 
-    <div id="control">
+    <div id="control" class="hidden">
         <button class="btn-fight" id="attack">
             <img src="assets/images/icons/attack.png" alt="Attack button">
         </button>

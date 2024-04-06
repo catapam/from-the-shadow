@@ -1,3 +1,36 @@
+let character = [{
+    name : "Hero",
+    type : "hero",
+    path : "hero",
+    scream: "charge",
+    strenght: "100",
+    health: "100"
+},
+{
+    name : "Gotoku",
+    type : "enemy",
+    path : "gotoku",
+    scream: "charge",
+    strenght: "100",
+    health: "100"
+},
+{
+    name : "Onrei",
+    type : "enemy",
+    path : "onrei",
+    scream: "charge",
+    strenght: "100",
+    health: "100"
+},
+{
+    name : "Yurei",
+    type : "enemy",
+    path : "yurei",
+    scream: "charge",
+    strenght: "100",
+    health: "100"
+}]
+
 updatePosition('hero','hero');
 updatePosition('enemy');
 window.addEventListener('resize', function() {
@@ -42,6 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var inputName = heroNameInput.value;
         if (inputName) {
             heroNameInput.value = inputName.charAt(0).toUpperCase() + inputName.slice(1);
+            document.getElementById('hero-name').textContent = heroNameInput.value;
         }
     });
 
@@ -67,39 +101,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
-
-let character = [{
-    name : "Hero",
-    type : "hero",
-    path : "hero",
-    scream: "charge",
-    strenght: "100",
-    health: "100"
-},
-{
-    name : "Gotoku",
-    type : "enemy",
-    path : "gotoku",
-    scream: "charge",
-    strenght: "100",
-    health: "100"
-},
-{
-    name : "Onrei",
-    type : "enemy",
-    path : "onrei",
-    scream: "charge",
-    strenght: "100",
-    health: "100"
-},
-{
-    name : "Yurei",
-    type : "enemy",
-    path : "yurei",
-    scream: "charge",
-    strenght: "100",
-    health: "100"
-}]
 
 function updatePosition(elementId) {
     const element = document.getElementById(elementId);
@@ -272,11 +273,12 @@ function scream() {
 
 function enemyArrives() {
     document.getElementById('enemy').style.display = 'block';
-    const enemyDiv = document.getElementById('enemy');
-    const img = enemyDiv.querySelector('img');
+    // const enemyDiv = document.getElementById('enemy');
+    // const img = enemyDiv.querySelector('img');
     const enemies = character.filter(character => character.type === 'enemy');
-
-    const selectedEnemy = enemies[Math.floor(Math.random() * enemies.length)].path;
+    const enemy = enemies[Math.floor(Math.random() * enemies.length)]
+    const selectedEnemy = enemy.path;
+    document.getElementById('enemy-name').textContent = enemy.name;
     run('enemy',selectedEnemy);
 }
 
