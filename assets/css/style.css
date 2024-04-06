@@ -183,6 +183,74 @@ body {
     z-index: 100;
 }
 
+#stats {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 10px 0;
+    z-index: 100;
+}
+
+#hero-bars, #enemy-bars{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    z-index: 101; 
+    width: 40vw;
+    justify-content: flex-end;
+    margin-left: auto;
+}
+
+#hero-bars{
+    justify-content: flex-end;
+    margin-left: auto;
+    transform: scaleX(-1);
+}
+
+#hero-bars{
+    justify-content: flex-start;
+    margin-right: auto;
+}
+
+#time{
+    z-index: 101; 
+    width: 20vw;
+}
+
+.health-bar,.mana-bar,.xp-bar {
+    width: 70%; 
+    padding: 3px;
+    border-radius: 5px;
+}
+
+.health {
+    background: linear-gradient(to right, rgb(73, 0, 0), rgb(255, 255, 0));
+    border-color: none;
+    height: 20px;
+    border-radius: 2px;
+}
+
+.mana {
+    background: linear-gradient(to right, #000969, rgb(0, 174, 255));
+    border-color: none;
+    height: 10px;
+    border-radius: 2px;
+}
+
+.xp {
+    background: linear-gradient(to right, #00740d, rgb(128, 255, 0));
+    border-color: none;
+    height: 5px;
+    border-radius: 2px;
+}
+
+#hero-health,#enemy-health,#hero-mana,#enemy-mana,#hero-xp,#enemy-xp{
+    position: relative;
+}
+
 @media screen and (min-width: 576px) {
     *{
         font-size: 110%;

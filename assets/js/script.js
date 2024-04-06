@@ -62,28 +62,32 @@ let character = [{
     type : "hero",
     path : "hero",
     scream: "charge",
-    strenght: "100"
+    strenght: "100",
+    health: "100"
 },
 {
     name : "Gotoku",
     type : "enemy",
     path : "gotoku",
     scream: "charge",
-    strenght: "100"
+    strenght: "100",
+    health: "100"
 },
 {
     name : "Onrei",
     type : "enemy",
     path : "onrei",
     scream: "charge",
-    strenght: "100"
+    strenght: "100",
+    health: "100"
 },
 {
     name : "Yurei",
     type : "enemy",
     path : "yurei",
     scream: "charge",
-    strenght: "100"
+    strenght: "100",
+    health: "100"
 }]
 
 function updatePosition(elementId) {
@@ -134,7 +138,7 @@ function run(elementID, name) {
         const progress = timestamp - start;
         const timeFraction = progress / duration;
         const easeOut = 1 - Math.pow(1 - timeFraction, 2);
-        var distance = finalPosition - (startPosition - viewportWidth);
+        var distance = finalPosition - (startPosition - viewportWidth)+(elementWidth / 4);
         var currentPos = easeOut * distance;
         
         if (elementID === 'hero') {
@@ -208,6 +212,7 @@ function tutorial() {
             nextButton.textContent = 'x';
             nextButton.onclick = function () {
                 document.getElementById('story').style.display = 'none';
+                document.getElementById('stats').style.display = 'flex';
             };
         }
     });
@@ -278,4 +283,3 @@ function recharge() {
 function item() {
 
 };
-
