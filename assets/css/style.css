@@ -146,21 +146,14 @@ body {
 
 #hero, #enemy {
     position: absolute;
-    height: 30vh;
 }
 
 #hero {
-    position: fixed;
-    bottom: 25vh;
-    right: calc(50vw);
     z-index: 2; 
 }
 
 #enemy {
-    position: fixed;
     transform: scaleX(-1); 
-    bottom: 25vh;
-    left: 25vw;
     z-index: 1; 
 }
 

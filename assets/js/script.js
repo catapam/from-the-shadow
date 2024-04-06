@@ -1,3 +1,10 @@
+updatePosition('hero');
+updatePosition('enemy');
+window.addEventListener('resize', function() {
+    updatePosition('hero');
+    updatePosition('enemy');
+});
+
 document.addEventListener('DOMContentLoaded', function () {
     var infoButton = document.getElementById('info_button');
     var modal = document.getElementById('info_modal');
@@ -44,59 +51,117 @@ document.addEventListener('DOMContentLoaded', function () {
             heroNameInput.focus();
         } else {
             nameArea.style.display = 'none';
+            document.getElementById('fight_area').style.display = 'flex';
             start();
         }
     });
 });
 
-function updatePosition() {
-    const heroDiv = document.getElementById('hero');
-    const viewportWidth = window.innerWidth;
-    const elementWidth = heroDiv.offsetWidth;
+let character = [{
+    name : "Hero",
+    type : "hero",
+    path : "hero",
+    scream: "charge",
+    strenght: "100"
+},
+{
+    name : "Gotoku",
+    type : "enemy",
+    path : "gotoku",
+    scream: "charge",
+    strenght: "100"
+},
+{
+    name : "Onrei",
+    type : "enemy",
+    path : "onrei",
+    scream: "charge",
+    strenght: "100"
+},
+{
+    name : "Yurei",
+    type : "enemy",
+    path : "yurei",
+    scream: "charge",
+    strenght: "100"
+}]
 
-    const rightPosition = (viewportWidth * 0.5) - (elementWidth / 4);
-    heroDiv.style.position = 'fixed';
-    heroDiv.style.right = `${rightPosition}px`; 
-    heroDiv.style.bottom = '25vh'; 
+function updatePosition(elementId) {
+    const type = document.getElementById(elementId);
+    const viewportWidth = window.innerWidth;
+    const elementWidth = type.offsetWidth;
+    var position = (viewportWidth * 0.5) - (elementWidth / 4);
+
+    if (elementId === 'hero'){
+        type.style.right = `${position}px`; 
+        type.style.zIndex = '2';
+    } else if (elementId === 'enemy'){
+        type.style.left = `${position}px`; 
+        type.style.zIndex = '1';
+    }
+
+    type.style.position = 'fixed';
+    type.style.bottom = '25vh'; 
+    type.style.height = '30vh'; 
 }
 
-updatePosition();
-window.addEventListener('resize', updatePosition);
-
 function start() {
-    document.getElementById('fight_area').style.display = 'flex';
-    document.getElementById('enemy').style.display = 'none';
+    document.getElementById('enemy').style.display = 'block';
+    document.getElementById('enemy').style.left = '100vw';
+    document.getElementById('hero').style.right = '100vw';
     document.getElementById('stats').style.display = 'none';
     document.getElementById('control').style.display = 'none';
-    var heroDiv = document.getElementById('hero');
-    var heroImage = heroDiv.querySelector('img');
+    
+    run('hero','hero');
+    tutorial();
+}
 
-    heroImage.src = 'assets/images/wizzard/Run.gif';
-    finalRight=((parseFloat(document.getElementById('hero').style.right))/window.innerWidth)*100
-    heroDiv.style.right = '100vw';
+function run(elementID,name){
+    var characterDiv = document.getElementById(elementID);
+    var characterImage = characterDiv.querySelector('img');
 
-    console.log(finalRight);
+    characterImage.src = `assets/images/${name}/Run.gif`;
+    
+    finalPosition=((parseFloat(document.getElementById(elementID).style.right))/window.innerWidth)*100;
+    characterDiv.style.right = '100vw';
+
     let start = null;
     const duration = 800;
 
-    function animate(timestamp) {
-        if (!start) start = timestamp;
-        const progress = timestamp - start;
-        const timeFraction = progress / duration;
-        const easeOut = 1 - Math.pow(1 - timeFraction, 2);
+    if (elementID === 'hero'){
+        function animate(timestamp) {
+            if (!start) start = timestamp;
+            const progress = timestamp - start;
+            const timeFraction = progress / duration;
+            const easeOut = 1 - Math.pow(1 - timeFraction, 2);
 
-        const currentRight = 100 + (finalRight - 100) * easeOut;
-        heroDiv.style.right = `${currentRight}vw`
+            const currentRight = 100 + (finalPosition - 100) * easeOut;
+            characterDiv.style.right = `${currentRight}vw`
 
-        if (progress < duration) {
-            requestAnimationFrame(animate);
-        } else {
-            heroImage.src = 'assets/images/wizzard/Idle.gif';
+            if (progress < duration) {
+                requestAnimationFrame(animate);
+            } else {
+                characterImage.src = `assets/images/${name}/Idle.gif`;
+            }
+        }
+    } else {
+        function animate(timestamp) {
+            if (!start) start = timestamp;
+            const progress = timestamp - start;
+            const timeFraction = progress / duration;
+            const easeOut = 1 - Math.pow(1 - timeFraction, 2);
+    
+            const currentRight = 100 + (finalPosition - 100) * easeOut;
+            characterDiv.style.left = `${currentRight}vw`
+    
+            if (progress < duration) {
+                requestAnimationFrame(animate);
+            } else {
+                characterImage.src = `assets/images/${name}/Idle.gif`;
+            }
         }
     }
-
     requestAnimationFrame(animate);
-    tutorial();
 }
 
 function tutorial() {
@@ -203,27 +268,10 @@ function enemyArrives() {
     document.getElementById('enemy').style.display = 'block';
     const enemyDiv = document.getElementById('enemy');
     const img = enemyDiv.querySelector('img');
+    const enemies = character.filter(character => character.type === 'enemy');
 
-    const enemies = ['gotoku', 'yurei', 'onrei'];
-    const selectedEnemy = enemies[Math.floor(Math.random() * enemies.length)];
-    img.src = `/assets/images/${selectedEnemy}/Run.gif`;
-
-    img.style.position = 'fixed';
-    img.style.left = '-35vw';
-    img.style.bottom = '25vh';
-    img.style.height = '0';
-    img.style.width = 'auto';
-    img.style.opacity = '0';
-
-    // img.animate([
-    //     { transform: 'translate(-50%, -50%) scale(0)', opacity: 0.5},
-    //     { transform: 'translate(calc(50vw - 30%), 33vh) scale(1)', opacity: 1}
-    // ], {
-    //     duration: 800,
-    //     fill: 'forwards' 
-    // }).onfinish = () => {
-    //     img.src = `/assets/images/${selectedEnemy}/Idle.gif`;
-    // };
+    const selectedEnemy = enemies[Math.floor(Math.random() * enemies.length)].path;
+    run('enemy',selectedEnemy);
 }
 
 function attack() {
