@@ -1,3 +1,6 @@
+
+
+
 document.addEventListener('DOMContentLoaded', function () {
     var infoButton = document.getElementById('info_button');
     var modal = document.getElementById('info_modal');
@@ -27,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
     startButton.addEventListener('click', function () {
         startArea.style.display = 'none';
         nameArea.style.display = 'block';
-        body.style.backgroundImage = 'radial-gradient(circle at 85vw 35vh,rgba(0, 0, 0, 1) 0%,rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%),url(/assets/images/game_background.png)';
+        body.style.backgroundImage = 'radial-gradient(circle at 85vw 35vh,rgba(0, 0, 0, 1) 0%,rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%),url(assets/images/game_background.png)';
     });
 
     heroNameInput.addEventListener('blur', function () {
@@ -49,7 +52,7 @@ function start() {
     var heroDiv = document.getElementById('hero'); // Keep this for positioning
     var heroImage = heroDiv.querySelector('img'); // Correctly target the <img> for src changes
     
-    heroImage.src = '/assets/images/wizzard/Run.gif';
+    heroImage.src = 'assets/images/wizzard/Run.gif';
     
     // Adjust styling for the container
     heroDiv.style.left = '-100vw'; // Start off-screen to the left
@@ -70,7 +73,7 @@ function start() {
         if (progress < duration) {
             requestAnimationFrame(animate);
         } else {
-            heroImage.src = '/assets/images/wizzard/Idle.gif';
+            heroImage.src = 'assets/images/wizzard/Idle.gif';
             // After animation, adjust for final position
             heroDiv.style.left = `calc(50vw - 30%)`; // Set final position
             heroDiv.style.transform = 'translateX(-50%)'; // Keep transform if needed for further adjustments
@@ -78,6 +81,10 @@ function start() {
     }
 
     requestAnimationFrame(animate);
+}
+
+function enemyArives (){
+
 }
 
 function attack(){
