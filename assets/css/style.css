@@ -11,7 +11,7 @@ html{
 }
 
 body {
-    background-image: radial-gradient(circle at 50vw 35vh, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%), url(assets/images/game_background.png);
+    background-image: radial-gradient(circle at 50vw 35vh, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%), url(/assets/images/scenario/backgrounds/game_background.png);
     height: 100vh;
     background-size: cover;
     /* Cover the entire area of the parent */
@@ -73,7 +73,7 @@ body {
 .modal {
     position: fixed;
     /* Stay in place */
-    z-index: 1;
+    z-index: 99;
     /* Sit on top */
     left: 0;
     top: 0;
@@ -96,8 +96,8 @@ body {
     /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #FEFFFF;
-    width: 80%;
-    /* Could be more or less, depending on screen size */
+    width: 50%;
+    max-width: 50vw;
 }
 
 /* The Close Button */
@@ -177,7 +177,22 @@ body {
     color: black;
 }
 
+#tutorial_modal .modal-content{
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    bottom:75vh;
+    padding: 0;
+    margin: 0;
+    z-index: 100;
+}
+
 @media screen and (min-width: 576px) {
+    *{
+        font-size: 120%;
+    }
+
     #game_area h1 {
         font-size: 4vw;
     }

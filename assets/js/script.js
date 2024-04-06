@@ -1,6 +1,3 @@
-
-
-
 document.addEventListener('DOMContentLoaded', function () {
     var infoButton = document.getElementById('info_button');
     var modal = document.getElementById('info_modal');
@@ -30,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
     startButton.addEventListener('click', function () {
         startArea.style.display = 'none';
         nameArea.style.display = 'block';
-        body.style.backgroundImage = 'radial-gradient(circle at 85vw 35vh,rgba(0, 0, 0, 1) 0%,rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%),url(assets/images/game_background.png)';
+        body.style.backgroundImage = 'radial-gradient(circle at 85vw 35vh,rgba(0, 0, 0, 1) 0%,rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%),url(assets/images/scenario/backgrounds/game_background.png)';
     });
 
     heroNameInput.addEventListener('blur', function () {
@@ -49,13 +46,11 @@ document.addEventListener('DOMContentLoaded', function () {
 function start() {
     document.getElementById('fight_area').style.display = 'flex';
     document.getElementById('enemy').style.display = 'none';
-    var heroDiv = document.getElementById('hero'); // Keep this for positioning
-    var heroImage = heroDiv.querySelector('img'); // Correctly target the <img> for src changes
+    var heroDiv = document.getElementById('hero');
+    var heroImage = heroDiv.querySelector('img'); 
     
     heroImage.src = 'assets/images/wizzard/Run.gif';
-    
-    // Adjust styling for the container
-    heroDiv.style.left = '-100vw'; // Start off-screen to the left
+    heroDiv.style.left = '-100vw'; 
 
     let start = null;
     const duration = 800;
@@ -66,24 +61,83 @@ function start() {
         const timeFraction = progress / duration;
         const easeOut = 1 - Math.pow(1 - timeFraction, 2);
         
-        // Update to reflect final desired position with correct calculation
-        const currentLeft = -100 + easeOut * (150); // Assuming 100vw + 50vw (halfway plus adjustment)
-        heroDiv.style.left = `calc(${currentLeft}vw - 30%)`; // Adjust based on your requirement
+        const currentLeft = -100 + easeOut * (150);
+        heroDiv.style.left = `calc(${currentLeft}vw - 30%)`
 
         if (progress < duration) {
             requestAnimationFrame(animate);
         } else {
             heroImage.src = 'assets/images/wizzard/Idle.gif';
-            // After animation, adjust for final position
-            heroDiv.style.left = `calc(50vw - 30%)`; // Set final position
-            heroDiv.style.transform = 'translateX(-50%)'; // Keep transform if needed for further adjustments
+            heroDiv.style.left = `calc(50vw - 30%)`; 
+            heroDiv.style.transform = 'translateX(-50%)';
         }
     }
 
     requestAnimationFrame(animate);
+    tutorial();
 }
 
-function enemyArives (){
+function tutorial() {
+    let stories = [
+        'Wow! What is that big round shadow?',
+        'Did you hear that scream?',
+        'What is that coming out of the shadow?',
+        'This is bad, I will have to protect the village!'
+    ];
+    let currentIndex = 0;
+
+    document.getElementById('tutorial_modal').style.display = 'block';
+
+    let heroNameInput = document.getElementById('id');
+
+    let player = document.createElement('h4');
+    let storyParagraph = document.createElement('p');
+    let nextButton = document.createElement('button');
+    nextButton.className = 'close btn-next';
+    nextButton.id = 'next';
+    nextButton.textContent = '>>';
+    nextButton.style.color = 'black';
+    nextButton.style.width = '15%';
+    nextButton.style.alignSelf = 'Right';
+    nextButton.style.marginLeft = 'auto';
+
+    player.className = 'player-name';
+    player.textContent = heroNameInput.value; 
+
+    storyParagraph.textContent = stories[currentIndex];
+
+    let storyContainer = document.getElementById('story');
+    storyContainer.innerHTML = ''; 
+    storyContainer.appendChild(player);
+    storyContainer.appendChild(storyParagraph);
+    storyContainer.appendChild(nextButton);
+
+    nextButton.addEventListener('click', function() {
+        if (currentIndex < stories.length-2) {
+            currentIndex++;
+            storyParagraph.textContent = stories[currentIndex];
+            if (currentIndex === 1){
+                scream()
+            }
+            if (currentIndex === 2){
+                enemyArives()
+            }
+        } else {
+            currentIndex++;
+            storyParagraph.textContent = stories[currentIndex]; 
+            nextButton.textContent = 'x';
+            nextButton.onclick = function() {
+                document.getElementById('tutorial_modal').style.display = 'none';
+            };
+        }
+    });
+}
+
+function scream(){
+
+}
+
+function enemyArives(){
 
 }
 
