@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
     startButton.addEventListener('click', function () {
         startArea.style.display = 'none';
         nameArea.style.display = 'block';
-        body.style.backgroundImage = 'radial-gradient(circle at 85vw 35vh,rgba(0, 0, 0, 1) 0%,rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%),url(assets/images/game_background.png)';
+        body.style.backgroundImage = 'radial-gradient(circle at 85vw 35vh,rgba(0, 0, 0, 1) 0%,rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%),url(/assets/images/game_background.png)';
     });
 
     heroNameInput.addEventListener('blur', function () {
@@ -43,41 +43,42 @@ document.addEventListener('DOMContentLoaded', function () {
      });
 });
 
-function start(){
+function start() {
     document.getElementById('fight_area').style.display = 'flex';
-    var heroImage = document.getElementById('hero').getElementsByTagName('img')[0];
-    heroImage.src = 'assets/images/wizzard/Run.gif';
+    document.getElementById('enemy').style.display = 'none';
+    var heroDiv = document.getElementById('hero'); // Keep this for positioning
+    var heroImage = heroDiv.querySelector('img'); // Correctly target the <img> for src changes
     
-    heroImage.style.position = 'relative';
-    heroImage.style.left = '-20vw';
+    heroImage.src = '/assets/images/wizzard/Run.gif';
     
+    // Adjust styling for the container
+    heroDiv.style.left = '-100vw'; // Start off-screen to the left
+
     let start = null;
-    const element = heroImage;
-    
-    const duration = 800; 
-    const startLeft = -20; 
-    const endLeft = 20; 
-    
+    const duration = 800;
+
     function animate(timestamp) {
         if (!start) start = timestamp;
         const progress = timestamp - start;
+        const timeFraction = progress / duration;
+        const easeOut = 1 - Math.pow(1 - timeFraction, 2);
         
-        const currentLeft = startLeft + (endLeft - startLeft) * (progress / duration);
-        element.style.left = `${currentLeft}vw`;
-        element.style.transform= 'translateX(-50%)';
-        
+        // Update to reflect final desired position with correct calculation
+        const currentLeft = -100 + easeOut * (150); // Assuming 100vw + 50vw (halfway plus adjustment)
+        heroDiv.style.left = `calc(${currentLeft}vw - 30%)`; // Adjust based on your requirement
+
         if (progress < duration) {
             requestAnimationFrame(animate);
         } else {
-            element.src = 'assets/images/wizzard/Idle.gif';
-            element.style.left = '20vw';
-            element.style.transform= 'translateX(-50%)';
+            heroImage.src = '/assets/images/wizzard/Idle.gif';
+            // After animation, adjust for final position
+            heroDiv.style.left = `calc(50vw - 30%)`; // Set final position
+            heroDiv.style.transform = 'translateX(-50%)'; // Keep transform if needed for further adjustments
         }
     }
-    
-    // Start the animation
+
     requestAnimationFrame(animate);
-};
+}
 
 function attack(){
 

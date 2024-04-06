@@ -6,14 +6,12 @@
 }
 
 html{
-    max-height: 100vh;
-    max-width: 100vw;
     padding: 0;
     margin: 0;
 }
 
 body {
-    background-image: radial-gradient(circle at 50vw 35vh, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%), url(assets/images/game_background.png);
+    background-image: radial-gradient(circle at 50vw 35vh, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%), url(/assets/images/game_background.png);
     height: 100vh;
     background-size: cover;
     /* Cover the entire area of the parent */
@@ -145,20 +143,23 @@ body {
 
 #hero, #enemy {
     position: absolute;
-    top: 33%; 
     height: 25vh;
 }
 
 #hero {
-    bottom:30%;
-    left: 20vw;
+    position: fixed;
     transform: translateX(-50%);
+    top: 33vh;
+    left: calc(50vw - 30%);
+    z-index: 2; 
 }
 
 #enemy {
-    top:30%;
-    right: 20vw;
-    transform: translateX(50%) scaleX(-1);
+    position: fixed;
+    transform: translateX(50%) scaleX(-1); 
+    top: 33vh;
+    right: calc(50vw - 30%);
+    z-index: 1; 
 }
 
 #fight_area img{
