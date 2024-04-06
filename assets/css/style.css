@@ -11,6 +11,7 @@ html{
 }
 
 body {
+    position: relative;
     background-image: radial-gradient(circle at 50vw 35vh, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%), url(/assets/images/scenario/backgrounds/game_background.png);
     height: 100vh;
     background-size: cover;
@@ -122,6 +123,7 @@ body {
 
 #id {
     color: black;
+    font-size: 110%;
 }
 
 .name-form {
@@ -132,7 +134,8 @@ body {
 }
 
 #fight_button{
-    width: 50vw;
+    max-width: 50vw;
+    width: 100%;
 }
 
 #fight_area{
@@ -143,22 +146,21 @@ body {
 
 #hero, #enemy {
     position: absolute;
-    height: 25vh;
+    height: 30vh;
 }
 
 #hero {
     position: fixed;
-    transform: translateX(-50%);
-    top: 33vh;
-    left: calc(50vw - 30%);
+    bottom: 25vh;
+    right: calc(50vw);
     z-index: 2; 
 }
 
 #enemy {
     position: fixed;
-    transform: translateX(50%) scaleX(-1); 
-    top: 33vh;
-    right: calc(50vw - 30%);
+    transform: scaleX(-1); 
+    bottom: 25vh;
+    left: 25vw;
     z-index: 1; 
 }
 
@@ -190,7 +192,7 @@ body {
 
 @media screen and (min-width: 576px) {
     *{
-        font-size: 120%;
+        font-size: 110%;
     }
 
     #game_area h1 {
@@ -200,11 +202,5 @@ body {
     .btn {
         font-size: 3vw;
         width: 20%;
-    }
-
-    #hero, #enemy {
-        position: absolute;
-        top: 20%; 
-        height: 60vh;
     }
 }
