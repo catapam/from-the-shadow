@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var body = document.body;
     var heroNameInput = document.getElementById('id');
     var fightButton = document.getElementById('fight_button');
+    var actionButton = document.getElementsByClassName('btn-fight');
 
     infoButton.addEventListener('click', function () {
         modal.style.display = 'block';
@@ -54,6 +55,16 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('fight_area').style.display = 'flex';
             start();
         }
+    });
+
+    Array.from(actionButton).forEach(function(button) {
+        button.addEventListener('click', function() {
+            this.classList.add('btn-clicked');
+            console.log("Button clicked");
+            setTimeout(() => {
+                this.classList.remove('btn-clicked');
+            }, 100); 
+        });
     });
 });
 
@@ -213,6 +224,7 @@ function tutorial() {
             nextButton.onclick = function () {
                 document.getElementById('story').style.display = 'none';
                 document.getElementById('stats').style.display = 'flex';
+                document.getElementById('control').style.display = 'flex';
             };
         }
     });
