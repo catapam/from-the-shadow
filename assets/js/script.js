@@ -1,7 +1,7 @@
-updatePosition('hero');
+updatePosition('hero','hero');
 updatePosition('enemy');
 window.addEventListener('resize', function() {
-    updatePosition('hero');
+    updatePosition('hero','hero');
     updatePosition('enemy');
 });
 
@@ -87,80 +87,69 @@ let character = [{
 }]
 
 function updatePosition(elementId) {
-    const type = document.getElementById(elementId);
+    const element = document.getElementById(elementId);
     const viewportWidth = window.innerWidth;
-    const elementWidth = type.offsetWidth;
-    var position = (viewportWidth * 0.5) - (elementWidth / 4);
+    const elementWidth = element.offsetWidth;
+    const position = ((viewportWidth / 2) - ((elementWidth) / 4));
 
-    if (elementId === 'hero'){
-        type.style.right = `${position}px`; 
-        type.style.zIndex = '2';
-    } else if (elementId === 'enemy'){
-        type.style.left = `${position}px`; 
-        type.style.zIndex = '1';
+    if (elementId === 'hero') {
+        element.style.right = `${position}px`;
+    } else if (elementId === 'enemy') {
+        element.style.left = `${position}px`;
     }
 
-    type.style.position = 'fixed';
-    type.style.bottom = '25vh'; 
-    type.style.height = '30vh'; 
+    element.style.position = 'fixed';
+    element.style.bottom = '25vh';
+    element.style.height = '30vh';
+    element.style.zIndex = elementId === 'hero' ? '2' : '1';
 }
 
 function start() {
     document.getElementById('enemy').style.display = 'block';
-    document.getElementById('enemy').style.left = '100vw';
     document.getElementById('hero').style.right = '100vw';
+    document.getElementById('enemy').style.left = '100vw';
+    
     document.getElementById('stats').style.display = 'none';
     document.getElementById('control').style.display = 'none';
     
-    run('hero','hero');
+    run('hero', 'hero');
     tutorial();
 }
 
-function run(elementID,name){
+function run(elementID, name) {
     var characterDiv = document.getElementById(elementID);
     var characterImage = characterDiv.querySelector('img');
-
+    var viewportWidth = window.innerWidth;
+    var elementWidth = characterDiv.offsetWidth;
     characterImage.src = `assets/images/${name}/Run.gif`;
-    
-    finalPosition=((parseFloat(document.getElementById(elementID).style.right))/window.innerWidth)*100;
-    characterDiv.style.right = '100vw';
+
+    var finalPosition = ((viewportWidth / 2) - (elementWidth / 4));
+    var startPosition = viewportWidth;
 
     let start = null;
     const duration = 800;
 
-    if (elementID === 'hero'){
-        function animate(timestamp) {
-            if (!start) start = timestamp;
-            const progress = timestamp - start;
-            const timeFraction = progress / duration;
-            const easeOut = 1 - Math.pow(1 - timeFraction, 2);
-
-            const currentRight = 100 + (finalPosition - 100) * easeOut;
-            characterDiv.style.right = `${currentRight}vw`
-
-            if (progress < duration) {
-                requestAnimationFrame(animate);
-            } else {
-                characterImage.src = `assets/images/${name}/Idle.gif`;
-            }
+    function animate(timestamp) {
+        if (!start) start = timestamp;
+        const progress = timestamp - start;
+        const timeFraction = progress / duration;
+        const easeOut = 1 - Math.pow(1 - timeFraction, 2);
+        var distance = finalPosition - (startPosition - viewportWidth);
+        var currentPos = easeOut * distance;
+        
+        if (elementID === 'hero') {
+            characterDiv.style.right = `${startPosition-currentPos}px`;
+        } else {
+            characterDiv.style.left = `${startPosition-currentPos}px`;
         }
-    } else {
-        function animate(timestamp) {
-            if (!start) start = timestamp;
-            const progress = timestamp - start;
-            const timeFraction = progress / duration;
-            const easeOut = 1 - Math.pow(1 - timeFraction, 2);
-    
-            const currentRight = 100 + (finalPosition - 100) * easeOut;
-            characterDiv.style.left = `${currentRight}vw`
-    
-            if (progress < duration) {
-                requestAnimationFrame(animate);
-            } else {
-                characterImage.src = `assets/images/${name}/Idle.gif`;
-            }
+        if (progress < duration) {
+            requestAnimationFrame(animate);
+        } else {
+            characterImage.src = `assets/images/${name}/Idle.gif`;
+            updatePosition(elementID);
         }
     }
+
     requestAnimationFrame(animate);
 }
 
