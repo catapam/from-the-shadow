@@ -365,7 +365,7 @@ function attack(elementId, path) {
         timer("stop");
         enemyTurn();
     } else if (elementId === "enemy"){
-        setTimeout(heroTurn, 2000);
+        setTimeout(heroTurn, 1500);
     }
 }
 
@@ -531,11 +531,13 @@ function xp(elementId,type) {
 };
 
 function enemyTurn() {
+    document.getElementById("control").style.display="none";
     // if enough mana add the possibility of running attack 3, otherwise random choice between charge. attack 1 and attack 2
     // if health is too low, increases priority of doing a charge
     // pass turn back to hero
 };
 
 function heroTurn() {
+    document.getElementById("control").style.display="flex";
     timer("start");
 };
