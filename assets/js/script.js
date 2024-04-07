@@ -4,8 +4,8 @@ let character = [{
     path : "hero",
     scream: "charge",
     strength: "100",
-    totalHealth: "100",
-    currentHealth: "100",
+    totalHealth: "500",
+    currentHealth: "500",
     gifDuration: {
         "Attack_1.gif": 1000,
         "Attack_2.gif": 320,
@@ -22,8 +22,8 @@ let character = [{
     path : "gotoku",
     scream: "charge",
     strength: "100",
-    totalHealth: "100",
-    currentHealth: "100",
+    totalHealth: "500",
+    currentHealth: "500",
     gifDuration: {
         "Attack_1.gif": 320,
         "Attack_2.gif": 320,
@@ -39,8 +39,8 @@ let character = [{
     path : "onrei",
     scream: "charge",
     strength: "100",
-    totalHealth: "100",
-    currentHealth: "100",
+    totalHealth: "500",
+    currentHealth: "500",
     gifDuration: {
         "Attack_1.gif": 1000,
         "Attack_2.gif": 800,
@@ -56,8 +56,8 @@ let character = [{
     path : "yurei",
     scream: "charge",
     strength: "100",
-    totalHealth: "100",
-    currentHealth: "100",
+    totalHealth: "500",
+    currentHealth: "500",
     gifDuration: {
         "Attack_1.gif": 800,
         "Attack_2.gif": 800,
@@ -288,6 +288,7 @@ function tutorial() {
                 // document.getElementById("tutorial-controls").style.display = "block";
                 //add details about controls, and hide the modal again once the close button is clicked>
                 // document.getElementById("tutorial-controls").style.display = "none";
+                timer("start");
             };
         }
     });
@@ -361,9 +362,10 @@ function attack(elementId, path) {
     }, gifDuration);
 
     if (elementId === "hero"){
+        timer("stop");
         enemyTurn();
     } else if (elementId === "enemy"){
-        // timer();
+        setTimeout(heroTurn, 2000);
     }
 }
 
@@ -444,26 +446,31 @@ function score(type, value) {
     };
 };
 
-function timer() {
+function timer(type) {
     //10s timer for the hero turn
     //if passed without acting, pass turn to enemy
     //create pause option (maybe)
     let timeLeft = 10; 
     const timerElement = document.getElementById("timer");
 
-    timerElement.classList.remove("hidden");
-    timerElement.textContent = timeLeft;
-
-    const countdown = setInterval(function() {
-        timeLeft--;
+    if (type === "start"){
+        timerElement.classList.remove("hidden");
         timerElement.textContent = timeLeft;
 
-        if (timeLeft <= 0) {
-            clearInterval(countdown);
-            timerElement.classList.add("hidden");
-            enemyTurn();
-        }
-    }, 1000);
+        const countdown = setInterval(function() {
+            timeLeft--;
+            timerElement.textContent = timeLeft;
+
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                timerElement.classList.add("hidden");
+                enemyTurn();
+            }
+        }, 1000);
+    } else if (type === "stop"){
+        timerElement.textContent = 10;
+        timerElement.classList.add("hidden");
+    }
 };
 
 function damage(elementId,attack) {
@@ -527,4 +534,8 @@ function enemyTurn() {
     // if enough mana add the possibility of running attack 3, otherwise random choice between charge. attack 1 and attack 2
     // if health is too low, increases priority of doing a charge
     // pass turn back to hero
+};
+
+function heroTurn() {
+    timer("start");
 };
