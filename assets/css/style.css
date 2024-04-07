@@ -161,7 +161,7 @@ body {
     height: 100%;
 }
 
-#tutorial_modal .modal-content{
+#tutorial_modal #story{
     position: fixed;
     display: flex;
     flex-direction: column;

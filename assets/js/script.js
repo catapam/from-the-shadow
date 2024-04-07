@@ -94,7 +94,6 @@ document.addEventListener('DOMContentLoaded', function () {
     Array.from(actionButton).forEach(function(button) {
         button.addEventListener('click', function() {
             this.classList.add('btn-clicked');
-            console.log("Button clicked");
             setTimeout(() => {
                 this.classList.remove('btn-clicked');
             }, 100); 
@@ -225,7 +224,14 @@ function tutorial() {
             nextButton.onclick = function () {
                 document.getElementById('story').style.display = 'none';
                 document.getElementById('stats').style.display = 'flex';
+                document.getElementById('tutorial-stats').style.display = 'block';
+                //add details about stats, and hide the modal again once the close button is clicked>
+                document.getElementById('tutorial-stats').style.display = 'none';
+
                 document.getElementById('control').style.display = 'flex';
+                document.getElementById('tutorial-controls').style.display = 'block';
+                //add details about controls, and hide the modal again once the close button is clicked>
+                document.getElementById('tutorial-controls').style.display = 'none';
             };
         }
     });
@@ -276,6 +282,8 @@ function enemyArrives() {
     const enemies = character.filter(character => character.type === 'enemy');
     const enemy = enemies[Math.floor(Math.random() * enemies.length)]
     const selectedEnemy = enemy.path;
+
+    // randomize the amount of XP and mana the enemy starts with
     document.getElementById('enemy-name').textContent = enemy.name;
     run('enemy',selectedEnemy);
 }
@@ -321,35 +329,40 @@ function nextRound() {
     //new background selection
     //new enemy selected
     //previous hero stats are kept, health is full restored
+    // all enemy stats are restored
+    // keep score, update round number to 
 };
 
-function score(type) {
-    if (type === 'time'){
-        // time:  time left on turn x round x 10
-    }
+function score(type, value) {
+    let scoreElement = document.getElementById('score-value');
+    let currentScore = parseInt(scoreElement.textContent) || 0;
+    let roundElement = document.getElementById('level-value');
+    let round = parseInt(roundElement.textContent) || 1; 
+    let newScore = 0;
+    let multiplier = 10;
 
-    if (type === 'levelUp'){
+    if (type === 'time' || type === 'levelUp' || type === 'round'){
+        // time: time left on turn x round x 10
         // level-up: new level x round x 10
-    }
-    
-    if (type === 'round'){
-        // next round: new round x 10
+        // next round: new round x 10 (pass value as 1)
+        newScore = value * round * multiplier;
+        currentScore += newScore; 
+        scoreElement.textContent = currentScore;
     }
 
-    if (type === 'attack'){
+    if (type === 'attack' || type === 'kill' || type === 'defence'){
         // attack: damage x (1+(round/10))
-    }
-
-    if (type === 'kill'){
         // kill: full enemy health x (1+(round/10))
-    }
-    
-    if (type === 'defence'){
-        // defence: (enemy strenght - damage) x (1+(round/10))
+        // defence: (enemy strenght - damage) x (1+(round/10)) >>> pass value= (enemy strenght - damage)
+        newScore = value * (1+ (round / multiplier));
+        currentScore += newScore; 
+        scoreElement.textContent = currentScore;
     }
     
     if (type === 'charge'){
-        // charge: health recovered + mana recovered
+        // charge: health recovered + mana recovered >>> pass value= (health recovered + mana recovered)
+        currentScore += value; 
+        scoreElement.textContent = currentScore;
     }
 };
 
