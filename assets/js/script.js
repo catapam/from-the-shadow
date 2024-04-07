@@ -167,7 +167,7 @@ function updatePosition(elementId) {
     }
 
     element.style.position = "fixed";
-    element.style.bottom = "25vh";
+    element.style.bottom = "30vh";
     element.style.height = "30vh";
     element.style.zIndex = elementId === "hero" ? "2" : "1";
 }
@@ -277,17 +277,17 @@ function tutorial() {
             nextButton.onclick = function () {
                 document.getElementById("story").style.display = "none";
                 document.getElementById("stats").style.display = "flex";
-                document.getElementById("tutorial-stats").style.display = "block";
+                // document.getElementById("tutorial-stats").style.display = "block";
                 //add details about stats, and hide the modal again once the close button is clicked>
-                document.getElementById("tutorial-stats").style.display = "none";
+                // document.getElementById("tutorial-stats").style.display = "none";
 
                 //add timer details:
-                document.getElementById("tutorial-stats").style.display = "block";
+                // document.getElementById("tutorial-stats").style.display = "block";
 
                 document.getElementById("control").style.display = "flex";
-                document.getElementById("tutorial-controls").style.display = "block";
+                // document.getElementById("tutorial-controls").style.display = "block";
                 //add details about controls, and hide the modal again once the close button is clicked>
-                document.getElementById("tutorial-controls").style.display = "none";
+                // document.getElementById("tutorial-controls").style.display = "none";
             };
         }
     });
@@ -471,13 +471,26 @@ function damage(elementId,attack) {
     let totalDamage = Math.round(attack * multiplier);
     let enemyStrength = character.find(char => char.name === document.getElementById("enemy-name").textContent).strength;
     let scoreDamage = (enemyStrength-totalDamage);
+    
     if (elementId === "hero"){
+        p = document.getElementById("enemy").querySelector("p")
+        p.style.opacity = 1
+        p.textContent=totalDamage;
+
         health("enemy","decrease");
         score("damage", totalDamage);
     } else if (elementId === "enemy"){
+        p = document.getElementById("hero").querySelector("p")
+        p.style.opacity = 1
+        p.textContent=totalDamage;
+
         health("hero","decrease");
         score("defence", scoreDamage);
     };
+
+    setTimeout(() => {
+        p.style.opacity = 0;
+    }, 800);
 };
 
 function health(elementId,type) {

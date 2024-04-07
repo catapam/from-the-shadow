@@ -157,6 +157,16 @@ body {
     z-index: 1; 
 }
 
+#hero p, #enemy p {
+    color: rgba(255, 0, 0);
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+
+#enemy p {
+    transform: scaleX(-1); 
+}
+
 #fight_area img{
     height: 100%;
 }
