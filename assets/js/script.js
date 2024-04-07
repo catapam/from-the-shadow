@@ -228,6 +228,9 @@ function tutorial() {
                 //add details about stats, and hide the modal again once the close button is clicked>
                 document.getElementById('tutorial-stats').style.display = 'none';
 
+                //add timer details:
+                document.getElementById('tutorial-stats').style.display = 'block';
+
                 document.getElementById('control').style.display = 'flex';
                 document.getElementById('tutorial-controls').style.display = 'block';
                 //add details about controls, and hide the modal again once the close button is clicked>
@@ -370,6 +373,22 @@ function timer() {
     //10s timer for the hero turn
     //if passed without acting, pass turn to enemy
     //create pause option (maybe)
+    let timeLeft = 10; 
+    const timerElement = document.getElementById('timer');
+
+    timerElement.classList.remove('hidden');
+
+    timerElement.textContent = timeLeft;
+
+    const countdown = setInterval(function() {
+        timeLeft--;
+        timerElement.textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            timerElement.classList.add('hidden');
+        }
+    }, 1000);
 };
 
 function damage(elementID) {
