@@ -33,13 +33,15 @@
 
     <div id="fight_area" class="hidden">
         <div id="hero">
-            <p class="centered">0</p>
+            <p class="centered" id="hero-damage">0</p>
             <img src="" alt="Hero caracter">
+            <p class="centered" id="hero-level">lvl <span id="hero-level-value">1</span></p>
         </div>
 
         <div id="enemy">
-            <p class="centered">0</p>
+            <p class="centered" id="enemy-damage">0</p>
             <img src="" alt="Enemy caracter">
+            <p class="centered" id="enemy-level">lvl <span id="enemy-level-value">1</span></p>
         </div>
 
         <div id="stats" class="hidden">
@@ -72,7 +74,7 @@
             <div id="game-stats" class="centered">
                 <div id="time" class="centered">
                     <p class="centered" id="score">score <span id="score-value"></span></p>
-                    <p class="centered" id="level">round <span id="level-value">1</span></p>
+                    <p class="centered" id="level">round <span id="round-value">1</span></p>
                     <h1 class="centered hidden" id="timer">10</h1>
                 </div>
                 <div id="next" class="centered hidden">
@@ -82,18 +84,22 @@
     </div> 
 
     <div id="control" class="hidden">
-        <button class="btn-fight" id="attack">
-            <img src="assets/images/icons/attack.png" alt="Attack button">
-        </button>
-        <button class="btn-fight" id="magic">
-            <img src="assets/images/icons/magic.png" alt="Magic button">
-        </button>
-        <button class="btn-fight" id="charge">
-            <img src="assets/images/icons/recharge.png" alt="Charge button">
-        </button>
-        <button class="btn-fight" id="level">
-            <img src="assets/images/icons/level-up.png" alt="Level-up button">
-        </button>
+        <div class="btn-group" id="btn-group-left">
+            <button class="btn-fight" id="attack">
+                <img src="assets/images/icons/attack.png" alt="Attack button">
+            </button>
+            <button class="btn-fight" id="magic">
+                <img src="assets/images/icons/magic.png" alt="Magic button">
+            </button>
+        </div>
+        <div class="btn-group" id="btn-group-right">
+            <button class="btn-fight" id="charge">
+                <img src="assets/images/icons/recharge.png" alt="Charge button">
+            </button>
+            <button class="btn-fight" id="level-up">
+                <img src="assets/images/icons/level-up.png" alt="Level-up button">
+            </button>
+        </div>
     </div>
 
     <!-- Tutorial Modal -->

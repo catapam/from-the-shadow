@@ -1,3 +1,4 @@
+let timerInterval;
 let character = [{
     name : "Hero",
     type : "hero",
@@ -85,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var body = document.body;
     var heroNameInput = document.getElementById("id");
     var fightButton = document.getElementById("fight_button");
-    var actionButton = document.getElementsByClassName("btn-fight");
+    var actionButton = document.getElementsByClassName("btn-group");
 
     infoButton.addEventListener("click", function () {
         modal.style.display = "block";
@@ -149,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
         charge("hero", "hero");
     });
 
-    document.getElementById("level").addEventListener("click", function() {
+    document.getElementById("level-up").addEventListener("click", function() {
         levelUp("hero", "hero");
     });
 });
@@ -167,7 +168,7 @@ function updatePosition(elementId) {
     }
 
     element.style.position = "fixed";
-    element.style.bottom = "30vh";
+    element.style.bottom = "35vh";
     element.style.height = "30vh";
     element.style.zIndex = elementId === "hero" ? "2" : "1";
 }
@@ -363,7 +364,7 @@ function attack(elementId, path) {
 
     if (elementId === "hero"){
         timer("stop");
-        enemyTurn();
+        setTimeout(enemyTurn, 1500);
     } else if (elementId === "enemy"){
         setTimeout(heroTurn, 1500);
     }
@@ -410,14 +411,10 @@ function nextRound() {
 };
 
 function score(type, value) {
-    console.log("score is triggered");
-    console.log("type is:"+type);
-    console.log("value is:"+value);
     let scoreElement = document.getElementById("score-value");
     let currentScore = parseInt(scoreElement.textContent) || 0;
-    let roundElement = document.getElementById("level-value");
+    let roundElement = document.getElementById("round-value");
     let round = parseInt(roundElement.textContent) || 1; 
-    console.log("round is:"+round);
     let newScore = 0;
     let multiplier = 10;
 
@@ -432,13 +429,9 @@ function score(type, value) {
         // damage: damage x (1+(round/10))
         // kill: full enemy health x (1+(round/10))
         // defence: (enemy strenght - damage) x (1+(round/10)) >>> pass value= (enemy strenght - damage)
-        console.log("damage is triggered");
         newScore = Math.round(value * (1+ (round / multiplier)));
-        console.log("score is calculated");
         currentScore += newScore; 
-        console.log("score is summed up");
         scoreElement.textContent = currentScore;
-        console.log("score is updated");
     } else if (type === "charge"){
         // charge: health recovered + mana recovered >>> pass value= (health recovered + mana recovered)
         currentScore += Math.round(value); 
@@ -447,31 +440,35 @@ function score(type, value) {
 };
 
 function timer(type) {
-    //10s timer for the hero turn
-    //if passed without acting, pass turn to enemy
-    //create pause option (maybe)
-    let timeLeft = 10; 
+    let timeLeft = 10;
     const timerElement = document.getElementById("timer");
 
-    if (type === "start"){
-        timerElement.classList.remove("hidden");
-        timerElement.textContent = timeLeft;
-
-        const countdown = setInterval(function() {
-            timeLeft--;
-            timerElement.textContent = timeLeft;
-
-            if (timeLeft <= 0) {
-                clearInterval(countdown);
-                timerElement.classList.add("hidden");
+    function updateTimer() {
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            timerElement.classList.add("hidden");
+            if (type === "start") {
                 enemyTurn();
             }
-        }, 1000);
-    } else if (type === "stop"){
-        timerElement.textContent = 10;
-        timerElement.classList.add("hidden");
+        } else {
+            timerElement.textContent = timeLeft;
+        }
     }
-};
+
+    if (type === "start") {
+        clearInterval(timerInterval); 
+        timerElement.classList.remove("hidden");
+        timerElement.textContent = timeLeft;
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimer();
+        }, 1000);
+    } else if (type === "stop") {
+        clearInterval(timerInterval); 
+        timerElement.classList.add("hidden");
+        timerElement.textContent = '10'; 
+    }
+}
 
 function damage(elementId,attack) {
     let multiplier = Math.random();
@@ -480,14 +477,14 @@ function damage(elementId,attack) {
     let scoreDamage = (enemyStrength-totalDamage);
     
     if (elementId === "hero"){
-        p = document.getElementById("enemy").querySelector("p")
+        p = document.getElementById("enemy-damage")
         p.style.opacity = 1
         p.textContent=totalDamage;
 
         health("enemy","decrease");
         score("damage", totalDamage);
     } else if (elementId === "enemy"){
-        p = document.getElementById("hero").querySelector("p")
+        p = document.getElementById("hero-damage")
         p.style.opacity = 1
         p.textContent=totalDamage;
 
@@ -540,4 +537,12 @@ function enemyTurn() {
 function heroTurn() {
     document.getElementById("control").style.display="flex";
     timer("start");
+};
+
+function hurt(){
+
+};
+
+function dead(){
+
 };
