@@ -4,7 +4,16 @@ let character = [{
     path : "hero",
     scream: "charge",
     strenght: "100",
-    health: "100"
+    health: "100",
+    gifDuration: {
+        "Attack_1.gif": 1000,
+        "Attack_2.gif": 320,
+        "Charge.gif": 960,
+        "Dead.gif": 1500,
+        "Fireball.gif": 1040,
+        "Flame_jet.gif": 1040,
+        "Hurt.gif": 750
+    }
 },
 {
     name : "Gotoku",
@@ -12,7 +21,15 @@ let character = [{
     path : "gotoku",
     scream: "charge",
     strenght: "100",
-    health: "100"
+    health: "100",
+    gifDuration: {
+        "Attack_1.gif": 320,
+        "Attack_2.gif": 320,
+        "Attack_3.gif": 800,
+        "Dead.gif": 1000,
+        "Hurt.gif": 600,
+        "Scream.gif": 1000
+    }
 },
 {
     name : "Onrei",
@@ -20,7 +37,15 @@ let character = [{
     path : "onrei",
     scream: "charge",
     strenght: "100",
-    health: "100"
+    health: "100",
+    gifDuration: {
+        "Attack_1.gif": 1000,
+        "Attack_2.gif": 800,
+        "Attack_3.gif": 560,
+        "Dead.gif": 1020,
+        "Hurt.gif": 510,
+        "Scream.gif": 560
+    }
 },
 {
     name : "Yurei",
@@ -28,7 +53,15 @@ let character = [{
     path : "yurei",
     scream: "charge",
     strenght: "100",
-    health: "100"
+    health: "100",
+    gifDuration: {
+        "Attack_1.gif": 800,
+        "Attack_2.gif": 800,
+        "Attack_3.gif": 700,
+        "Dead.gif": 800,
+        "Hurt.gif": 750,
+        "Scream.gif": 1320
+    }
 }]
 
 updatePosition('hero','hero');
@@ -131,8 +164,8 @@ function start() {
     tutorial();
 }
 
-function run(elementID, name) {
-    var characterDiv = document.getElementById(elementID);
+function run(elementId, name) {
+    var characterDiv = document.getElementById(elementId);
     var characterImage = characterDiv.querySelector('img');
     var viewportWidth = window.innerWidth;
     var elementWidth = characterDiv.offsetWidth;
@@ -152,7 +185,7 @@ function run(elementID, name) {
         var distance = finalPosition - (startPosition - viewportWidth)+(elementWidth / 4);
         var currentPos = easeOut * distance;
         
-        if (elementID === 'hero') {
+        if (elementId === 'hero') {
             characterDiv.style.right = `${startPosition-currentPos}px`;
         } else {
             characterDiv.style.left = `${startPosition-currentPos}px`;
@@ -161,7 +194,7 @@ function run(elementID, name) {
             requestAnimationFrame(animate);
         } else {
             characterImage.src = `assets/images/${name}/Idle.gif`;
-            updatePosition(elementID);
+            updatePosition(elementId);
         }
     }
 
@@ -291,12 +324,36 @@ function enemyArrives() {
     run('enemy',selectedEnemy);
 }
 
-function attack(elementID) {
-    // attack 1: strenght x 1
-    // attack 1: strenght x 1,2
-};
+function attack(elementId, path) {
+    let characterObj = character.find(char => char.path === path);
+    if (!characterObj) {
+        console.error("Character not found:", path);
+        return;
+    }
+    let characterDiv = document.getElementById(elementId);
+    let characterImage = characterDiv.querySelector('img');
+    let attackType = Math.random() < 0.5 ? "Attack_1.gif" : "Attack_2.gif";
+    characterImage.src = `assets/images/${characterObj.path}/${attackType}`;
+    let gifDuration = characterObj.gifDuration[attackType];
+    
+    let strength = characterObj.strength;
+    
+    let multiplier = attackType === "Attack_1.gif" ? 1 : 1.2;
+    let damageScore = multiplier * strength;
 
-function fire(elementID) {
+    damage(elementId, damageScore);
+    setTimeout(() => {
+        characterImage.src = `assets/images/${characterObj.path}/Idle.gif`;
+    }, gifDuration);
+
+    if (elementId === "hero"){
+        enemyTurn();
+    } else if (elementId === "enemy"){
+        timer();
+    }
+}
+
+function fire(elementId) {
     //if hero:
     //magic 1: strenght x 1,5
     //magic 2: strenght x 2
@@ -307,11 +364,11 @@ function fire(elementID) {
     //consumes 40 mana, need to have at least 40
 };
 
-function recharge(elementID) {
+function recharge(elementId) {
     // add 50% health
     // reduces 20% mana
     // add 5% xp
-    if (elementID === 'enemy'){
+    if (elementId === 'enemy'){
 
         scream();
     } else {
@@ -319,7 +376,7 @@ function recharge(elementID) {
     }
 };
 
-function levelUp(elementID) {
+function levelUp(elementId) {
     // full health and mana restore
     // previous health x 1,1
     // previous mana x 1,05
@@ -377,7 +434,6 @@ function timer() {
     const timerElement = document.getElementById('timer');
 
     timerElement.classList.remove('hidden');
-
     timerElement.textContent = timeLeft;
 
     const countdown = setInterval(function() {
@@ -387,26 +443,28 @@ function timer() {
         if (timeLeft <= 0) {
             clearInterval(countdown);
             timerElement.classList.add('hidden');
+            enemyTurn()
         }
     }, 1000);
 };
 
-function damage(elementID) {
+function damage(elementId,strenght) {
+    console.log('damage from '+ elementId +' of '+strenght)
     // calculation based on strenght x opponent health
     // multiplies by randon number between 0 and 1
 };
 
-function health(elementID) {
+function health(elementId,type) {
     // reduces the damage received
     // adds when level up, round pass or charge activated
 };
 
-function mana(elementID) {
+function mana(elementId,type) {
     // spends when fire or charge is triggered
     // fills up when level up, attack
 };
 
-function xp(elementID) {
+function xp(elementId,type) {
     //base the calculation on score earned
     //when 100%, allow clicking the level-up button
 };
