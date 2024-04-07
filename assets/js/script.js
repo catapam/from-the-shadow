@@ -280,46 +280,107 @@ function enemyArrives() {
     run('enemy',selectedEnemy);
 }
 
-function attack() {
-
+function attack(elementID) {
+    // attack 1: strenght x 1
+    // attack 1: strenght x 1,2
 };
 
-function fire() {
-
+function fire(elementID) {
+    //if hero:
+    //magic 1: strenght x 1,5
+    //magic 2: strenght x 2
+    //random selection
+    //consumes 60 mana, need to have at least 60
+    //if enemy:
+    //attack 3: strenght x 1,5
+    //consumes 40 mana, need to have at least 40
 };
 
-function recharge() {
+function recharge(elementID) {
+    // add 50% health
+    // reduces 20% mana
+    // add 5% xp
+    if (elementID === 'enemy'){
 
+        scream();
+    } else {
+
+    }
 };
 
-function levelUp() {
-
+function levelUp(elementID) {
+    // full health and mana restore
+    // previous health x 1,1
+    // previous mana x 1,05
+    // previous xp x 1,2
+    // previous strenght x 1,1
 };
 
 function nextRound() {
-
+    //run out
+    //new background selection
+    //new enemy selected
+    //previous hero stats are kept, health is full restored
 };
 
-function score() {
+function score(type) {
+    if (type === 'time'){
+        // time:  time left on turn x round x 10
+    }
 
+    if (type === 'levelUp'){
+        // level-up: new level x round x 10
+    }
+    
+    if (type === 'round'){
+        // next round: new round x 10
+    }
+
+    if (type === 'attack'){
+        // attack: damage x (1+(round/10))
+    }
+
+    if (type === 'kill'){
+        // kill: full enemy health x (1+(round/10))
+    }
+    
+    if (type === 'defence'){
+        // defence: (enemy strenght - damage) x (1+(round/10))
+    }
+    
+    if (type === 'charge'){
+        // charge: health recovered + mana recovered
+    }
 };
 
 function timer() {
-
+    //10s timer for the hero turn
+    //if passed without acting, pass turn to enemy
+    //create pause option (maybe)
 };
 
-function health() {
-
+function damage(elementID) {
+    // calculation based on strenght x opponent health
+    // multiplies by randon number between 0 and 1
 };
 
-function mana() {
-
+function health(elementID) {
+    // reduces the damage received
+    // adds when level up, round pass or charge activated
 };
 
-function xp() {
+function mana(elementID) {
+    // spends when fire or charge is triggered
+    // fills up when level up, attack
+};
 
+function xp(elementID) {
+    //base the calculation on score earned
+    //when 100%, allow clicking the level-up button
 };
 
 function enemyTurn() {
-
+    // if enough mana add the possibility of running attack 3, otherwise random choice between charge. attack 1 and attack 2
+    // if health is too low, increases priority of doing a charge
+    // pass turn back to hero
 };
