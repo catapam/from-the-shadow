@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var body = document.body;
     var heroNameInput = document.getElementById("id");
     var fightButton = document.getElementById("fight_button");
-    var actionButton = document.getElementsByClassName("btn-group");
+    var actionButton = document.getElementsByClassName("btn-fight");
 
     infoButton.addEventListener("click", function () {
         modal.style.display = "block";
@@ -370,7 +370,7 @@ function attack(elementId, path) {
     }
 }
 
-function magic(elementId) {
+function magic(elementId,path) {
     //if hero:
     //magic 1: strenght x 1,5
     //magic 2: strenght x 2
@@ -379,6 +379,33 @@ function magic(elementId) {
     //if enemy:
     //attack 3: strenght x 1,5
     //consumes 40 mana, need to have at least 40
+    let characterObj = character.find(char => char.path === path);
+    let characterDiv = document.getElementById(elementId);
+    let characterImage = characterDiv.querySelector("img");
+    
+    if (elementId === "hero"){
+        var attackType = Math.random() < 0.5 ? "Fireball.gif" : "Flame_jet.gif";
+    } else{
+        var attackType = "Attack_3.gif";
+    }
+
+    characterImage.src = `assets/images/${characterObj.path}/${attackType}`;
+    let gifDuration = characterObj.gifDuration[attackType];
+    let strength = characterObj.strength;
+    let multiplier = attackType === "Flame_jet.gif" ? 3 : 2.5;
+    let damageScore = multiplier * strength;
+
+    damage(elementId, damageScore);
+    setTimeout(() => {
+        characterImage.src = `assets/images/${characterObj.path}/Idle.gif`;
+    }, gifDuration);
+
+    if (elementId === "hero"){
+        timer("stop");
+        setTimeout(enemyTurn, 1500);
+    } else if (elementId === "enemy"){
+        setTimeout(heroTurn, 1500);
+    }
 };
 
 function charge(elementId) {
@@ -471,7 +498,8 @@ function timer(type) {
 }
 
 function damage(elementId,attack) {
-    let multiplier = Math.random();
+    let random = Math.random();
+    let multiplier = random < 0.5 ? (random/4) : ((random/4)*3+(1/4));
     let totalDamage = Math.round(attack * multiplier);
     let enemyStrength = character.find(char => char.name === document.getElementById("enemy-name").textContent).strength;
     let scoreDamage = (enemyStrength-totalDamage);
