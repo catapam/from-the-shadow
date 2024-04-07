@@ -3,7 +3,7 @@ let character = [{
     type : "hero",
     path : "hero",
     scream: "charge",
-    strenght: "100",
+    strength: "100",
     health: "100",
     gifDuration: {
         "Attack_1.gif": 1000,
@@ -20,7 +20,7 @@ let character = [{
     type : "enemy",
     path : "gotoku",
     scream: "charge",
-    strenght: "100",
+    strength: "100",
     health: "100",
     gifDuration: {
         "Attack_1.gif": 320,
@@ -36,7 +36,7 @@ let character = [{
     type : "enemy",
     path : "onrei",
     scream: "charge",
-    strenght: "100",
+    strength: "100",
     health: "100",
     gifDuration: {
         "Attack_1.gif": 1000,
@@ -52,7 +52,7 @@ let character = [{
     type : "enemy",
     path : "yurei",
     scream: "charge",
-    strenght: "100",
+    strength: "100",
     health: "100",
     gifDuration: {
         "Attack_1.gif": 800,
@@ -131,6 +131,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.classList.remove('btn-clicked');
             }, 100); 
         });
+    });
+
+    document.getElementById('attack').addEventListener('click', function() {
+        attack('hero', 'hero');
+    });
+
+    document.getElementById('magic').addEventListener('click', function() {
+        magic('hero', 'hero');
+    });
+
+    document.getElementById('charge').addEventListener('click', function() {
+        charge('hero', 'hero');
+    });
+
+    document.getElementById('level').addEventListener('click', function() {
+        levelUp('hero', 'hero');
     });
 });
 
@@ -326,18 +342,12 @@ function enemyArrives() {
 
 function attack(elementId, path) {
     let characterObj = character.find(char => char.path === path);
-    if (!characterObj) {
-        console.error("Character not found:", path);
-        return;
-    }
     let characterDiv = document.getElementById(elementId);
     let characterImage = characterDiv.querySelector('img');
     let attackType = Math.random() < 0.5 ? "Attack_1.gif" : "Attack_2.gif";
     characterImage.src = `assets/images/${characterObj.path}/${attackType}`;
     let gifDuration = characterObj.gifDuration[attackType];
-    
     let strength = characterObj.strength;
-    
     let multiplier = attackType === "Attack_1.gif" ? 1 : 1.2;
     let damageScore = multiplier * strength;
 
@@ -353,7 +363,7 @@ function attack(elementId, path) {
     }
 }
 
-function fire(elementId) {
+function magic(elementId) {
     //if hero:
     //magic 1: strenght x 1,5
     //magic 2: strenght x 2
@@ -364,7 +374,7 @@ function fire(elementId) {
     //consumes 40 mana, need to have at least 40
 };
 
-function recharge(elementId) {
+function charge(elementId) {
     // add 50% health
     // reduces 20% mana
     // add 5% xp
@@ -405,23 +415,23 @@ function score(type, value) {
         // time: time left on turn x round x 10
         // level-up: new level x round x 10
         // next round: new round x 10 (pass value as 1)
-        newScore = value * round * multiplier;
+        newScore = Math.round(value * round * multiplier);
         currentScore += newScore; 
         scoreElement.textContent = currentScore;
     }
 
-    if (type === 'attack' || type === 'kill' || type === 'defence'){
-        // attack: damage x (1+(round/10))
+    if (type === 'damage' || type === 'kill' || type === 'defence'){
+        // damage: damage x (1+(round/10))
         // kill: full enemy health x (1+(round/10))
         // defence: (enemy strenght - damage) x (1+(round/10)) >>> pass value= (enemy strenght - damage)
-        newScore = value * (1+ (round / multiplier));
+        newScore = Math.round(value * (1+ (round / multiplier)));
         currentScore += newScore; 
         scoreElement.textContent = currentScore;
     }
     
     if (type === 'charge'){
         // charge: health recovered + mana recovered >>> pass value= (health recovered + mana recovered)
-        currentScore += value; 
+        currentScore += Math.round(value); 
         scoreElement.textContent = currentScore;
     }
 };
@@ -443,15 +453,22 @@ function timer() {
         if (timeLeft <= 0) {
             clearInterval(countdown);
             timerElement.classList.add('hidden');
-            enemyTurn()
+            enemyTurn();
         }
     }, 1000);
 };
 
 function damage(elementId,strenght) {
-    console.log('damage from '+ elementId +' of '+strenght)
-    // calculation based on strenght x opponent health
-    // multiplies by randon number between 0 and 1
+    let multiplier = Math.random();
+    let totalDamage = Math.round(strenght * multiplier);
+    if (elementId === 'hero'){
+        health("enemy","decrease");
+        score("damage", totalDamage);
+    } else if (elementId === 'enemy'){
+        health("hero","decrease");
+    };
+
+    console.log('damage from '+ elementId +' of '+totalDamage);
 };
 
 function health(elementId,type) {
