@@ -273,8 +273,6 @@ function scream() {
 
 function enemyArrives() {
     document.getElementById('enemy').style.display = 'block';
-    // const enemyDiv = document.getElementById('enemy');
-    // const img = enemyDiv.querySelector('img');
     const enemies = character.filter(character => character.type === 'enemy');
     const enemy = enemies[Math.floor(Math.random() * enemies.length)]
     const selectedEnemy = enemy.path;
@@ -294,6 +292,34 @@ function recharge() {
 
 };
 
-function item() {
+function levelUp() {
+
+};
+
+function nextRound() {
+
+};
+
+function score() {
+
+};
+
+function timer() {
+
+};
+
+function health() {
+
+};
+
+function mana() {
+
+};
+
+function xp() {
+
+};
+
+function enemyTurn() {
 
 };

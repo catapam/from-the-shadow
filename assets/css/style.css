@@ -212,7 +212,7 @@ body {
 #enemy-bars p{
     transform: scaleX(-1);
     font-size: small;
-    margin-right: 10px;
+    padding-right: 10px;
     align-self: flex-start;
 }
 
@@ -315,9 +315,15 @@ body {
         max-width: 25vh; 
         max-height: 25vh;
     }
-
-    #fight_area img {
-        height: 100%;
+    @media screen and (min-width: 290px){
+        #hero-bars, #enemy-bars{
+            width: 30vw;
+        }
+    
+        #game-stats{
+            position: fixed;
+            top:10px;
+        }
     }
 }
 
