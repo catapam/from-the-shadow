@@ -429,17 +429,29 @@ function magic(elementId, path) {
 };
 
 function charge(elementId,path) {
-    // add 50% health
-    // reduces 20% mana
+    let characterObj = character.find(char => char.path === path);
+    let characterDiv = document.getElementById(elementId);
+    let characterImage = characterDiv.querySelector("img");
+    let fileName = elementId === "hero" ? "Charge.gif" : "Scream.gif";
+
+    characterImage.src = `assets/images/${characterObj.path}/${fileName}`;
+    let gifDuration = characterObj.gifDuration[fileName];
+
+    setTimeout(() => {
+        characterImage.src = `assets/images/${characterObj.path}/Idle.gif`;
+    }, gifDuration);
+
     if (elementId === "enemy") {
-
+        setTimeout(heroTurn, 1500);
         scream();
+        health(elementId,"add","0.6");
+        mana(elementId,"decrease","0.15");
     } else {
-        
-
+        timer("stop");
+        setTimeout(enemyTurn, 1500);
+        health(elementId,"add","0.5");
+        mana(elementId,"decrease","0.2");
     }
-    health(elementId,"add","0.5")
-    mana(elementId,"decrease","0.2")
 };
 
 function levelUp(elementId) {
