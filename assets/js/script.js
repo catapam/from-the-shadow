@@ -150,18 +150,22 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document.getElementById("attack").addEventListener("click", function() {
+        document.getElementById("control").style.display="none";
         attack("hero", "hero");
     });
 
     document.getElementById("magic").addEventListener("click", function() {
+        document.getElementById("control").style.display="none";
         magic("hero", "hero");
     });
 
     document.getElementById("charge").addEventListener("click", function() {
+        document.getElementById("control").style.display="none";
         charge("hero", "hero");
     });
 
     document.getElementById("level-up").addEventListener("click", function() {
+        document.getElementById("control").style.display="none";
         levelUp("hero", "hero");
     });
 });
@@ -375,10 +379,10 @@ function attack(elementId, path) {
     let multiplier = attackType === "Attack_1.gif" ? 1 : 1.2;
     let damageScore = multiplier * strength;
 
-    damage(elementId, damageScore);
     setTimeout(() => {
         characterImage.src = `assets/images/${characterObj.path}/Idle.gif`;
     }, gifDuration);
+    damage(elementId, damageScore);
 
     if (elementId === "hero"){
         timer("stop");
@@ -590,7 +594,6 @@ function xp(elementId,type) {
 };
 
 function enemyTurn() {
-    document.getElementById("control").style.display="none";
     attack("enemy",currentEnemy);
     // if enough mana add the possibility of running attack 3, otherwise random choice between charge. attack 1 and attack 2
     // if health is too low, increases priority of doing a charge
