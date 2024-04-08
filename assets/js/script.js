@@ -624,9 +624,12 @@ function xp(elementId, type, size) {
 
 function enemyTurn() {
     var healthBar = document.getElementById('enemy-health'); 
+    if (!healthBar.style.width) {
+        healthBar.style.width = "100%"; 
+    }
+
     var currentHealth = parseFloat(healthBar.style.width);
     var heroHealth = parseFloat(document.getElementById('hero-health').style.width);
-
     if (currentHealth > 0 && heroHealth > 0) {
         attack("enemy", currentEnemy);
     } else {
@@ -650,12 +653,12 @@ function hurt(elementId,value) {
     let path = elementId === "hero" ? "hero" : currentEnemy;
     let damageHealth = value/ (character.find(char => char.path === path).totalHealth)
 
+    health(elementId,"decrease",damageHealth);
+
     elementImage.src = `assets/images/${path}/Hurt.gif`;
     setTimeout(() => {
         elementImage.src = `assets/images/${path}/Idle.gif`;
     }, character.find(char => char.path === path).gifDuration["Hurt.gif"]);
-
-    health(elementId,"decrease",damageHealth);
 };
 
 function dead(elementId) {
