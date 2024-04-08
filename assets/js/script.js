@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
     startButton.addEventListener("click", function () {
         startArea.style.display = "none";
         nameArea.style.display = "block";
-        body.style.backgroundImage = "radial-gradient(circle at 85vw 35vh,rgba(0, 0, 0, 1) 0%,rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%),url(assets/images/scenario/backgrounds/game_background.png)";
+        body.style.backgroundImage = "radial-gradient(circle at 85vw 35vh,rgba(0, 0, 0, 1) 0%,rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%),url(assets/images/scenario/backgrounds/game_background_1.webp)";
         preloadGifs(gifArray);
     });
 
@@ -304,6 +304,15 @@ function tutorial() {
             nextButton.onclick = function () {
                 document.getElementById("story").style.display = "none";
                 document.getElementById("stats").style.display = "flex";
+                if (!document.getElementById("hero-health").style.width) {
+                    document.getElementById("hero-health").style.width = "100%"; 
+                };
+                if (!document.getElementById("hero-mana").style.width) {
+                    document.getElementById("hero-mana").style.width = "1%"; 
+                };
+                if (!document.getElementById("hero-xp").style.width) {
+                    document.getElementById("hero-xp").style.width = "1%"; 
+                };
                 // document.getElementById("tutorial-stats").style.display = "block";
                 //add details about stats, and hide the modal again once the close button is clicked>
                 // document.getElementById("tutorial-stats").style.display = "none";
@@ -328,7 +337,7 @@ function createOverlay() {
     overlay.style.left = "35vw";
     overlay.style.width = "100%";
     overlay.style.height = "100%";
-    overlay.style.backgroundImage = "url('assets/images/scenario/scream.png')";
+    overlay.style.backgroundImage = "url('assets/images/scenario/scream.webp')";
     overlay.style.backgroundSize = "cover";
     overlay.style.backgroundPosition = "center";
     overlay.style.backgroundRepeat = "no-repeat";
@@ -368,6 +377,12 @@ function enemyArrives() {
     currentEnemy = enemy.path;
 
     // randomize the amount of XP and mana the enemy starts with
+    const randomMana = Math.floor(Math.random() * 99) + 1;
+    const randomXP = Math.floor(Math.random() * 99) + 1;
+    document.getElementById("enemy-mana").style.width = randomMana + '%';
+    document.getElementById("enemy-xp").style.width = randomXP + '%';
+
+    document.getElementById("enemy-level-value").textContent = document.getElementById("hero-level-value").textContent;
     document.getElementById("enemy-name").textContent = enemy.name;
     run("enemy", currentEnemy);
 }
@@ -491,14 +506,10 @@ function score(type, value) {
         currentScore += newScore;
         scoreElement.textContent = currentScore;
     } else if (type === "damage" || type === "kill" || type === "defence") {
-        // damage: damage x (1+(round/10))
-        // kill: full enemy health x (1+(round/10))
-        // defence: (enemy strenght - damage) x (1+(round/10)) >>> pass value= (enemy strenght - damage)
         newScore = Math.round(value * (1 + (round / multiplier)));
         currentScore += newScore;
         scoreElement.textContent = currentScore;
     } else if (type === "charge") {
-        // charge: health recovered + mana recovered >>> pass value= (health recovered + mana recovered)
         currentScore += Math.round(value);
         scoreElement.textContent = currentScore;
     };
@@ -571,9 +582,6 @@ function damage(elementId, attack) {
 
 function health(elementId, type, size) {
     var healthBar = document.getElementById(`${elementId}-health`);
-    if (!healthBar.style.width) {
-        healthBar.style.width = "100%"; 
-    }
     var currentWidth = parseFloat(healthBar.style.width);
 
     if (type === "add") {
