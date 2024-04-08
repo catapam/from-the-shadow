@@ -7,7 +7,6 @@ let character = [{
     scream: "charge",
     strength: "100",
     totalHealth: "500",
-    currentHealth: "500",
     xp: "500",
     mana: "500",
     gifDuration: {
@@ -27,7 +26,6 @@ let character = [{
     scream: "charge",
     strength: "100",
     totalHealth: "500",
-    currentHealth: "500",
     xp: "500",
     mana: "500",
     gifDuration: {
@@ -46,7 +44,6 @@ let character = [{
     scream: "charge",
     strength: "100",
     totalHealth: "500",
-    currentHealth: "500",
     xp: "500",
     mana: "500",
     gifDuration: {
@@ -65,7 +62,6 @@ let character = [{
     scream: "charge",
     strength: "100",
     totalHealth: "500",
-    currentHealth: "500",
     xp: "500",
     mana: "500",
     gifDuration: {
@@ -401,22 +397,16 @@ function attack(elementId, path) {
 }
 
 function magic(elementId, path) {
-    //if hero:
-    //magic 1: strenght x 1,5
-    //magic 2: strenght x 2
-    //random selection
-    //consumes 60 mana, need to have at least 60
-    //if enemy:
-    //attack 3: strenght x 1,5
-    //consumes 40 mana, need to have at least 40
     let characterObj = character.find(char => char.path === path);
     let characterDiv = document.getElementById(elementId);
     let characterImage = characterDiv.querySelector("img");
 
     if (elementId === "hero") {
         var attackType = Math.random() < 0.5 ? "Fireball.gif" : "Flame_jet.gif";
+        mana(elementId,"decrease","0.6")
     } else {
         var attackType = "Attack_3.gif";
+        mana(elementId,"decrease","0.4")
     }
 
     characterImage.src = `assets/images/${characterObj.path}/${attackType}`;
@@ -438,16 +428,18 @@ function magic(elementId, path) {
     damage(elementId, damageScore);
 };
 
-function charge(elementId) {
+function charge(elementId,path) {
     // add 50% health
     // reduces 20% mana
-    // add 5% xp
     if (elementId === "enemy") {
 
         scream();
     } else {
+        
 
     }
+    health(elementId,"add","0.5")
+    mana(elementId,"decrease","0.2")
 };
 
 function levelUp(elementId) {
@@ -497,8 +489,9 @@ function score(type, value) {
 };
 
 function timer(type) {
-    let timeLeft = 10;
     const timerElement = document.getElementById("timer");
+    let totalTime = 5;
+    let timeLeft = totalTime;
 
     function updateTimer() {
         if (timeLeft <= 0) {
@@ -525,7 +518,7 @@ function timer(type) {
         clearInterval(timerInterval);
         document.getElementById("control").style.display = "none";
         timerElement.classList.add("hidden");
-        timerElement.textContent = '10';
+        timerElement.textContent = totalTime;
     }
 }
 
@@ -559,33 +552,42 @@ function damage(elementId, attack) {
 }
 
 function health(elementId,type,size) {
-    // reduces the damage received
-    // adds when level up, round pass or charge activated
+    var healthBar = document.getElementById(`${elementId}-health`);
+    var currentWidth = parseFloat(healthBar.style.width);
+
     if (type === "add") {
-
+        var newWidth = currentWidth + (size * 100); 
+        healthBar.style.width = `${newWidth}%`;
     } else if (type === "decrease") {
-
-    };
+        var newWidth = currentWidth - (size * 100);
+        healthBar.style.width = `${newWidth}%`;
+    }
 };
 
 function mana(elementId,type,size) {
-    // spends when fire or charge is triggered
-    // fills up when level up, attack
+    var manaBar = document.getElementById(`${elementId}-mana`);
+    var currentWidth = parseFloat(manaBar.style.width);
+
     if (type === "add") {
-
+        var newWidth = currentWidth + (size * 100); 
+        manaBar.style.width = `${newWidth}%`;
     } else if (type === "decrease") {
-
-    };
+        var newWidth = currentWidth - (size * 100);
+        manaBar.style.width = `${newWidth}%`;
+    }
 };
 
 function xp(elementId,type,size) {
-    //base the calculation on score earned
-    //when 100%, allow clicking the level-up button
+    var xpBar = document.getElementById(`${elementId}-xp`);
+    var currentWidth = parseFloat(xpBar.style.width);
+
     if (type === "add") {
-
+        var newWidth = currentWidth + (size * 100); 
+        xpBar.style.width = `${newWidth}%`;
     } else if (type === "decrease") {
-
-    };
+        var newWidth = currentWidth - (size * 100);
+        xpBar.style.width = `${newWidth}%`;
+    }
 };
 
 function enemyTurn() {
@@ -614,6 +616,26 @@ function hurt(elementId){
 };
 
 function dead(elementId) {
+    let elementDiv = document.getElementById(elementId);
+    let elementImage = elementDiv.querySelector("img");
+    let path = elementId === "hero" ? "hero" : currentEnemy;
+
+    elementImage.src = `assets/images/${path}/Dead.gif`;
+    setTimeout(() => {
+        elementDiv.style.display = "none";
+    }, character.find(char => char.path === path).gifDuration["Dead.gif"]);
+
+    timer("stop");
+    if (elementId === "hero"){
+        deadMenu();
+    } else{
+        let health = character.find(char => char.path === path).totalHealth;
+        score("kill",health);
+        nextRound();
+    }
+};
+
+function deadMenu(){
 
 };
 

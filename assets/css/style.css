@@ -214,7 +214,7 @@ body {
     flex-direction: column;
     justify-content: space-around;
     z-index: 101; 
-    width: 40vw;
+    width: 35vw;
     justify-content: flex-end;
     margin: 0;
 }
@@ -255,11 +255,20 @@ body {
 }
 
 .health-bar,.mana-bar,.xp-bar {
-    width: 85%; 
+    max-width: 100%;
+    min-width: 1%;
     padding: 3px;
     border-radius: 5px;
     background: color(gray);
     border-style: none;
+}
+
+.health-bar{
+    width: 100%; 
+}
+
+.mana-bar,.xp-bar {
+    width: 1%;  
 }
 
 .health {
@@ -338,7 +347,7 @@ body {
     }
     @media screen and (min-width: 290px){
         #hero-bars, #enemy-bars{
-            width: 30vw;
+            width: 25vw;
         }
     
         #game-stats{
@@ -359,7 +368,7 @@ body {
     }
 
     #hero-bars, #enemy-bars{
-        width: 40vw;
+        width: 35vw;
     }
 
     #game-stats{
