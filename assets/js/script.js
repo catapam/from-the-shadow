@@ -541,30 +541,15 @@ function damage(elementId, attack) {
         p = document.getElementById("enemy-damage");
         p.style.opacity = 1;
         p.textContent = totalDamage;
-
-        let enemyDiv = document.getElementById("enemy");
-        let enemyImage = enemyDiv.querySelector("img");
-        let enemyCharacter = character.find(char => char.path === currentEnemy);
-        enemyImage.src = `assets/images/${currentEnemy}/Hurt.gif`;
-        setTimeout(() => {
-            enemyImage.src = `assets/images/${currentEnemy}/Idle.gif`;
-        }, enemyCharacter.gifDuration["Hurt.gif"]);
-
-        health("enemy", "decrease");
+        
+        hurt("enemy");
         score("damage", totalDamage);
     } else if (elementId === "enemy") {
         p = document.getElementById("hero-damage");
         p.style.opacity = 1;
         p.textContent = totalDamage;
 
-        let heroDiv = document.getElementById("hero");
-        let heroImage = heroDiv.querySelector("img");
-        heroImage.src = `assets/images/hero/Hurt.gif`;
-        setTimeout(() => {
-            heroImage.src = `assets/images/hero/Idle.gif`;
-        }, character.find(char => char.type === "hero").gifDuration["Hurt.gif"]);
-
-        health("hero", "decrease");
+        hurt("hero");
         score("defence", scoreDamage);
     };
 
@@ -573,7 +558,7 @@ function damage(elementId, attack) {
     }, 1000);
 }
 
-function health(elementId, type) {
+function health(elementId,type,size) {
     // reduces the damage received
     // adds when level up, round pass or charge activated
     if (type === "add") {
@@ -583,7 +568,7 @@ function health(elementId, type) {
     };
 };
 
-function mana(elementId, type) {
+function mana(elementId,type,size) {
     // spends when fire or charge is triggered
     // fills up when level up, attack
     if (type === "add") {
@@ -593,7 +578,7 @@ function mana(elementId, type) {
     };
 };
 
-function xp(elementId, type) {
+function xp(elementId,type,size) {
     //base the calculation on score earned
     //when 100%, allow clicking the level-up button
     if (type === "add") {
@@ -615,11 +600,20 @@ function heroTurn() {
     timer("start");
 };
 
-function hurt() {
+function hurt(elementId){
+    let elementDiv = document.getElementById(elementId);
+    let elementImage = elementDiv.querySelector("img");
+    let path = elementId === "hero" ? "hero" : currentEnemy;
 
+    elementImage.src = `assets/images/${path}/Hurt.gif`;
+    setTimeout(() => {
+        elementImage.src = `assets/images/${path}/Idle.gif`;
+    }, character.find(char => char.path === path).gifDuration["Hurt.gif"]);
+
+    health(elementId, "decrease");
 };
 
-function dead() {
+function dead(elementId) {
 
 };
 
