@@ -403,10 +403,10 @@ function magic(elementId, path) {
 
     if (elementId === "hero") {
         var attackType = Math.random() < 0.5 ? "Fireball.gif" : "Flame_jet.gif";
-        mana(elementId,"decrease","0.6")
+        mana(elementId, "decrease", "0.6")
     } else {
         var attackType = "Attack_3.gif";
-        mana(elementId,"decrease","0.4")
+        mana(elementId, "decrease", "0.4")
     }
 
     characterImage.src = `assets/images/${characterObj.path}/${attackType}`;
@@ -428,7 +428,7 @@ function magic(elementId, path) {
     damage(elementId, damageScore);
 };
 
-function charge(elementId,path) {
+function charge(elementId, path) {
     let characterObj = character.find(char => char.path === path);
     let characterDiv = document.getElementById(elementId);
     let characterImage = characterDiv.querySelector("img");
@@ -444,13 +444,13 @@ function charge(elementId,path) {
     if (elementId === "enemy") {
         setTimeout(heroTurn, 1500);
         scream();
-        health(elementId,"add","0.6");
-        mana(elementId,"decrease","0.15");
+        health(elementId, "add", "0.6");
+        mana(elementId, "decrease", "0.15");
     } else {
         timer("stop");
         setTimeout(enemyTurn, 1500);
-        health(elementId,"add","0.5");
-        mana(elementId,"decrease","0.2");
+        health(elementId, "add", "0.5");
+        mana(elementId, "decrease", "0.2");
     }
 };
 
@@ -532,56 +532,64 @@ function timer(type) {
         timerElement.classList.add("hidden");
         timerElement.textContent = totalTime;
     }
-}
+};
 
 function damage(elementId, attack) {
     let random = Math.random();
+    let ownLevel = elementId === "hero" ? document.getElementById("hero-level-value").textContent : document.getElementById("enemy-level-value").textContent
+    let enemyLevel = elementId === "enemy" ? document.getElementById("hero-level-value").textContent : document.getElementById("enemy-level-value").textContent
     let multiplier = random < 0.5 ? (random / 4) : ((random / 4) * 3 + (1 / 4));
-    let totalDamage = Math.round(attack * multiplier);
+    let totalDamage = Math.round(attack * multiplier * ownLevel);
     let enemyStrength = character.find(char => char.name === document.getElementById("enemy-name").textContent).strength;
-    let scoreDamage = (enemyStrength - totalDamage);
+    let scoreDamage = ((enemyStrength*enemyLevel) - totalDamage);
 
     let p;
     if (elementId === "hero") {
         p = document.getElementById("enemy-damage");
         p.style.opacity = 1;
         p.textContent = totalDamage;
-        
-        hurt("enemy");
+
+        hurt("enemy",totalDamage);
         score("damage", totalDamage);
     } else if (elementId === "enemy") {
         p = document.getElementById("hero-damage");
         p.style.opacity = 1;
         p.textContent = totalDamage;
 
-        hurt("hero");
+        hurt("hero",totalDamage);
         score("defence", scoreDamage);
     };
 
     setTimeout(() => {
         p.style.opacity = 0;
     }, 1000);
-}
+};
 
-function health(elementId,type,size) {
+function health(elementId, type, size) {
     var healthBar = document.getElementById(`${elementId}-health`);
+    if (!healthBar.style.width) {
+        healthBar.style.width = "100%"; 
+    }
     var currentWidth = parseFloat(healthBar.style.width);
 
     if (type === "add") {
-        var newWidth = currentWidth + (size * 100); 
+        var newWidth = currentWidth + (size * 100);
         healthBar.style.width = `${newWidth}%`;
     } else if (type === "decrease") {
-        var newWidth = currentWidth - (size * 100);
+        var newWidth = (currentWidth - (size * 100))>0 ? (currentWidth - (size * 100)):0;
         healthBar.style.width = `${newWidth}%`;
+        if (newWidth === 0){
+            dead(elementId);
+        }
     }
 };
 
-function mana(elementId,type,size) {
+function mana(elementId, type, size) {
     var manaBar = document.getElementById(`${elementId}-mana`);
     var currentWidth = parseFloat(manaBar.style.width);
 
     if (type === "add") {
-        var newWidth = currentWidth + (size * 100); 
+        var newWidth = currentWidth + (size * 100);
         manaBar.style.width = `${newWidth}%`;
     } else if (type === "decrease") {
         var newWidth = currentWidth - (size * 100);
@@ -589,12 +597,12 @@ function mana(elementId,type,size) {
     }
 };
 
-function xp(elementId,type,size) {
+function xp(elementId, type, size) {
     var xpBar = document.getElementById(`${elementId}-xp`);
     var currentWidth = parseFloat(xpBar.style.width);
 
     if (type === "add") {
-        var newWidth = currentWidth + (size * 100); 
+        var newWidth = currentWidth + (size * 100);
         xpBar.style.width = `${newWidth}%`;
     } else if (type === "decrease") {
         var newWidth = currentWidth - (size * 100);
@@ -603,7 +611,16 @@ function xp(elementId,type,size) {
 };
 
 function enemyTurn() {
-    attack("enemy", currentEnemy);
+    var healthBar = document.getElementById('enemy-health'); 
+    var currentWidth = parseFloat(healthBar.style.width);
+
+    if (currentWidth > 0) {
+        attack("enemy", currentEnemy);
+    } else {
+        timer("stop");
+        return; 
+    }
+
     // if enough mana add the possibility of running attack 3, otherwise random choice between charge. attack 1 and attack 2
     // if health is too low, increases priority of doing a charge
     // pass turn back to hero
@@ -614,17 +631,18 @@ function heroTurn() {
     timer("start");
 };
 
-function hurt(elementId){
+function hurt(elementId,value) {
     let elementDiv = document.getElementById(elementId);
     let elementImage = elementDiv.querySelector("img");
     let path = elementId === "hero" ? "hero" : currentEnemy;
+    let damageHealth = value/ (character.find(char => char.path === path).totalHealth)
 
     elementImage.src = `assets/images/${path}/Hurt.gif`;
     setTimeout(() => {
         elementImage.src = `assets/images/${path}/Idle.gif`;
     }, character.find(char => char.path === path).gifDuration["Hurt.gif"]);
 
-    health(elementId, "decrease");
+    health(elementId,"decrease",damageHealth);
 };
 
 function dead(elementId) {
@@ -638,16 +656,16 @@ function dead(elementId) {
     }, character.find(char => char.path === path).gifDuration["Dead.gif"]);
 
     timer("stop");
-    if (elementId === "hero"){
+    if (elementId === "hero") {
         deadMenu();
-    } else{
+    } else {
         let health = character.find(char => char.path === path).totalHealth;
-        score("kill",health);
+        score("kill", health);
         nextRound();
     }
 };
 
-function deadMenu(){
+function deadMenu() {
 
 };
 

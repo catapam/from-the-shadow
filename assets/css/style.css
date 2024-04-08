@@ -256,7 +256,6 @@ body {
 
 .health-bar,.mana-bar,.xp-bar {
     max-width: 100%;
-    min-width: 1%;
     padding: 3px;
     border-radius: 5px;
     background: color(gray);
@@ -265,10 +264,12 @@ body {
 
 .health-bar{
     width: 100%; 
+    min-width: 0;
 }
 
 .mana-bar,.xp-bar {
     width: 1%;  
+    min-width: 1%;
 }
 
 .health {
