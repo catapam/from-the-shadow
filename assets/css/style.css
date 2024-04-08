@@ -159,8 +159,10 @@ body {
 
 #hero #hero-damage, #enemy #enemy-damage{
     color: rgba(255, 0, 0);
+    font-size: 150%;
     opacity: 0;
     transition: opacity 2s ease-in-out;
+    font-weight: bold;
 }
 
 #enemy p {

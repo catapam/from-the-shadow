@@ -1,4 +1,5 @@
 let timerInterval;
+let currentEnemy;
 let character = [{
     name : "Hero",
     type : "hero",
@@ -339,11 +340,11 @@ function enemyArrives() {
     document.getElementById("enemy").style.display = "block";
     const enemies = character.filter(character => character.type === "enemy");
     const enemy = enemies[Math.floor(Math.random() * enemies.length)]
-    const selectedEnemy = enemy.path;
+    currentEnemy = enemy.path;
 
     // randomize the amount of XP and mana the enemy starts with
     document.getElementById("enemy-name").textContent = enemy.name;
-    run("enemy",selectedEnemy);
+    run("enemy",currentEnemy);
 }
 
 function attack(elementId, path) {
@@ -522,7 +523,7 @@ function damage(elementId,attack) {
 
     setTimeout(() => {
         p.style.opacity = 0;
-    }, 800);
+    }, 1000);
 };
 
 function health(elementId,type) {
@@ -557,6 +558,7 @@ function xp(elementId,type) {
 
 function enemyTurn() {
     document.getElementById("control").style.display="none";
+    attack("enemy",currentEnemy);
     // if enough mana add the possibility of running attack 3, otherwise random choice between charge. attack 1 and attack 2
     // if health is too low, increases priority of doing a charge
     // pass turn back to hero
