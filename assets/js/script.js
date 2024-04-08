@@ -447,10 +447,14 @@ function charge(elementId, path) {
         health(elementId, "add", "0.6");
         mana(elementId, "decrease", "0.15");
     } else {
+        let level = document.getElementById("hero-level-value").textContent;
+        // check the calculation later to make the 0.5 value only apply if there is 50% room on the bar, otherwise, apply the correct amount
+        let scoreValue = (0.5 * characterObj.totalHealth * level) + (0.2 * characterObj.mana * level);
         timer("stop");
         setTimeout(enemyTurn, 1500);
         health(elementId, "add", "0.5");
         mana(elementId, "decrease", "0.2");
+        score("charge",scoreValue);
     }
 };
 
