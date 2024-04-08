@@ -616,14 +616,15 @@ function xp(elementId, type, size) {
 
 function enemyTurn() {
     var healthBar = document.getElementById('enemy-health'); 
-    var currentWidth = parseFloat(healthBar.style.width);
+    var currentHealth = parseFloat(healthBar.style.width);
+    var heroHealth = parseFloat(document.getElementById('hero-health').style.width);
 
-    if (currentWidth > 0) {
+    if (currentHealth > 0 && heroHealth > 0) {
         attack("enemy", currentEnemy);
     } else {
         timer("stop");
         return; 
-    }
+    };
 
     // if enough mana add the possibility of running attack 3, otherwise random choice between charge. attack 1 and attack 2
     // if health is too low, increases priority of doing a charge
