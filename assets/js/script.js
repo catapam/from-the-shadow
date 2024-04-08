@@ -8,6 +8,8 @@ let character = [{
     strength: "100",
     totalHealth: "500",
     currentHealth: "500",
+    xp: "500",
+    mana: "500",
     gifDuration: {
         "Attack_1.gif": 1000,
         "Attack_2.gif": 320,
@@ -26,6 +28,8 @@ let character = [{
     strength: "100",
     totalHealth: "500",
     currentHealth: "500",
+    xp: "500",
+    mana: "500",
     gifDuration: {
         "Attack_1.gif": 320,
         "Attack_2.gif": 320,
@@ -43,6 +47,8 @@ let character = [{
     strength: "100",
     totalHealth: "500",
     currentHealth: "500",
+    xp: "500",
+    mana: "500",
     gifDuration: {
         "Attack_1.gif": 1000,
         "Attack_2.gif": 800,
@@ -60,6 +66,8 @@ let character = [{
     strength: "100",
     totalHealth: "500",
     currentHealth: "500",
+    xp: "500",
+    mana: "500",
     gifDuration: {
         "Attack_1.gif": 800,
         "Attack_2.gif": 800,
@@ -495,6 +503,7 @@ function timer(type) {
     function updateTimer() {
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
+            document.getElementById("control").style.display = "none";
             timerElement.classList.add("hidden");
             if (type === "start") {
                 enemyTurn();
@@ -514,6 +523,7 @@ function timer(type) {
         }, 1000);
     } else if (type === "stop") {
         clearInterval(timerInterval);
+        document.getElementById("control").style.display = "none";
         timerElement.classList.add("hidden");
         timerElement.textContent = '10';
     }
