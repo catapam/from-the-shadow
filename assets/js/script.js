@@ -70,6 +70,15 @@ let character = [{
     }
 }]
 
+let gifArray = [];
+
+character.forEach(char => {
+    Object.keys(char.gifDuration).forEach(gifName => {
+        const fullPath = `assets/images/${char.path}/${gifName}`;
+        gifArray.push(fullPath);
+    });
+});
+
 updatePosition("hero","hero");
 updatePosition("enemy");
 window.addEventListener("resize", function() {
@@ -108,6 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
         startArea.style.display = "none";
         nameArea.style.display = "block";
         body.style.backgroundImage = "radial-gradient(circle at 85vw 35vh,rgba(0, 0, 0, 1) 0%,rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%),url(assets/images/scenario/backgrounds/game_background.png)";
+        preloadGifs(gifArray);
     });
 
     heroNameInput.addEventListener("blur", function () {
@@ -155,6 +165,13 @@ document.addEventListener("DOMContentLoaded", function () {
         levelUp("hero", "hero");
     });
 });
+
+function preloadGifs(gifArray) {
+    gifArray.forEach(gif => {
+        const img = new Image();
+        img.src = gif;
+    });
+}
 
 function updatePosition(elementId) {
     const element = document.getElementById(elementId);
@@ -396,7 +413,6 @@ function magic(elementId,path) {
     let multiplier = attackType === "Flame_jet.gif" ? 3 : 2.5;
     let damageScore = multiplier * strength;
 
-    damage(elementId, damageScore);
     setTimeout(() => {
         characterImage.src = `assets/images/${characterObj.path}/Idle.gif`;
     }, gifDuration);
@@ -407,6 +423,7 @@ function magic(elementId,path) {
     } else if (elementId === "enemy"){
         setTimeout(heroTurn, 1500);
     }
+    damage(elementId, damageScore);
 };
 
 function charge(elementId) {
@@ -498,33 +515,49 @@ function timer(type) {
     }
 }
 
-function damage(elementId,attack) {
+function damage(elementId, attack) {
     let random = Math.random();
-    let multiplier = random < 0.5 ? (random/4) : ((random/4)*3+(1/4));
+    let multiplier = random < 0.5 ? (random / 4) : ((random / 4) * 3 + (1 / 4));
     let totalDamage = Math.round(attack * multiplier);
     let enemyStrength = character.find(char => char.name === document.getElementById("enemy-name").textContent).strength;
-    let scoreDamage = (enemyStrength-totalDamage);
-    
-    if (elementId === "hero"){
-        p = document.getElementById("enemy-damage")
-        p.style.opacity = 1
-        p.textContent=totalDamage;
+    let scoreDamage = (enemyStrength - totalDamage);
 
-        health("enemy","decrease");
+    let p;
+    if (elementId === "hero") {
+        p = document.getElementById("enemy-damage");
+        p.style.opacity = 1;
+        p.textContent = totalDamage;
+
+        let enemyDiv = document.getElementById("enemy");
+        let enemyImage = enemyDiv.querySelector("img");
+        let enemyCharacter = character.find(char => char.path === currentEnemy);
+        enemyImage.src = `assets/images/${currentEnemy}/Hurt.gif`;
+        setTimeout(() => {
+            enemyImage.src = `assets/images/${currentEnemy}/Idle.gif`;
+        }, enemyCharacter.gifDuration["Hurt.gif"]);
+
+        health("enemy", "decrease");
         score("damage", totalDamage);
-    } else if (elementId === "enemy"){
-        p = document.getElementById("hero-damage")
-        p.style.opacity = 1
-        p.textContent=totalDamage;
+    } else if (elementId === "enemy") {
+        p = document.getElementById("hero-damage");
+        p.style.opacity = 1;
+        p.textContent = totalDamage;
 
-        health("hero","decrease");
+        let heroDiv = document.getElementById("hero");
+        let heroImage = heroDiv.querySelector("img");
+        heroImage.src = `assets/images/hero/Hurt.gif`;
+        setTimeout(() => {
+            heroImage.src = `assets/images/hero/Idle.gif`;
+        }, character.find(char => char.type === "hero").gifDuration["Hurt.gif"]);
+
+        health("hero", "decrease");
         score("defence", scoreDamage);
     };
 
     setTimeout(() => {
         p.style.opacity = 0;
     }, 1000);
-};
+}
 
 function health(elementId,type) {
     // reduces the damage received
@@ -576,3 +609,10 @@ function hurt(){
 function dead(){
 
 };
+
+function preloadGifs(gifArray) {
+    gifArray.forEach(gif => {
+        const img = new Image();
+        img.src = gif;
+    });
+}
