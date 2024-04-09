@@ -184,7 +184,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document.getElementById("level-up").addEventListener("click", function () {
-        levelUp("hero", "hero");
+        levelUp("hero");
     });
 });
 
@@ -491,6 +491,13 @@ function levelUp(elementId) {
     currentStats[elementId].xp = 1;
     updateUI(elementId);
     score("levelUp",(currentStats[elementId].level));
+
+    if (elementId === "hero") {
+        timer("stop");
+        setTimeout(enemyTurn, 1500);
+    } else if (elementId === "enemy") {
+        setTimeout(heroTurn, 1500);
+    }
 };
 
 function score(type, value) {
@@ -586,6 +593,7 @@ function damage(elementId, attack) {
         p.textContent = totalDamage;
 
         hurt("hero", totalDamage);
+        xp("hero","add",totalDamage / (character.find(char => char.path === "hero").strength*10));
         score("defence", scoreDamage);
     };
 
