@@ -1,5 +1,21 @@
 let timerInterval;
 let currentEnemy;
+let currentStats = {
+    hero: {
+        name: "",
+        health: 100,
+        mana: 1,
+        xp: 1,
+        level: 1
+    },
+    enemy: {
+        name: "",
+        health: 100,
+        mana: 500,
+        xp: 0,
+        level: 1
+    }
+};
 let character = [{
     name: "Hero",
     type: "hero",
@@ -376,11 +392,12 @@ function enemyArrives() {
     const enemy = enemies[Math.floor(Math.random() * enemies.length)]
     currentEnemy = enemy.path;
 
-    // randomize the amount of XP and mana the enemy starts with
     const randomMana = Math.floor(Math.random() * 99) + 1;
     const randomXP = Math.floor(Math.random() * 99) + 1;
+    const randomHealth = 100;
     document.getElementById("enemy-mana").style.width = randomMana + '%';
     document.getElementById("enemy-xp").style.width = randomXP + '%';
+    document.getElementById("enemy-health").style.width = randomHealth + '%';
 
     document.getElementById("enemy-level-value").textContent = document.getElementById("hero-level-value").textContent;
     document.getElementById("enemy-name").textContent = enemy.name;
@@ -463,7 +480,6 @@ function charge(elementId, path) {
         mana(elementId, "decrease", "0.15");
     } else {
         let level = document.getElementById("hero-level-value").textContent;
-        // check the calculation later to make the 0.5 value only apply if there is 50% room on the bar, otherwise, apply the correct amount
         let scoreValue = (0.5 * characterObj.totalHealth * level) + (0.2 * characterObj.mana * level);
         timer("stop");
         setTimeout(enemyTurn, 1500);
@@ -550,13 +566,21 @@ function timer(type) {
 };
 
 function damage(elementId, attack) {
+    let randomFrequency = Math.random();
     let random = Math.random();
-    let ownLevel = elementId === "hero" ? document.getElementById("hero-level-value").textContent : document.getElementById("enemy-level-value").textContent
-    let enemyLevel = elementId === "enemy" ? document.getElementById("hero-level-value").textContent : document.getElementById("enemy-level-value").textContent
-    let multiplier = random < 0.5 ? (random / 4) : ((random / 4) * 3 + (1 / 4));
+    let ownLevel = elementId === "hero" ? parseInt(document.getElementById("hero-level-value").textContent) : parseInt(document.getElementById("enemy-level-value").textContent);
+    let enemyLevel = elementId === "enemy" ? parseInt(document.getElementById("hero-level-value").textContent) : parseInt(document.getElementById("enemy-level-value").textContent);
+
+    let multiplier;
+    if (randomFrequency < 0.9) {5
+        multiplier = 0.5 + (random * 0.5);
+    } else {
+        multiplier = random * 0.5; 
+    }
+
     let totalDamage = Math.round(attack * multiplier * ownLevel);
     let enemyStrength = character.find(char => char.name === document.getElementById("enemy-name").textContent).strength;
-    let scoreDamage = ((enemyStrength*enemyLevel) - totalDamage);
+    let scoreDamage = ((enemyStrength * enemyLevel) - totalDamage);
 
     let p;
     if (elementId === "hero") {
@@ -564,16 +588,20 @@ function damage(elementId, attack) {
         p.style.opacity = 1;
         p.textContent = totalDamage;
 
-        hurt("enemy",totalDamage);
+        hurt("enemy", totalDamage);
         score("damage", totalDamage);
     } else if (elementId === "enemy") {
         p = document.getElementById("hero-damage");
         p.style.opacity = 1;
         p.textContent = totalDamage;
 
-        hurt("hero",totalDamage);
+        hurt("hero", totalDamage);
         score("defence", scoreDamage);
     };
+
+    let ownCharacter = character.find(char => char.path === (elementId === "hero" ? "hero" : currentEnemy));
+    xp(elementId, "add", totalDamage / ownCharacter.xp);
+    mana(elementId, "add", (totalDamage / ownCharacter.mana) * 0.1);
 
     setTimeout(() => {
         p.style.opacity = 0;
@@ -586,11 +614,14 @@ function health(elementId, type, size) {
 
     if (type === "add") {
         var newWidth = currentWidth + (size * 100);
+        if (newWidth > 100){
+            newWidth = 100;
+        }
         healthBar.style.width = `${newWidth}%`;
     } else if (type === "decrease") {
         var newWidth = (currentWidth - (size * 100))>0 ? (currentWidth - (size * 100)):0;
         healthBar.style.width = `${newWidth}%`;
-        if (newWidth === 0){
+        if (newWidth <= 0){
             dead(elementId);
         }
     }
@@ -602,6 +633,9 @@ function mana(elementId, type, size) {
 
     if (type === "add") {
         var newWidth = currentWidth + (size * 100);
+        if (newWidth > 100){
+            newWidth = 100;
+        }
         manaBar.style.width = `${newWidth}%`;
     } else if (type === "decrease") {
         var newWidth = currentWidth - (size * 100);
@@ -615,6 +649,9 @@ function xp(elementId, type, size) {
 
     if (type === "add") {
         var newWidth = currentWidth + (size * 100);
+        if (newWidth > 100){
+            newWidth = 100;
+        }
         xpBar.style.width = `${newWidth}%`;
     } else if (type === "decrease") {
         var newWidth = currentWidth - (size * 100);
@@ -653,11 +690,10 @@ function hurt(elementId,value) {
     let path = elementId === "hero" ? "hero" : currentEnemy;
     let damageHealth = value/ (character.find(char => char.path === path).totalHealth)
 
-    health(elementId,"decrease",damageHealth);
-
     elementImage.src = `assets/images/${path}/Hurt.gif`;
     setTimeout(() => {
         elementImage.src = `assets/images/${path}/Idle.gif`;
+        health(elementId,"decrease",damageHealth);
     }, character.find(char => char.path === path).gifDuration["Hurt.gif"]);
 };
 
