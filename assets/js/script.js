@@ -221,11 +221,11 @@ function start() {
     document.getElementById("stats").style.display = "none";
     document.getElementById("control").style.display = "none";
 
-    run("hero", "hero");
+    runIn("hero", "hero");
     tutorial();
 }
 
-function run(elementId, path) {
+function runIn(elementId, path) {
     var characterDiv = document.getElementById(elementId);
     var characterImage = characterDiv.querySelector("img");
     var viewportWidth = window.innerWidth;
@@ -382,15 +382,15 @@ function enemyArrives() {
     const enemy = enemies[Math.floor(Math.random() * enemies.length)]
     const randomMana = Math.floor(Math.random() * 99) + 1;
     const randomXP = Math.floor(Math.random() * 99) + 1;
-    const randomHealth = 100;
     currentEnemy = enemy.path;
     currentStats["enemy"].name = enemy.name;
-    currentStats["enemy"].health = randomHealth;
+    currentStats["enemy"].health = 100;
     currentStats["enemy"].mana = randomMana;
     currentStats["enemy"].xp = randomXP;
+    currentStats["enemy"].level = currentStats["hero"].level;
 
     updateUI("enemy");
-    run("enemy", currentEnemy);
+    runIn("enemy", currentEnemy);
 }
 
 function attack(elementId, path) {
@@ -478,11 +478,19 @@ function charge(elementId, path) {
 };
 
 function levelUp(elementId) {
-    // full health and mana restore
-    // previous health x 1,1
-    // previous mana x 1,05
-    // previous xp x 1,2
-    // previous strength x 1,1
+    let characterPath = elementId === "hero" ? "hero" : currentEnemy;
+    character.find(char => char.path === characterPath).health *= 1.1    
+    character.find(char => char.path === characterPath).mana *= 1.05
+    character.find(char => char.path === characterPath).xp *= 1.2  
+    character.find(char => char.path === characterPath).strength *= 1.1
+    currentStats[elementId].health = 100;
+    currentStats[elementId].level += 1;
+    if (currentStats[elementId].mana < 50){
+        currentStats[elementId].mana = 50;
+    }
+    currentStats[elementId].xp = 1;
+    updateUI(elementId);
+    score("levelUp",(currentStats[elementId].level));
 };
 
 function nextRound() {
@@ -577,6 +585,7 @@ function damage(elementId, attack) {
         p.textContent = totalDamage;
 
         hurt("enemy", totalDamage);
+        xp("enemy","add",totalDamage / (character.currentEnemy.strength*10));
         score("damage", totalDamage);
     } else if (elementId === "enemy") {
         p = document.getElementById("hero-damage");
@@ -589,7 +598,7 @@ function damage(elementId, attack) {
 
     let ownCharacter = character.find(char => char.path === (elementId === "hero" ? "hero" : currentEnemy));
     xp(elementId, "add", totalDamage / ownCharacter.xp);
-    mana(elementId, "add", (totalDamage / ownCharacter.mana) * 0.1);
+    mana(elementId, "add", (totalDamage / ownCharacter.mana) * 0.5);
 
     setTimeout(() => {
         p.style.opacity = 0;
@@ -718,9 +727,38 @@ function preloadGifs(gifArray) {
 
 function updateUI(elementId) {
     console.log(currentStats);
-    document.getElementById(`${elementId}-health`).style.width = `${currentStats[elementId].health}%`;
-    document.getElementById(`${elementId}-mana`).style.width = `${currentStats[elementId].mana}%`;
-    document.getElementById(`${elementId}-xp`).style.width = `${currentStats[elementId].xp}%`;
+    document.getElementsByClassName("health")[elementId === "hero" ? 0 : 1].style.width = `${currentStats[elementId].health}%`;
+    document.getElementsByClassName("mana")[elementId === "hero" ? 0 : 1].style.width = `${currentStats[elementId].mana}%`;
+    document.getElementsByClassName("xp")[elementId === "hero" ? 0 : 1].style.width = `${currentStats[elementId].xp}%`;
     document.getElementById(`${elementId}-level-value`).textContent = currentStats[elementId].level;
     document.getElementById(`${elementId}-name`).textContent = currentStats[elementId].name;
+
+    const magicButton = document.getElementById('magic');
+    if (currentStats.hero.mana > 50) {
+        magicButton.disabled = false;
+        magicButton.classList.remove('button-disabled');
+    } else {
+        magicButton.disabled = true;
+        magicButton.classList.add('button-disabled');
+    }
+
+    // Charge button condition
+    const chargeButton = document.getElementById('charge');
+    if (currentStats.hero.mana > 20) {
+        chargeButton.disabled = false;
+        chargeButton.classList.remove('button-disabled');
+    } else {
+        chargeButton.disabled = true;
+        chargeButton.classList.add('button-disabled');
+    }
+
+    // Level-Up button condition
+    const levelUpButton = document.getElementById('level-up');
+    if (currentStats.hero.xp >= 100) {
+        levelUpButton.disabled = false;
+        levelUpButton.classList.remove('button-disabled');
+    } else {
+        levelUpButton.disabled = true;
+        levelUpButton.classList.add('button-disabled');
+    }
 };
