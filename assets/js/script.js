@@ -97,10 +97,10 @@ character.forEach(char => {
     });
 });
 
-updatePosition("hero", "hero");
+updatePosition("hero");
 updatePosition("enemy");
 window.addEventListener("resize", function () {
-    updatePosition("hero", "hero");
+    updatePosition("hero");
     updatePosition("enemy");
 });
 
@@ -493,15 +493,6 @@ function levelUp(elementId) {
     score("levelUp",(currentStats[elementId].level));
 };
 
-function nextRound() {
-    //run out
-    //new background selection
-    //new enemy selected
-    //previous hero stats are kept, health is full restored
-    // all enemy stats are restored
-    // keep score, update round number to 
-};
-
 function score(type, value) {
     let scoreElement = document.getElementById("score-value");
     let currentScore = parseInt(scoreElement.textContent) || 0;
@@ -525,6 +516,8 @@ function score(type, value) {
         currentScore += Math.round(value);
         scoreElement.textContent = currentScore;
     };
+
+    console.log(`score update, action: ${type} , size: ${newScore} `);
 };
 
 function timer(type) {
@@ -585,7 +578,7 @@ function damage(elementId, attack) {
         p.textContent = totalDamage;
 
         hurt("enemy", totalDamage);
-        xp("enemy","add",totalDamage / (character.currentEnemy.strength*10));
+        xp("enemy","add",totalDamage / (character.find(char => char.path === currentEnemy).strength*10));
         score("damage", totalDamage);
     } else if (elementId === "enemy") {
         p = document.getElementById("hero-damage");
@@ -659,19 +652,6 @@ function xp(elementId, type, size) {
     }
 };
 
-function enemyTurn() {
-    if (currentStats["enemy"].health > 0 && currentStats["hero"].health > 0) {
-        attack("enemy", currentEnemy);
-    } else {
-        timer("stop");
-        return; 
-    };
-
-    // if enough mana add the possibility of running attack 3, otherwise random choice between charge. attack 1 and attack 2
-    // if health is too low, increases priority of doing a charge
-    // pass turn back to hero
-};
-
 function heroTurn() {
     document.getElementById("control").style.display = "flex";
     timer("start");
@@ -714,10 +694,6 @@ function dead(elementId) {
     }
 };
 
-function deadMenu() {
-
-};
-
 function preloadGifs(gifArray) {
     gifArray.forEach(gif => {
         const img = new Image();
@@ -726,7 +702,6 @@ function preloadGifs(gifArray) {
 };
 
 function updateUI(elementId) {
-    console.log(currentStats);
     document.getElementsByClassName("health")[elementId === "hero" ? 0 : 1].style.width = `${currentStats[elementId].health}%`;
     document.getElementsByClassName("mana")[elementId === "hero" ? 0 : 1].style.width = `${currentStats[elementId].mana}%`;
     document.getElementsByClassName("xp")[elementId === "hero" ? 0 : 1].style.width = `${currentStats[elementId].xp}%`;
@@ -762,3 +737,46 @@ function updateUI(elementId) {
         levelUpButton.classList.add('button-disabled');
     }
 };
+
+function deadMenu() {
+
+};
+
+function enemyTurn() {
+    if (currentStats["enemy"].health > 0 && currentStats["hero"].health > 0) {
+        document.getElementById("enemy").style.zIndex = "3";
+        attack("enemy", currentEnemy);
+
+        // all the enemy logic will be inside this if
+        // if enough mana add the possibility of running attack 3, otherwise random choice between charge. attack 1 and attack 2
+        // if health is too low, increases priority of doing a charge
+        // pass turn back to hero
+
+        document.getElementById("enemy").style.zIndex = "1";
+    } else {
+        timer("stop");
+        nextRound();
+        return; 
+    };
+};
+
+function nextRound() {
+    //run out
+    //new background selection
+    //new enemy selected
+    //previous hero stats are kept, health is full restored
+    // all enemy stats are restored
+    // keep score, update round number to 
+};
+
+// would like:
+// review tutoril adding more info and details
+// make the border of stats shine if they are full
+// background change
+// add more enemies
+// comment codes
+// readme
+// add effects for level-up (hero and enemy)
+// optimize code execution and structure
+// review what is broken on score, something makes it go really high sometimes, added console.log to follow it when it happens again
+// check animations to see if they can be delayed starting to make more sense (Dead.Gif is fixed already)
