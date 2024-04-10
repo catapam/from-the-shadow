@@ -27,7 +27,7 @@ let character = [{
     xp: 500,
     mana: 500,
     minManaMagic: 20,
-    minManaCharge: 20,
+    minManaCharge: 50,
     gifDuration: {
         "Attack_1.gif": 1000,
         "Attack_2.gif": 320,
@@ -42,12 +42,12 @@ let character = [{
     name: "Gotoku",
     type: "enemy",
     path: "gotoku",
-    strength: 100,
-    health: 500,
-    xp: 500,
+    strength: 110,
+    health: 550,
+    xp: 550,
     mana: 500,
-    minManaMagic: 20,
-    minManaCharge: 20,
+    minManaMagic: 15,
+    minManaCharge: 40,
     gifDuration: {
         "Attack_1.gif": 320,
         "Attack_2.gif": 320,
@@ -61,9 +61,9 @@ let character = [{
     name: "Onrei",
     type: "enemy",
     path: "onrei",
-    strength: 100,
-    health: 500,
-    xp: 500,
+    strength: 120,
+    health: 400,
+    xp: 400,
     mana: 500,
     minManaMagic: 20,
     minManaCharge: 20,
@@ -80,10 +80,10 @@ let character = [{
     name: "Yurei",
     type: "enemy",
     path: "yurei",
-    strength: 100,
-    health: 500,
-    xp: 500,
-    mana: 500,
+    strength: 80,
+    health: 550,
+    xp: 400,
+    mana: 200,
     minManaMagic: 20,
     minManaCharge: 20,
     gifDuration: {
@@ -175,23 +175,27 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    document.getElementById("control").addEventListener("click", function () {
-        document.getElementById("control").style.display = "none";
-    });
-
     document.getElementById("attack").addEventListener("click", function () {
         attack("hero", "hero");
+        document.getElementById("control").style.display = "none";
+        score("time", document.getElementById("timer").textContent);
     });
 
     document.getElementById("magic").addEventListener("click", function () {
+        document.getElementById("control").style.display = "none";
+        score("time", document.getElementById("timer").textContent);
         magic("hero", "hero");
     });
 
     document.getElementById("charge").addEventListener("click", function () {
+        document.getElementById("control").style.display = "none";
+        score("time", document.getElementById("timer").textContent);
         charge("hero", "hero");
     });
 
     document.getElementById("level-up").addEventListener("click", function () {
+        document.getElementById("control").style.display = "none";
+        score("time", document.getElementById("timer").textContent);
         levelUp("hero");
     });
 });
@@ -523,20 +527,23 @@ function score(type, value) {
     let multiplier = 10;
 
     if (type === "time" || type === "levelUp" || type === "round") {
-        // time: time left on turn x round x 10
         // level-up: new level x round x 10
         // next round: new round x 10 (pass value as 1)
         newScore = Math.round(value * round * multiplier);
         currentScore += newScore;
         scoreElement.textContent = currentScore;
-    } else if (type === "damage" || type === "kill" || type === "defence") {
+    } else if (type === "damage" || type === "kill") {
         newScore = Math.round(value * (1 + (round / multiplier)));
         currentScore += newScore;
         scoreElement.textContent = currentScore;
     } else if (type === "charge") {
         currentScore += Math.round(value);
         scoreElement.textContent = currentScore;
-    };
+    } else if (type === "defence"){
+        newScore = Math.round(value * (1 + (round / multiplier))) > 0 ? Math.round(value * (1 + (round / multiplier))) : 0;
+        currentScore += newScore;
+        scoreElement.textContent = currentScore;
+    }
 
     console.log(`score update, action: ${type} , size: ${newScore} `);
 };
@@ -675,8 +682,12 @@ function xp(elementId, type, size) {
 };
 
 function heroTurn() {
-    document.getElementById("control").style.display = "flex";
-    timer("start");
+    if (currentStats["hero"].health > 0) {
+        document.getElementById("control").style.display = "flex";
+        timer("start");
+    } else {
+        gameOver();
+    }
 };
 
 function hurt(elementId,value) {
@@ -704,7 +715,7 @@ function dead(elementId) {
     elementImage.src = `assets/images/${path}/Dead.gif`;
     timer("stop");
     if (elementId === "hero") {
-        deadMenu();
+        gameOver();
     } else {
         setTimeout(() => {
             elementDiv.style.display = "none";
@@ -760,8 +771,11 @@ function updateUI(elementId) {
     }
 };
 
-function deadMenu() {
+function gameOver() {
+    document.getElementById("control").style.display = "none";
 
+    const gameOverScreen = document.getElementById("game-over-screen"); 
+    gameOverScreen.style.display = "block";
 };
 
 function enemyTurn() {
@@ -799,4 +813,3 @@ function nextRound() {
 // review what is broken on score, something makes it go really high sometimes, added console.log to follow it when it happens again
 // check animations to see if they can be delayed starting to make more sense (Dead.Gif is fixed already)
 // damage score should also trigger timer score
-// when hero is killed controls should stop showing immediatelly and heroTurn should not start
