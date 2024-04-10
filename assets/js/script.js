@@ -24,7 +24,7 @@ let character = [{
     scream: "charge",
     strength: 150,
     health: 1000,
-    xp: 500,
+    xp: 1000,
     mana: 500,
     minManaMagic: 20,
     minManaCharge: 50,
@@ -44,7 +44,7 @@ let character = [{
     path: "gotoku",
     strength: 160,
     health: 1100,
-    xp: 550,
+    xp: 1100,
     mana: 500,
     minManaMagic: 15,
     minManaCharge: 40,
@@ -63,7 +63,7 @@ let character = [{
     path: "onrei",
     strength: 170,
     health: 800,
-    xp: 400,
+    xp: 800,
     mana: 500,
     minManaMagic: 20,
     minManaCharge: 20,
@@ -82,7 +82,7 @@ let character = [{
     path: "yurei",
     strength: 140,
     health: 1100,
-    xp: 400,
+    xp: 800,
     mana: 200,
     minManaMagic: 20,
     minManaCharge: 20,
@@ -392,8 +392,8 @@ function enemyArrives() {
     document.getElementById("enemy").style.display = "block";
     const enemies = character.filter(character => character.type === "enemy");
     const enemy = enemies[Math.floor(Math.random() * enemies.length)]
-    const randomMana = Math.floor(Math.random() * 99) + 1;
-    const randomXP = Math.floor(Math.random() * 99) + 1;
+    const randomMana = Math.floor((Math.random() * 99)-50) + 1;
+    const randomXP = Math.floor((Math.random() * 99)-50) + 1;
     currentEnemy = enemy.path;
     currentStats["enemy"].name = enemy.name;
     currentStats["enemy"].health = 100;
@@ -501,14 +501,19 @@ function levelUp(elementId) {
     character.find(char => char.path === characterPath).mana *= 1.05
     character.find(char => char.path === characterPath).xp *= 1.2
     character.find(char => char.path === characterPath).strength *= 1.1
-    currentStats[elementId].health = 100;
+    document.getElementById(elementId).classList.add('glow-once'); 
+    score("levelUp", (currentStats[elementId].level));
+    document.getElementById(elementId).addEventListener('animationend', () => {
+        document.getElementById(elementId).classList.remove('glow-once');
+    });
+
+    currentStats[elementId].health = currentStats[elementId].health >= 50 ? 100 : currentStats[elementId].health + 50;
     currentStats[elementId].level += 1;
     if (currentStats[elementId].mana < 50) {
         currentStats[elementId].mana = 50;
     }
     currentStats[elementId].xp = 1;
     updateUI(elementId);
-    score("levelUp", (currentStats[elementId].level));
 
     if (elementId === "hero") {
         timer("stop");
@@ -594,7 +599,7 @@ function damage(elementId, attack) {
         multiplier = random * 0.5;
     }
 
-    let totalDamage = Math.round(attack * multiplier * ownLevel);
+    let totalDamage = Math.round(attack * multiplier * (1+(ownLevel*0.1)));
     let enemyStrength = elementId === "hero" ? character.find(char => char.name === currentStats.enemy.name).strength : character.find(char => char.name === "Hero").strength;
     let scoreDamage = ((enemyStrength * enemyLevel) - totalDamage);
 
@@ -808,14 +813,14 @@ function AI() {
     const enemyHealth = currentStats.enemy.health;
     const enemyMana = currentStats.enemy.mana;
     const heroHealth = currentStats.hero.health;
-    let availableActions = ['attack', 'attack', 'attack', 'attack']; 
+    let availableActions = ['attack', 'attack', 'attack', 'attack','attack', 'attack']; 
 
     if (currentStats.enemy.xp >= 100) {
-        availableActions.push('levelUp', 'levelUp', 'levelUp');
+        availableActions.push('levelUp', 'levelUp', 'levelUp', 'levelUp');
     }
 
     if (enemyMana >= character.find(char => char.path === currentEnemy).minManaMagic) {
-        availableActions.push('magic');
+        availableActions.push('magic','magic','magic');
         if (heroHealth < 20){
             availableActions.push('magic','magic');
         }
