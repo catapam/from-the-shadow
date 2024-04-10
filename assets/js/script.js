@@ -22,10 +22,12 @@ let character = [{
     type: "hero",
     path: "hero",
     scream: "charge",
-    strength: "100",
-    health: "500",
-    xp: "500",
-    mana: "500",
+    strength: 100,
+    health: 500,
+    xp: 500,
+    mana: 500,
+    minManaMagic: 20,
+    minManaCharge: 20,
     gifDuration: {
         "Attack_1.gif": 1000,
         "Attack_2.gif": 320,
@@ -40,10 +42,12 @@ let character = [{
     name: "Gotoku",
     type: "enemy",
     path: "gotoku",
-    strength: "100",
-    health: "500",
-    xp: "500",
-    mana: "500",
+    strength: 100,
+    health: 500,
+    xp: 500,
+    mana: 500,
+    minManaMagic: 20,
+    minManaCharge: 20,
     gifDuration: {
         "Attack_1.gif": 320,
         "Attack_2.gif": 320,
@@ -57,10 +61,12 @@ let character = [{
     name: "Onrei",
     type: "enemy",
     path: "onrei",
-    strength: "100",
-    health: "500",
-    xp: "500",
-    mana: "500",
+    strength: 100,
+    health: 500,
+    xp: 500,
+    mana: 500,
+    minManaMagic: 20,
+    minManaCharge: 20,
     gifDuration: {
         "Attack_1.gif": 1000,
         "Attack_2.gif": 800,
@@ -74,10 +80,12 @@ let character = [{
     name: "Yurei",
     type: "enemy",
     path: "yurei",
-    strength: "100",
-    health: "500",
-    xp: "500",
-    mana: "500",
+    strength: 100,
+    health: 500,
+    xp: 500,
+    mana: 500,
+    minManaMagic: 20,
+    minManaCharge: 20,
     gifDuration: {
         "Attack_1.gif": 800,
         "Attack_2.gif": 800,
@@ -409,11 +417,15 @@ function attack(elementId, path) {
     }, gifDuration);
     damage(elementId, damageScore);
 
-    if (elementId === "hero") {
+    if (elementId === "hero" && currentStats.enemy.health > 0) {
         timer("stop");
+        //score timer
         setTimeout(enemyTurn, 1500);
-    } else if (elementId === "enemy") {
-        setTimeout(heroTurn, 1500);
+    } else if (elementId === "enemy" && currentStats.hero.health <= 0) {
+        timer("stop");
+    } else {
+        // setTimeout(heroTurn, 1500);
+        setTimeout( currentStats.hero.health > 0 ? heroTurn : timer("stop"), 1500);
     }
 }
 
@@ -421,13 +433,14 @@ function magic(elementId, path) {
     let characterObj = character.find(char => char.path === path);
     let characterDiv = document.getElementById(elementId);
     let characterImage = characterDiv.querySelector("img");
+    let cost = character.find(char => char.path === path).minManaCharge;
 
     if (elementId === "hero") {
         var attackType = Math.random() < 0.5 ? "Fireball.gif" : "Flame_jet.gif";
-        mana(elementId, "decrease", "0.6")
+        mana(elementId, "decrease", cost);
     } else {
         var attackType = "Attack_3.gif";
-        mana(elementId, "decrease", "0.4")
+        mana(elementId, "decrease", cost);
     }
 
     characterImage.src = `assets/images/${characterObj.path}/${attackType}`;
@@ -454,6 +467,7 @@ function charge(elementId, path) {
     let characterDiv = document.getElementById(elementId);
     let characterImage = characterDiv.querySelector("img");
     let fileName = elementId === "hero" ? "Charge.gif" : "Scream.gif";
+    let cost = character.find(char => char.path === path).minManaCharge;
 
     characterImage.src = `assets/images/${characterObj.path}/${fileName}`;
     let gifDuration = characterObj.gifDuration[fileName];
@@ -465,14 +479,14 @@ function charge(elementId, path) {
     if (elementId === "enemy") {
         setTimeout(heroTurn, 1500);
         scream();
-        health(elementId, "add", "0.6");
-        mana(elementId, "decrease", "0.15");
+        health(elementId, "add", "0.5");
+        mana(elementId, "decrease", cost);
     } else {
         let scoreValue = currentStats.hero.health <= 50 ? (0.5 * characterObj.health * currentStats.hero.level) + (0.2 * characterObj.mana * currentStats.hero.level) : ((100 - currentStats.hero.health) * characterObj.health * currentStats.hero.level) + (0.2 * characterObj.mana * currentStats.hero.level);
         timer("stop");
         setTimeout(enemyTurn, 1500);
         health(elementId, "add", "0.5");
-        mana(elementId, "decrease", "0.2");
+        mana(elementId, "decrease", cost);
         score("charge",scoreValue);
     }
 };
@@ -688,14 +702,13 @@ function dead(elementId) {
     let path = elementId === "hero" ? "hero" : currentEnemy;
 
     elementImage.src = `assets/images/${path}/Dead.gif`;
-    setTimeout(() => {
-        elementDiv.style.display = "none";
-    }, character.find(char => char.path === path).gifDuration["Dead.gif"]);
-
     timer("stop");
     if (elementId === "hero") {
         deadMenu();
     } else {
+        setTimeout(() => {
+            elementDiv.style.display = "none";
+        }, character.find(char => char.path === path).gifDuration["Dead.gif"]);
         let health = character.find(char => char.path === path).health;
         score("kill", health);
         nextRound();
@@ -715,9 +728,10 @@ function updateUI(elementId) {
     document.getElementsByClassName("xp")[elementId === "hero" ? 0 : 1].style.width = `${currentStats[elementId].xp}%`;
     document.getElementById(`${elementId}-level-value`).textContent = currentStats[elementId].level;
     document.getElementById(`${elementId}-name`).textContent = currentStats[elementId].name;
+    let path = elementId === "hero" ? "hero" : currentEnemy;
 
     const magicButton = document.getElementById('magic');
-    if (currentStats.hero.mana > 50) {
+    if (currentStats.hero.mana >= character.find(char => char.path === path).minManaMagic) {
         magicButton.disabled = false;
         magicButton.classList.remove('button-disabled');
     } else {
@@ -727,7 +741,7 @@ function updateUI(elementId) {
 
     // Charge button condition
     const chargeButton = document.getElementById('charge');
-    if (currentStats.hero.mana > 20) {
+    if (currentStats.hero.mana >= character.find(char => char.path === path).minManaCharge) {
         chargeButton.disabled = false;
         chargeButton.classList.remove('button-disabled');
     } else {
@@ -759,13 +773,9 @@ function enemyTurn() {
         // if enough mana add the possibility of running attack 3, otherwise random choice between charge. attack 1 and attack 2
         // if health is too low, increases priority of doing a charge
         // pass turn back to hero
-
+        
         document.getElementById("enemy").style.zIndex = "1";
-    } else {
-        timer("stop");
-        nextRound();
-        return; 
-    };
+    }
 };
 
 function nextRound() {
@@ -788,3 +798,5 @@ function nextRound() {
 // optimize code execution and structure
 // review what is broken on score, something makes it go really high sometimes, added console.log to follow it when it happens again
 // check animations to see if they can be delayed starting to make more sense (Dead.Gif is fixed already)
+// damage score should also trigger timer score
+// when hero is killed controls should stop showing immediatelly and heroTurn should not start
