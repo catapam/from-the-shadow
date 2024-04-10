@@ -22,8 +22,8 @@ let character = [{
     type: "hero",
     path: "hero",
     scream: "charge",
-    strength: 100,
-    health: 500,
+    strength: 150,
+    health: 1000,
     xp: 500,
     mana: 500,
     minManaMagic: 20,
@@ -42,8 +42,8 @@ let character = [{
     name: "Gotoku",
     type: "enemy",
     path: "gotoku",
-    strength: 110,
-    health: 550,
+    strength: 160,
+    health: 1100,
     xp: 550,
     mana: 500,
     minManaMagic: 15,
@@ -61,8 +61,8 @@ let character = [{
     name: "Onrei",
     type: "enemy",
     path: "onrei",
-    strength: 120,
-    health: 400,
+    strength: 170,
+    health: 800,
     xp: 400,
     mana: 500,
     minManaMagic: 20,
@@ -80,8 +80,8 @@ let character = [{
     name: "Yurei",
     type: "enemy",
     path: "yurei",
-    strength: 80,
-    health: 550,
+    strength: 140,
+    health: 1100,
     xp: 400,
     mana: 200,
     minManaMagic: 20,
@@ -527,7 +527,6 @@ function score(type, value) {
     let multiplier = 10;
 
     if (type === "time" || type === "levelUp" || type === "round") {
-        // level-up: new level x round x 10
         // next round: new round x 10 (pass value as 1)
         newScore = Math.round(value * round * multiplier);
         currentScore += newScore;
@@ -606,7 +605,7 @@ function damage(elementId, attack) {
         p.textContent = totalDamage;
 
         hurt("enemy", totalDamage);
-        xp("enemy", "add", totalDamage / (character.find(char => char.path === currentEnemy).strength * 10));
+        xp("enemy", "add", totalDamage / (character.find(char => char.path === currentEnemy).strength * 30));
         score("damage", totalDamage);
     } else if (elementId === "enemy") {
         p = document.getElementById("hero-damage");
@@ -614,12 +613,12 @@ function damage(elementId, attack) {
         p.textContent = totalDamage;
 
         hurt("hero", totalDamage);
-        xp("hero", "add", totalDamage / (character.find(char => char.path === "hero").strength * 10));
+        xp("hero", "add", totalDamage / (character.find(char => char.path === "hero").strength * 30));
         score("defence", scoreDamage);
     };
 
     let ownCharacter = character.find(char => char.path === (elementId === "hero" ? "hero" : currentEnemy));
-    xp(elementId, "add", totalDamage / ownCharacter.xp);
+    xp(elementId, "add", (totalDamage / ownCharacter.xp)*0.7);
     mana(elementId, "add", (totalDamage / ownCharacter.mana) * 0.5);
 
     setTimeout(() => {
