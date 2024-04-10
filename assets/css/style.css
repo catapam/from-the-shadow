@@ -73,7 +73,7 @@ body {
 /* The Modal (background) */
 .modal {
     position: fixed;
-    z-index: 99;
+    z-index: 150;
     left: 0;
     top: 0;
     width: 100%;
@@ -90,9 +90,18 @@ body {
     border: 1px solid #FEFFFF;
     width: 50%;
     max-width: 50vw;
+    max-height: 100vw;
+}
+
+#game-over-screen{
+    display: none;
+    justify-content: center; 
+    align-items: center;
 }
 
 #game-over-screen .modal-content {
+    max-width: 200px;
+    max-height: 150px;
     text-align: center;
 }
 
@@ -108,8 +117,8 @@ body {
 }
 
 #game-over-buttons button {
-    flex: 1; 
     margin: 10px 20px; 
+    min-width: 75px;
     cursor: pointer; 
     font-size: medium; 
     color: black;

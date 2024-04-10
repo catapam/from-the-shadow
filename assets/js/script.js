@@ -549,7 +549,7 @@ function score(type, value) {
         scoreElement.textContent = currentScore;
     }
 
-    console.log(`score update, action: ${type} , size: ${newScore} `);
+    console.log(`score update, action: ${type} , size: ${newScore}, new score: ${currentScore} `);
 };
 
 function timer(type) {
@@ -780,7 +780,7 @@ function gameOver() {
     document.getElementById("control").style.display = "none";
 
     const gameOverScreen = document.getElementById("game-over-screen");
-    gameOverScreen.style.display = "block";
+    gameOverScreen.style.display = "flex";
 };
 
 function enemyTurn() {
@@ -814,26 +814,33 @@ function AI() {
     const enemyMana = currentStats.enemy.mana;
     const heroHealth = currentStats.hero.health;
     let availableActions = ['attack', 'attack', 'attack', 'attack','attack', 'attack']; 
+    console.log(`start actions, available:${availableActions}`);
 
     if (currentStats.enemy.xp >= 100) {
         availableActions.push('levelUp', 'levelUp', 'levelUp', 'levelUp');
+        console.log(`xp check actions, available:${availableActions}`);
     }
 
     if (enemyMana >= character.find(char => char.path === currentEnemy).minManaMagic) {
         availableActions.push('magic','magic','magic');
+        console.log(`magic check 1 actions, available:${availableActions}`);
         if (heroHealth < 20){
             availableActions.push('magic','magic');
+            console.log(`magic check 2 actions, available:${availableActions}`);
         }
     }
 
-    if (enemyMana >= character.find(char => char.path === currentEnemy).minManaCharge) {
-        availableActions.push('charge');
-        if (enemyHealth < 30){
-            availableActions.push('charge','charge','charge');
+    if (enemyMana >= character.find(char => char.path === currentEnemy).minManaCharge && enemyHealth < 75) {
+        availableActions.push('charge','charge');
+        console.log(`charge check 1 actions, available:${availableActions}`);
+        if (enemyHealth < 25){
+            availableActions.push('charge','charge');
+            console.log(`charge check 1 actions, available:${availableActions}`);
         }
     }
-
+    console.log(`final actions, available:${availableActions}`);
     const randomIndex = Math.floor(Math.random() * availableActions.length);
+    console.log(`action chosen:${availableActions[randomIndex]}`);
     return availableActions[randomIndex];
 }
 
@@ -854,5 +861,5 @@ function nextRound() {
 // readme
 // add effects for level-up (hero and enemy)
 // optimize code execution and structure
-// review what is broken on score, something makes it go really high sometimes, added console.log to follow it when it happens again
+// review what is broken on score (possibly charge score), something makes it go really high sometimes, added console.log to follow it when it happens again
 // check animations to see if they can be delayed starting to make more sense (Dead.Gif is fixed already)
