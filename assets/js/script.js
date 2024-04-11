@@ -24,9 +24,9 @@ let character = [{
     scream: "charge",
     strength: 150,
     health: 1000,
-    xp: 1000,
-    mana: 500,
-    minManaMagic: 20,
+    xp: 2000,
+    mana: 1000,
+    minManaMagic: 35,
     minManaCharge: 50,
     gifDuration: {
         "Attack_1.gif": 1000,
@@ -44,8 +44,8 @@ let character = [{
     path: "gotoku",
     strength: 160,
     health: 1100,
-    xp: 1100,
-    mana: 500,
+    xp: 2200,
+    mana: 1000,
     minManaMagic: 15,
     minManaCharge: 40,
     gifDuration: {
@@ -63,8 +63,8 @@ let character = [{
     path: "onrei",
     strength: 170,
     health: 800,
-    xp: 800,
-    mana: 500,
+    xp: 1600,
+    mana: 1000,
     minManaMagic: 20,
     minManaCharge: 20,
     gifDuration: {
@@ -82,8 +82,8 @@ let character = [{
     path: "yurei",
     strength: 140,
     health: 1100,
-    xp: 800,
-    mana: 200,
+    xp: 1600,
+    mana: 1000,
     minManaMagic: 20,
     minManaCharge: 20,
     gifDuration: {
@@ -206,7 +206,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("continue").addEventListener("click", function () {
         document.getElementById("game-over-screen").style.display = "none";
         currentStats["hero"].health = 100;
-        document.getElementById("hero").classList.add('glow-once'); 
+        document.getElementById("hero").classList.add('glow-once');
         document.getElementById("hero").querySelector("img").src = `assets/images/hero/Idle.gif`;
         updatePosition("hero");
         updateUI("hero");
@@ -247,12 +247,13 @@ function start() {
     document.getElementById("stats").style.display = "none";
     document.getElementById("control").style.display = "none";
 
-    run("hero", "hero","in");
-    if (document.getElementById("round-value").textContent <= 1){
+    run("hero", "hero", "in");
+    if (document.getElementById("round-value").textContent <= 1) {
         tutorial();
-    } else if (document.getElementById("round-value").textContent = 2){
-        tutorial2();
     }
+    // else if (document.getElementById("round-value").textContent = 2){
+    //     // tutorial2();
+    // }
 }
 
 function run(elementId, path, direction) {
@@ -268,8 +269,8 @@ function run(elementId, path, direction) {
         finalPosition = ((viewportWidth / 2) - (elementWidth / 4));
         startPosition = viewportWidth;
     } else {
-        screenOverlay.style.display= "block";
-        characterDiv.style.zIndex= 201;
+        screenOverlay.style.display = "block";
+        characterDiv.style.zIndex = 201;
         startPosition = ((viewportWidth / 2) - (elementWidth / 4));
         finalPosition = elementWidth / 2;
         screenOverlay.style.transition = 'opacity 500ms ease-in-out';
@@ -289,7 +290,7 @@ function run(elementId, path, direction) {
 
         if (elementId === "hero") {
             characterDiv.style.right = `${startPosition - currentPos}px`;
-            if (direction === "out"){
+            if (direction === "out") {
                 screenOverlay.style.opacity = Math.min(1, timeFraction);
             }
         } else {
@@ -429,8 +430,8 @@ function enemyArrives() {
     document.getElementById("enemy").style.display = "block";
     const enemies = character.filter(character => character.type === "enemy");
     const enemy = enemies[Math.floor(Math.random() * enemies.length)]
-    const randomMana = Math.floor((Math.random() * 99)-50) + 1;
-    const randomXP = Math.floor((Math.random() * 99)-50) + 1;
+    const randomMana = Math.floor((Math.random() * 50)) + 1;
+    const randomXP = Math.floor((Math.random() * 30)) + 1;
     currentEnemy = enemy.path;
     currentStats["enemy"].name = enemy.name;
     currentStats["enemy"].health = 100;
@@ -439,7 +440,7 @@ function enemyArrives() {
     currentStats["enemy"].level = currentStats["hero"].level;
 
     updateUI("enemy");
-    run("enemy", currentEnemy,"in");
+    run("enemy", currentEnemy, "in");
 }
 
 function attack(elementId, path) {
@@ -456,7 +457,7 @@ function attack(elementId, path) {
     setTimeout(() => {
         characterImage.src = `assets/images/${characterObj.path}/Idle.gif`;
     }, gifDuration);
-    damage(elementId, damageScore);
+    damage(elementId, damageScore, "attack");
 
     if (elementId === "hero" && currentStats.enemy.health > 0) {
         timer("stop");
@@ -487,7 +488,7 @@ function magic(elementId, path) {
     characterImage.src = `assets/images/${characterObj.path}/${attackType}`;
     let gifDuration = characterObj.gifDuration[attackType];
     let strength = characterObj.strength;
-    let multiplier = attackType === "Flame_jet.gif" ? 3 : 2.5;
+    let multiplier = attackType === "Fireball.gif" ? 1.5 : 2;
     let damageScore = multiplier * strength;
 
     setTimeout(() => {
@@ -500,7 +501,7 @@ function magic(elementId, path) {
     } else if (elementId === "enemy") {
         setTimeout(heroTurn, 1500);
     }
-    damage(elementId, damageScore);
+    damage(elementId, damageScore, "magic");
 };
 
 function charge(elementId, path) {
@@ -520,14 +521,14 @@ function charge(elementId, path) {
     if (elementId === "enemy") {
         setTimeout(heroTurn, 1500);
         scream();
-        health(elementId, "add", "0.5");
-        mana(elementId, "decrease", cost);
+        health(elementId, "add", "0.4");
+        mana(elementId, "decrease", cost / 100);
     } else {
-        let scoreValue = currentStats.hero.health <= 50 ? (0.5 * characterObj.health * currentStats.hero.level) + (0.2 * characterObj.mana * currentStats.hero.level) : ((100 - currentStats.hero.health) * characterObj.health * currentStats.hero.level) + (0.2 * characterObj.mana * currentStats.hero.level);
+        let scoreValue = currentStats.hero.health <= 70 ? (0.3 * characterObj.health * currentStats.hero.level) + (0.2 * characterObj.mana * currentStats.hero.level) : ((100 - currentStats.hero.health) * characterObj.health * currentStats.hero.level) + (0.2 * characterObj.mana * currentStats.hero.level);
         timer("stop");
         setTimeout(enemyTurn, 1500);
-        health(elementId, "add", "0.5");
-        mana(elementId, "decrease", cost);
+        health(elementId, "add", "0.3");
+        mana(elementId, "decrease", cost / 100);
         score("charge", scoreValue);
     }
 };
@@ -538,7 +539,7 @@ function levelUp(elementId) {
     character.find(char => char.path === characterPath).mana *= 1.05
     character.find(char => char.path === characterPath).xp *= 1.2
     character.find(char => char.path === characterPath).strength *= 1.1
-    document.getElementById(elementId).classList.add('glow-once'); 
+    document.getElementById(elementId).classList.add('glow-once');
     score("levelUp", (currentStats[elementId].level));
     document.getElementById(elementId).addEventListener('animationend', () => {
         document.getElementById(elementId).classList.remove('glow-once');
@@ -624,7 +625,7 @@ function timer(type) {
     }
 };
 
-function damage(elementId, attack) {
+function damage(elementId, attack, type) {
     let randomFrequency = Math.random();
     let random = Math.random();
     let ownLevel = elementId === "hero" ? currentStats.hero.level : currentStats.enemy.level;
@@ -637,7 +638,8 @@ function damage(elementId, attack) {
         multiplier = random * 0.5;
     }
 
-    let totalDamage = Math.round(attack * multiplier * (1+(ownLevel*0.1)));
+    let totalDamage = Math.round(attack * multiplier * (1 + (ownLevel * 0.1)));
+
     let enemyStrength = elementId === "hero" ? character.find(char => char.name === currentStats.enemy.name).strength : character.find(char => char.name === "Hero").strength;
     let scoreDamage = ((enemyStrength * enemyLevel) - totalDamage);
 
@@ -648,7 +650,7 @@ function damage(elementId, attack) {
         p.textContent = totalDamage;
 
         hurt("enemy", totalDamage);
-        xp("enemy", "add", totalDamage / (character.find(char => char.path === currentEnemy).strength * 30));
+        xp("enemy", "add", (totalDamage / (character.find(char => char.path === currentEnemy).health * enemyLevel))*0.5);
         score("damage", totalDamage);
     } else if (elementId === "enemy") {
         p = document.getElementById("hero-damage");
@@ -656,13 +658,16 @@ function damage(elementId, attack) {
         p.textContent = totalDamage;
 
         hurt("hero", totalDamage);
-        xp("hero", "add", totalDamage / (character.find(char => char.path === "hero").strength * 30));
+        xp("hero", "add", (totalDamage / (character.find(char => char.path === "hero").health * enemyLevel)));
         score("defence", scoreDamage);
     };
 
     let ownCharacter = character.find(char => char.path === (elementId === "hero" ? "hero" : currentEnemy));
-    xp(elementId, "add", (totalDamage / ownCharacter.xp)*0.7);
-    mana(elementId, "add", (totalDamage / ownCharacter.mana) * 0.5);
+    xp(elementId, "add", (totalDamage / ownCharacter.xp) * 0.35);
+
+    if (type === "attack") {
+        mana(elementId, "add", (totalDamage / ownCharacter.mana) * 0.25);
+    }
 
     setTimeout(() => {
         p.style.opacity = 0;
@@ -736,13 +741,16 @@ function hurt(elementId, value) {
     let elementDiv = document.getElementById(elementId);
     let elementImage = elementDiv.querySelector("img");
     let path = elementId === "hero" ? "hero" : currentEnemy;
-    let damageHealth = value / (character.find(char => char.path === path).health);
+    let opponent = elementId === "enemy" ? "hero" : "enemy";
+    let totalHealth =(character.find(char => char.path === path).health * currentStats[opponent].level);
+    let damageHealth = value / totalHealth;
 
     if (damageHealth < currentStats[elementId].health) {
         elementImage.src = `assets/images/${path}/Hurt.gif`;
         setTimeout(() => {
             elementImage.src = `assets/images/${path}/Idle.gif`;
             health(elementId, "decrease", damageHealth);
+            console.log(`total health is:${totalHealth}, total damage is:${value}, damage x health is: ${damageHealth}`)
         }, character.find(char => char.path === path).gifDuration["Hurt.gif"]);
     } else {
         health(elementId, "decrease", damageHealth);
@@ -767,7 +775,7 @@ function dead(elementId) {
 
         setTimeout(() => {
             nextRound();
-        },1500);
+        }, 1500);
     }
     document.getElementById("enemy").style.zIndex = "3";
 };
@@ -854,29 +862,31 @@ function AI() {
     const enemyHealth = currentStats.enemy.health;
     const enemyMana = currentStats.enemy.mana;
     const heroHealth = currentStats.hero.health;
-    let availableActions = ['attack', 'attack', 'attack', 'attack','attack', 'attack']; 
-    console.log(`start actions, available:${availableActions}`);
+    let availableActions = ['attack', 'attack', 'attack', 'attack', 'attack', 'attack'];
 
     if (currentStats.enemy.xp >= 100) {
         availableActions.push('levelUp', 'levelUp', 'levelUp', 'levelUp');
-        console.log(`xp check actions, available:${availableActions}`);
     }
 
     if (enemyMana >= character.find(char => char.path === currentEnemy).minManaMagic) {
-        availableActions.push('magic','magic','magic');
+        availableActions.push('magic', 'magic', 'magic');
         console.log(`magic check 1 actions, available:${availableActions}`);
-        if (heroHealth < 20){
-            availableActions.push('magic','magic');
-            console.log(`magic check 2 actions, available:${availableActions}`);
+        if (heroHealth < 50) {
+            availableActions.push('magic');
+        }
+        if (heroHealth < 20) {
+            availableActions.push('magic', 'magic');
         }
     }
 
     if (enemyMana >= character.find(char => char.path === currentEnemy).minManaCharge && enemyHealth < 75) {
-        availableActions.push('charge','charge');
+        availableActions.push('charge', 'charge');
         console.log(`charge check 1 actions, available:${availableActions}`);
-        if (enemyHealth < 25){
-            availableActions.push('charge','charge');
-            console.log(`charge check 1 actions, available:${availableActions}`);
+        if (enemyHealth < 25) {
+            availableActions.push('charge', 'charge');
+        }
+        if (enemyHealth < 15) {
+            availableActions.push('charge', 'charge', 'charge');
         }
     }
     console.log(`final actions, available:${availableActions}`);
@@ -888,18 +898,18 @@ function AI() {
 function nextRound() {
     document.getElementById("control").style.display = "none";
     document.getElementById("stats").style.display = "none";
-    run("hero","hero","out");
+    run("hero", "hero", "out");
     currentStats.hero.health = 100;
-    currentStats.hero.xp = (currentStats.hero.xp += 20) > 100 ? 100 : (currentStats.hero.xp +=20);
-    currentStats.hero.mana = (currentStats.hero.xp += 20) > 100 ? 100 : (currentStats.hero.xp +=20);
+    currentStats.hero.xp = (currentStats.hero.xp += 20) > 100 ? 100 : (currentStats.hero.xp += 20);
+    currentStats.hero.mana = (currentStats.hero.xp += 20) > 100 ? 100 : (currentStats.hero.xp += 20);
     document.getElementById("round-value").textContent = parseInt(document.getElementById("round-value").textContent) + 1;
 
     var randomBackgroundNumber = Math.floor(Math.random() * 8) + 1; // Generates a number between 1 and 8
     var newBackgroundImage = `assets/images/scenario/backgrounds/game_background_${randomBackgroundNumber}.webp`;
- 
+
     setTimeout(() => {
         document.body.style.backgroundImage = `radial-gradient(circle at 85vw 35vh, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%), url(${newBackgroundImage})`;
-        document.getElementById('screen-overlay').style.display= "none";
+        document.getElementById('screen-overlay').style.display = "none";
         setTimeout(() => {
             start();
             setTimeout(() => {
@@ -909,6 +919,8 @@ function nextRound() {
             }, 1000);
         }, 1000);
     }, 3000);
+    updateUI("hero");
+    updateUI("enemy");
 };
 
 // would like:
