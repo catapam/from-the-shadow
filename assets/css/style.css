@@ -274,7 +274,7 @@ body {
 }
 
 #level, #score{
-    font-size: small;
+    font-size: medium;
 }
 
 .health-bar,.mana-bar,.xp-bar {

@@ -248,7 +248,11 @@ function start() {
     document.getElementById("control").style.display = "none";
 
     run("hero", "hero","in");
-    tutorial();
+    if (document.getElementById("round-value").textContent <= 1){
+        tutorial();
+    } else if (document.getElementById("round-value").textContent = 2){
+        tutorial2();
+    }
 }
 
 function run(elementId, path, direction) {
@@ -259,14 +263,18 @@ function run(elementId, path, direction) {
     characterImage.src = `assets/images/${path}/Run.gif`;
     var screenOverlay = document.getElementById('screen-overlay');
     var finalPosition, startPosition, duration = 1000;
-    document.getElementById('screen-overlay').style.display= "block";
 
     if (direction === "in") {
         finalPosition = ((viewportWidth / 2) - (elementWidth / 4));
         startPosition = viewportWidth;
     } else {
+        screenOverlay.style.display= "block";
+        characterDiv.style.zIndex= 201;
         startPosition = ((viewportWidth / 2) - (elementWidth / 4));
         finalPosition = elementWidth / 2;
+        screenOverlay.style.transition = 'opacity 500ms ease-in-out';
+        screenOverlay.style.opacity = 1;
+        setTimeout(() => animate(), 0);
     }
 
     let start = null;
@@ -304,6 +312,7 @@ function run(elementId, path, direction) {
 
 function tutorial() {
     document.getElementById("tutorial_modal").style.display = "block";
+    document.getElementById("round-value").textContent = 1;
 
     let stories = [
         "Wow! What is that big round shadow?",
@@ -755,7 +764,10 @@ function dead(elementId) {
         }, character.find(char => char.path === path).gifDuration["Dead.gif"]);
         let health = character.find(char => char.path === path).health;
         score("kill", health);
-        nextRound();
+
+        setTimeout(() => {
+            nextRound();
+        },1500);
     }
     document.getElementById("enemy").style.zIndex = "3";
 };
@@ -874,13 +886,29 @@ function AI() {
 }
 
 function nextRound() {
+    document.getElementById("control").style.display = "none";
+    document.getElementById("stats").style.display = "none";
     run("hero","hero","out");
+    currentStats.hero.health = 100;
+    currentStats.hero.xp = (currentStats.hero.xp += 20) > 100 ? 100 : (currentStats.hero.xp +=20);
+    currentStats.hero.mana = (currentStats.hero.xp += 20) > 100 ? 100 : (currentStats.hero.xp +=20);
+    document.getElementById("round-value").textContent = parseInt(document.getElementById("round-value").textContent) + 1;
 
-    //new background selection
-    //new enemy selected
-    //previous hero stats are kept, health is full restored
-    // all enemy stats are restored
-    // keep score, update round number to 
+    var randomBackgroundNumber = Math.floor(Math.random() * 8) + 1; // Generates a number between 1 and 8
+    var newBackgroundImage = `assets/images/scenario/backgrounds/game_background_${randomBackgroundNumber}.webp`;
+ 
+    setTimeout(() => {
+        document.body.style.backgroundImage = `radial-gradient(circle at 85vw 35vh, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%), url(${newBackgroundImage})`;
+        document.getElementById('screen-overlay').style.display= "none";
+        setTimeout(() => {
+            start();
+            setTimeout(() => {
+                enemyArrives();
+                document.getElementById("control").style.display = "flex";
+                document.getElementById("stats").style.display = "flex";
+            }, 1000);
+        }, 1000);
+    }, 3000);
 };
 
 // would like:
