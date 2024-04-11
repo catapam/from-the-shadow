@@ -198,6 +198,20 @@ document.addEventListener("DOMContentLoaded", function () {
         score("time", document.getElementById("timer").textContent);
         levelUp("hero");
     });
+
+    document.getElementById("restart").addEventListener("click", function () {
+        window.location.reload();
+    });
+
+    document.getElementById("continue").addEventListener("click", function () {
+        document.getElementById("game-over-screen").style.display = "none";
+        currentStats["hero"].health = 100;
+        document.getElementById("hero").classList.add('glow-once'); 
+        document.getElementById("hero").querySelector("img").src = `assets/images/hero/Idle.gif`;
+        updatePosition("hero");
+        updateUI("hero");
+        heroTurn();
+    });
 });
 
 function preloadGifs(gifArray) {
@@ -233,22 +247,29 @@ function start() {
     document.getElementById("stats").style.display = "none";
     document.getElementById("control").style.display = "none";
 
-    runIn("hero", "hero");
+    run("hero", "hero","in");
     tutorial();
 }
 
-function runIn(elementId, path) {
+function run(elementId, path, direction) {
     var characterDiv = document.getElementById(elementId);
     var characterImage = characterDiv.querySelector("img");
     var viewportWidth = window.innerWidth;
     var elementWidth = characterDiv.offsetWidth;
     characterImage.src = `assets/images/${path}/Run.gif`;
+    var screenOverlay = document.getElementById('screen-overlay');
+    var finalPosition, startPosition, duration = 1000;
+    document.getElementById('screen-overlay').style.display= "block";
 
-    var finalPosition = ((viewportWidth / 2) - (elementWidth / 4));
-    var startPosition = viewportWidth;
+    if (direction === "in") {
+        finalPosition = ((viewportWidth / 2) - (elementWidth / 4));
+        startPosition = viewportWidth;
+    } else {
+        startPosition = ((viewportWidth / 2) - (elementWidth / 4));
+        finalPosition = elementWidth / 2;
+    }
 
     let start = null;
-    const duration = 800;
 
     function animate(timestamp) {
         if (!start) start = timestamp;
@@ -260,17 +281,24 @@ function runIn(elementId, path) {
 
         if (elementId === "hero") {
             characterDiv.style.right = `${startPosition - currentPos}px`;
+            if (direction === "out"){
+                screenOverlay.style.opacity = Math.min(1, timeFraction);
+            }
         } else {
             characterDiv.style.left = `${startPosition - currentPos}px`;
         }
+
         if (progress < duration) {
             requestAnimationFrame(animate);
         } else {
-            characterImage.src = `assets/images/${path}/Idle.gif`;
-            updatePosition(elementId);
+            if (direction === "in") {
+                characterImage.src = `assets/images/${path}/Idle.gif`;
+                updatePosition(elementId);
+            } else if (direction === "out" && elementId === "hero") {
+                screenOverlay.style.opacity = 1;
+            }
         }
     }
-
     requestAnimationFrame(animate);
 };
 
@@ -402,7 +430,7 @@ function enemyArrives() {
     currentStats["enemy"].level = currentStats["hero"].level;
 
     updateUI("enemy");
-    runIn("enemy", currentEnemy);
+    run("enemy", currentEnemy,"in");
 }
 
 function attack(elementId, path) {
@@ -541,6 +569,7 @@ function score(type, value) {
         currentScore += newScore;
         scoreElement.textContent = currentScore;
     } else if (type === "charge") {
+        // review charge score calculation, some time the valu is 10 but the score ends up showing 30k+
         currentScore += Math.round(value);
         scoreElement.textContent = currentScore;
     } else if (type === "defence") {
@@ -845,7 +874,8 @@ function AI() {
 }
 
 function nextRound() {
-    //run out
+    run("hero","hero","out");
+
     //new background selection
     //new enemy selected
     //previous hero stats are kept, health is full restored
@@ -859,7 +889,6 @@ function nextRound() {
 // add more enemies
 // comment codes
 // readme
-// add effects for level-up (hero and enemy)
 // optimize code execution and structure
 // review what is broken on score (possibly charge score), something makes it go really high sometimes, added console.log to follow it when it happens again
 // check animations to see if they can be delayed starting to make more sense (Dead.Gif is fixed already)

@@ -373,6 +373,21 @@ body {
     animation: glowEffect 1.5s cubic-bezier(0.5, 0, 0, 1);
 }
 
+#screen-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease-in-out;
+    z-index: 200;
+}
+
+
 @media screen and (max-height: 500px) {
     .btn-fight{
         width: 15vh;
