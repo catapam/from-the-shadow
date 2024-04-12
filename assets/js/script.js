@@ -7,7 +7,7 @@ let currentStats = {
     hero: {
         name: "",
         health: 100,
-        mana: 1,
+        mana: 50,
         xp: 1,
         level: 1,
         currentHealth:1000,
@@ -189,24 +189,20 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("attack").addEventListener("click", function () {
         attack("hero", "hero");
         document.getElementById("control").style.display = "none";
-        score("time", timerElement.textContent);
     });
 
     document.getElementById("magic").addEventListener("click", function () {
         document.getElementById("control").style.display = "none";
-        score("time", timerElement.textContent);
         magic("hero", "hero");
     });
 
     document.getElementById("charge").addEventListener("click", function () {
         document.getElementById("control").style.display = "none";
-        score("time", timerElement.textContent);
         charge("hero", "hero");
     });
 
     document.getElementById("level-up").addEventListener("click", function () {
         document.getElementById("control").style.display = "none";
-        score("time", timerElement.textContent);
         levelUp("hero");
     });
 
@@ -284,11 +280,15 @@ function start() {
 
     run("hero", "hero", "in");
     if (document.getElementById("round-value").textContent <= 1) {
+        story();
+    }
+    else if (document.getElementById("round-value").textContent = 2){
         tutorial();
     }
-    // else if (document.getElementById("round-value").textContent = 2){
-    //     // tutorial2();
-    // }
+}
+
+function tutorial (){
+
 }
 
 function run(elementId, path, direction) {
@@ -346,7 +346,7 @@ function run(elementId, path, direction) {
     requestAnimationFrame(animate);
 };
 
-function tutorial() {
+function story() {
     document.getElementById("tutorial_modal").style.display = "block";
     document.getElementById("round-value").textContent = 1;
 
@@ -404,17 +404,8 @@ function tutorial() {
                 document.getElementById("story").style.display = "none";
                 document.getElementById("stats").style.display = "flex";
                 updateUI("hero");
-                // document.getElementById("tutorial-stats").style.display = "block";
-                //add details about stats, and hide the modal again once the close button is clicked>
-                // document.getElementById("tutorial-stats").style.display = "none";
-
-                //add timer details:
-                // document.getElementById("tutorial-stats").style.display = "block";
-
                 document.getElementById("control").style.display = "flex";
-                // document.getElementById("tutorial-controls").style.display = "block";
-                //add details about controls, and hide the modal again once the close button is clicked>
-                // document.getElementById("tutorial-controls").style.display = "none";
+                tutorial();
                 timer("start");
             };
         }
@@ -504,7 +495,6 @@ function attack(elementId, path) {
 
     if (elementId === "hero" && currentStats.enemy.health > 0) {
         timer("stop");
-        //score timer
         setTimeout(enemyTurn, 1500);
     } else if (elementId === "enemy" && currentStats.hero.health <= 0) {
         timer("stop");
@@ -566,12 +556,10 @@ function charge(elementId, path) {
         health(elementId, "add", 0.5);
         mana(elementId, "decrease", cost / 100);
     } else {
-        let scoreValue = currentStats.hero.health <= 70 ? (0.5 * characterObj.health * currentStats.hero.level) + (0.2 * characterObj.mana * currentStats.hero.level) : ((100 - currentStats.hero.health) * characterObj.health * currentStats.hero.level) + (0.2 * characterObj.mana * currentStats.hero.level);
         timer("stop");
         setTimeout(enemyTurn, 1500);
         health(elementId, "add", 0.5);
         mana(elementId, "decrease", cost / 100);
-        score("charge", scoreValue);
     }
 };
 
@@ -584,7 +572,6 @@ function levelUp(elementId) {
     currentStats[`${elementId}`].currentStrength = (growthFactor * 1.01 * level) * character.find(char => char.path === characterPath).strength;
     
     document.getElementById(elementId).classList.add('glow-once');
-    score("levelUp", (currentStats[elementId].level));
     document.getElementById(elementId).addEventListener('animationend', () => {
         document.getElementById(elementId).classList.remove('glow-once');
     });
@@ -605,34 +592,16 @@ function levelUp(elementId) {
     }
 };
 
-function score(type, value) {
+function score(value) {
     let scoreElement = document.getElementById("score-value");
     let currentScore = parseInt(scoreElement.textContent) || 0;
     let roundElement = document.getElementById("round-value");
     let round = parseInt(roundElement.textContent) || 1;
-    let newScore = 0;
     let multiplier = 10;
+    let newScore = round * value * multiplier;
 
-    if (type === "time" || type === "levelUp" || type === "round") {
-        // next round: new round x 10 (pass value as 1)
-        newScore = Math.round(value * round * multiplier);
-        currentScore += newScore;
-        scoreElement.textContent = currentScore;
-    } else if (type === "damage" || type === "kill") {
-        newScore = Math.round(value * (1 + (round / multiplier)));
-        currentScore += newScore;
-        scoreElement.textContent = currentScore;
-    } else if (type === "charge") {
-        // review charge score calculation, some time the valu is 10 but the score ends up showing 30k+
-        currentScore += Math.round(value);
-        scoreElement.textContent = currentScore;
-    } else if (type === "defence") {
-        newScore = Math.round(value * (1 + (round / multiplier))) > 0 ? Math.round(value * (1 + (round / multiplier))) : 0;
-        currentScore += newScore;
-        scoreElement.textContent = currentScore;
-    }
-
-    // console.log(`score update, action: ${type} , size: ${newScore}, new score: ${currentScore} `);
+    currentScore += newScore;
+    scoreElement.textContent = currentScore;
 };
 
 function timer(type) {
@@ -683,42 +652,40 @@ function timer(type) {
 
 function damage(elementId, attack, type) {
     let randomFrequency = Math.random();
-    let random = Math.random() * 0.6;
-    let multiplier = randomFrequency < 0.35 ? 0.5 + random * 0.5 : random * 0.5;
+    let multiplier;
 
-    console.log(`attack:${attack}`);
-    console.log(`strenght-defence:${currentStats[`${elementId === "hero" ? "hero" : "enemy"}`].currentStrength}`);
-    if (attack - (currentStats[`${elementId === "hero" ? "hero" : "enemy"}`].currentStrength/2) > 0){
-        var totalDamage = Math.round((attack - currentStats[`${elementId === "hero" ? "hero" : "enemy"}`].currentStrength/2) * multiplier);
+    if (randomFrequency < 0.10) {
+        multiplier = 0; 
+    } else if (randomFrequency < 0.15) {
+        multiplier = 1.2; 
+    } else if (randomFrequency < 0.95) {
+        multiplier = 0.4 + Math.random() * (0.7 - 0.4); 
     } else {
-        var totalDamage = 0;
+        multiplier = 1.0; 
     }
-    
+
+    let defense = currentStats[`${elementId === "hero" ? "hero" : "enemy"}`].currentStrength / 2;
+    let rawDamage = attack - defense;
+    let totalDamage = rawDamage > 0 ? Math.round(rawDamage * multiplier) : 0;
+
     let p = document.getElementById(elementId === "hero" ? "enemy-damage" : "hero-damage");
     p.style.opacity = 1;
-    if (totalDamage > 0) {
-        p.textContent = totalDamage;
-    } else {
-        p.textContent = "miss";
-    }
+    p.textContent = totalDamage > 0 ? totalDamage : "miss";
 
     hurt(elementId === "hero" ? "enemy" : "hero", totalDamage);
 
-    let ownCharacter = character.find(char => char.path === (elementId === "hero" ? currentEnemy : "hero"));
-    console.log(currentStats[`${elementId === "hero" ? "enemy" : "hero"}`]);
-    console.log(currentStats[`${elementId === "hero" ? "enemy" : "hero"}`].currentStrength);
-    let xpGainForAttacker = (totalDamage*(totalDamage/currentStats[`${elementId === "hero" ? "enemy" : "hero"}`].currentStrength))/ownCharacter.health; 
-    console.log(xpGainForAttacker);
+    let xpGainForAttacker = ((totalDamage*(totalDamage/currentStats[`${elementId === "hero" ? "enemy" : "hero"}`].currentStrength))/currentStats[`${elementId === "hero" ? "hero" : "enemy"}`].currentHealth)/2; 
     let xpGainForDefender = xpGainForAttacker / 2; 
-    console.log(xpGainForDefender);
 
     xp(elementId, "add", xpGainForAttacker);
     xp(elementId === "hero" ? "enemy" : "hero", "add", xpGainForDefender); 
 
-    score(elementId === "hero" ? "damage" : "defence", totalDamage);
-
     if (type === "attack") {
-        mana(elementId, "add", (totalDamage / ownCharacter.health)/2);
+        mana(elementId, "add", (totalDamage / currentStats[`${elementId === "hero" ? "hero" : "enemy"}`].currentHealth)/2);
+    }
+
+    if (elementId === "hero"){
+        score(totalDamage);
     }
 
     setTimeout(() => {
@@ -821,8 +788,6 @@ function dead(elementId) {
         setTimeout(() => {
             elementDiv.style.display = "none";
         }, character.find(char => char.path === path).gifDuration["Dead.gif"]);
-        let health = character.find(char => char.path === path).health;
-        score("kill", health);
 
         setTimeout(() => {
             nextRound();
@@ -949,9 +914,9 @@ function nextRound() {
     run("hero", "hero", "out");
     currentStats.hero.health = 100;
     currentStats.hero.xp = (currentStats.hero.xp += 20) > 100 ? 100 : (currentStats.hero.xp += 20);
-    document.getElementById("round-value").textContent = parseInt(document.getElementById("round-value").textContent) + 1;
+    document.getElementById("round-value").textContent += 1;
 
-    var randomBackgroundNumber = Math.floor(Math.random() * 8) + 1; // Generates a number between 1 and 8
+    var randomBackgroundNumber = Math.floor(Math.random() * 8) + 1;
     var newBackgroundImage = `assets/images/scenario/backgrounds/game_background_${randomBackgroundNumber}.webp`;
 
     setTimeout(() => {
@@ -972,10 +937,8 @@ function nextRound() {
 
 // would like:
 // review tutoril adding more info and details
-// background change
 // add more enemies
 // comment codes
 // readme
 // optimize code execution and structure
-// review what is broken on score (possibly charge score), something makes it go really high sometimes, added console.log to follow it when it happens again
 // check animations to see if they can be delayed starting to make more sense (Dead.Gif is fixed already
