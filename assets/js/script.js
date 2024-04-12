@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var actionButton = document.getElementsByClassName("btn-fight");
 
     infoButton.addEventListener("click", function () {
-        modal.style.display = "block";
+        modal.style.display = "flex";
     });
 
     closeButton.addEventListener("click", function () {
@@ -236,7 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     
     document.getElementById("unpause").addEventListener("click", function() {
-        document.getElementById("pause-screen").classList.add("hidden");
+        document.getElementById("pause-screen").style.display = "none";
         timer("resume");
     });
 
@@ -282,13 +282,6 @@ function start() {
     if (document.getElementById("round-value").textContent <= 1) {
         story();
     }
-    else if (document.getElementById("round-value").textContent = 2){
-        tutorial();
-    }
-}
-
-function tutorial (){
-
 }
 
 function run(elementId, path, direction) {
@@ -347,7 +340,7 @@ function run(elementId, path, direction) {
 };
 
 function story() {
-    document.getElementById("tutorial_modal").style.display = "block";
+    document.getElementById("tutorial_modal").style.display = "flex";
     document.getElementById("round-value").textContent = 1;
 
     let stories = [
@@ -358,7 +351,7 @@ function story() {
     ];
     let currentIndex = 0;
 
-    document.getElementById("story").style.display = "block";
+    document.getElementById("story").style.display = "flex";
 
     let heroNameInput = document.getElementById("id");
 
@@ -410,6 +403,10 @@ function story() {
             };
         }
     });
+}
+
+function tutorial (){
+
 }
 
 function createOverlay() {
@@ -595,8 +592,7 @@ function levelUp(elementId) {
 function score(value) {
     let scoreElement = document.getElementById("score-value");
     let currentScore = parseInt(scoreElement.textContent) || 0;
-    let roundElement = document.getElementById("round-value");
-    let round = parseInt(roundElement.textContent) || 1;
+    let round = parseInt(document.getElementById("round-value").textContent) || 1;
     let multiplier = 10;
     let newScore = round * value * multiplier;
 
@@ -640,7 +636,7 @@ function timer(type) {
         timerElement.textContent = totalTime;
     } else if (type === "pause") {
         clearInterval(timerInterval);
-        document.getElementById("pause-screen").classList.remove("hidden");
+        document.getElementById("pause-screen").style.display = "flex";
         timerElement.textContent = timeLeft;
     } else if (type === "resume") {
         timerInterval = setInterval(() => {
@@ -914,7 +910,8 @@ function nextRound() {
     run("hero", "hero", "out");
     currentStats.hero.health = 100;
     currentStats.hero.xp = (currentStats.hero.xp += 20) > 100 ? 100 : (currentStats.hero.xp += 20);
-    document.getElementById("round-value").textContent += 1;
+    let round = parseInt(document.getElementById("round-value").textContent) + 1;
+    document.getElementById("round-value").textContent = round;
 
     var randomBackgroundNumber = Math.floor(Math.random() * 8) + 1;
     var newBackgroundImage = `assets/images/scenario/backgrounds/game_background_${randomBackgroundNumber}.webp`;

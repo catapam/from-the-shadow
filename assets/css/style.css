@@ -69,6 +69,7 @@ button {
     width: 30%;
     margin: 5vh 0 0 0;
     height: 10vh;
+    min-height: 35px;
     font-size: 6vw;
     font-family: 'Comic Sans MS', sans-serif;
     color: #FEFFFF;
@@ -79,12 +80,14 @@ button {
 
 /* The Modal (background) */
 .modal {
+    justify-content: center;
+    align-items: center;
     position: fixed;
     z-index: 150;
     left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.4);
 }
@@ -92,40 +95,43 @@ button {
 /* Modal Content */
 .modal-content {
     background-color: rgba(0, 0, 0, 0.8);
-    margin: 15% auto;
+    margin: auto;
     padding: 20px;
     border: 1px solid #FEFFFF;
-    width: 50%;
-    max-width: 50vw;
-    max-height: 100vw;
+    width: 50vw;
+    max-height: 100vh;
+    overflow: auto;
 }
 
-#game-over-screen{
-    display: none;
+#game-over-screen, #pause-screen{
     justify-content: center; 
     align-items: center;
-}
-
-#game-over-screen .modal-content {
-    max-width: 200px;
-    max-height: 150px;
-    text-align: center;
 }
 
 #game-over-screen .modal-content p, 
 #pause-screen .modal-content p{
     margin-top: 0;
-    font-size: large;
+    margin-bottom: 5vh;
+    font-size:larger;
+    font-weight: bolder;
+}
+
+#game-over-screen .modal-content, #pause-screen .modal-content{
+    max-width: 400px;
+    overflow:visible; 
+    max-height: 150px;
+    text-align: center;
 }
 
 #game-over-buttons, #pause-buttons{
     display: flex;
     justify-content: center; 
-    gap: 10px;
+    gap: 10vw;
+    max-width: 100vw;
 }
 
 #game-over-buttons button, #pause-buttons button{
-    margin: 10px 20px; 
+    margin: 0; 
     min-width: 75px;
     cursor: pointer; 
     font-size: medium; 

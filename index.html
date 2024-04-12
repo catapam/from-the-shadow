@@ -105,7 +105,7 @@
             <span class="close">&times;</span>
             <p>This game was created by Matheus Andrade, check more details about the project on the repository: <a href="https://github.com/catapam/from-the-shadow" target="_blank">GitHub</a>.</p>
             <br>
-            <p>The ranking is only stored locally, ahve fun competing with friends and family!</p>
+            <p>The ranking is only stored locally, have fun competing with friends and family!</p>
             <br>
             <p>A tutorial is offered at the start of the game.</p>
         </div>
@@ -137,14 +137,19 @@
     <div id="tutorial_modal" class="hidden">
         <div class="modal-content hidden" id="story">
         </div>
-        <div class="modal-content hidden" id="tutorial-stats">
-        </div>
-        <div class="modal-content hidden" id="tutorial-controls">
+        <div class="modal-content hidden" id="tutorial">
+            <div id="skip-tutorial"></div>
         </div>
     </div>
 
+
+    <!-- Ranking Modal -->
+    <div id="ranking_modal" class="hidden">
+        <span class="close">&times;</span>
+        <div class="modal-content hidden" id="ranking"></div>
+    </div>
+
     <div id="screen-overlay" class="hidden"></div>
-  
     <script src="assets/js/script.js"></script>
 </body>
 </html>
