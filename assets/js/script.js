@@ -1,4 +1,6 @@
 let timerInterval;
+let timeLeft = 5;
+let timerElement = document.getElementById("timer");
 let growthFactor = 1.1;
 let currentEnemy;
 let currentStats = {
@@ -187,24 +189,24 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("attack").addEventListener("click", function () {
         attack("hero", "hero");
         document.getElementById("control").style.display = "none";
-        score("time", document.getElementById("timer").textContent);
+        score("time", timerElement.textContent);
     });
 
     document.getElementById("magic").addEventListener("click", function () {
         document.getElementById("control").style.display = "none";
-        score("time", document.getElementById("timer").textContent);
+        score("time", timerElement.textContent);
         magic("hero", "hero");
     });
 
     document.getElementById("charge").addEventListener("click", function () {
         document.getElementById("control").style.display = "none";
-        score("time", document.getElementById("timer").textContent);
+        score("time", timerElement.textContent);
         charge("hero", "hero");
     });
 
     document.getElementById("level-up").addEventListener("click", function () {
         document.getElementById("control").style.display = "none";
-        score("time", document.getElementById("timer").textContent);
+        score("time", timerElement.textContent);
         levelUp("hero");
     });
 
@@ -220,6 +222,30 @@ document.addEventListener("DOMContentLoaded", function () {
         updatePosition("hero");
         updateUI("hero");
         heroTurn();
+    });
+
+    //pause function
+    timerElement.addEventListener('mouseenter', function() {
+        timerElement.classList.add('hovering');
+        timerElement.textContent = '||'; 
+    });
+
+    timerElement.addEventListener('mouseleave', function() {
+        timerElement.classList.remove('hovering');
+        timerElement.textContent = timeLeft;
+    });
+
+    timerElement.addEventListener("click", function() {
+        timer("pause");
+    });
+    
+    document.getElementById("unpause").addEventListener("click", function() {
+        document.getElementById("pause-screen").classList.add("hidden");
+        timer("resume");
+    });
+
+    document.getElementById("give-up").addEventListener("click", function() {
+        window.location.reload();
     });
 });
 
@@ -610,27 +636,30 @@ function score(type, value) {
 };
 
 function timer(type) {
-    const timerElement = document.getElementById("timer");
-    let totalTime = 5;
-    let timeLeft = totalTime;
+    let totalTime = timeLeft;
 
     function updateTimer() {
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
             document.getElementById("control").style.display = "none";
             timerElement.classList.add("hidden");
-            if (type === "start") {
+            if (type === "start" || type === "resume") {
                 enemyTurn();
             }
         } else {
-            timerElement.textContent = timeLeft;
+            if (!timerElement.classList.contains('hovering')) {
+                timerElement.textContent = timeLeft;
+            }
         }
     }
 
     if (type === "start") {
+        timeLeft = 5;
         clearInterval(timerInterval);
         timerElement.classList.remove("hidden");
-        timerElement.textContent = timeLeft;
+        if (!timerElement.classList.contains('hovering')) {
+            timerElement.textContent = timeLeft;
+        }
         timerInterval = setInterval(() => {
             timeLeft--;
             updateTimer();
@@ -640,6 +669,15 @@ function timer(type) {
         document.getElementById("control").style.display = "none";
         timerElement.classList.add("hidden");
         timerElement.textContent = totalTime;
+    } else if (type === "pause") {
+        clearInterval(timerInterval);
+        document.getElementById("pause-screen").classList.remove("hidden");
+        timerElement.textContent = timeLeft;
+    } else if (type === "resume") {
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimer();
+        }, 1000);
     }
 };
 

@@ -10,6 +10,7 @@
     <div id="start_area" class="centered">
         <img id="logo" src="assets/images/logo.webp" alt="logo image" class="centered">
         <button class="btn centered" id="start_button">Start</button>
+        <button class="btn centered" id="ranking_button">Ranking</button>
         <button class="btn centered" id="info_button">info</button>
     </div>
     
@@ -67,7 +68,7 @@
                 <div id="time" class="centered">
                     <p class="centered" id="score">score <span id="score-value"></span></p>
                     <p class="centered" id="level">round <span id="round-value">1</span></p>
-                    <h1 class="centered hidden" id="timer"></h1>
+                    <h1 class="centered" id="timer" data-hover-text="||"></h1>
                 </div>
                 <div id="next" class="centered hidden">
                 </div>
@@ -109,6 +110,17 @@
             <div id="game-over-buttons">
                 <button id="restart">Restart</button>
                 <button id="continue">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pause Modal -->
+    <div id="pause-screen" class="modal hidden">
+        <div class="modal-content" class="centered">
+            <p class="centered">Paused</p>
+            <div id="pause-buttons">
+                <button id="give-up">Give up</button>
+                <button id="unpause">Continue</button>
             </div>
         </div>
     </div>

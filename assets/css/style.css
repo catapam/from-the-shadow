@@ -56,6 +56,15 @@ body {
     margin-right: auto;
 }
 
+button {
+    overflow: hidden; 
+    white-space: nowrap; 
+    text-align: center; 
+    display: inline-block; 
+    cursor: pointer; 
+    padding: 0;
+}
+
 .btn {
     width: 30%;
     margin: 5vh 0 0 0;
@@ -66,8 +75,6 @@ body {
     background-color: rgba(0, 0, 0, 1);
     border-radius: 25px;
     border-color: #FEFFFF;
-    padding-left: 20px;
-    padding-right: 20px;
 }
 
 /* The Modal (background) */
@@ -105,18 +112,19 @@ body {
     text-align: center;
 }
 
-#game-over-screen .modal-content p {
+#game-over-screen .modal-content p, 
+#pause-screen .modal-content p{
     margin-top: 0;
     font-size: large;
 }
 
-#game-over-buttons {
+#game-over-buttons, #pause-buttons{
     display: flex;
     justify-content: center; 
     gap: 10px;
 }
 
-#game-over-buttons button {
+#game-over-buttons button, #pause-buttons button{
     margin: 10px 20px; 
     min-width: 75px;
     cursor: pointer; 
@@ -271,6 +279,9 @@ body {
 
 #timer{
     color: red;
+    border: 10px solid transparent;
+    min-width: 60px; 
+    cursor: pointer;
 }
 
 #level, #score{
@@ -292,6 +303,7 @@ body {
     padding: 0;
     margin: 0;
     max-width: 100%; 
+    transition: width 1s ease-out
 }
 
 .mana,.xp {
@@ -351,6 +363,7 @@ body {
     margin-left: 2vw;
     margin-right: 2vw;
     margin-bottom: 2vw;
+    cursor: pointer;
 }
 
 .btn-fight img {
