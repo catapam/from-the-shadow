@@ -399,14 +399,42 @@ function story() {
                 updateUI("hero");
                 document.getElementById("control").style.display = "flex";
                 tutorial();
-                timer("start");
             };
         }
     });
 }
 
 function tutorial (){
+    timerElement.classList.remove("hidden");
 
+    // add close tutorial option
+    // you can skip tutorial from here ...
+
+    // Health bar
+    // zindex it all the way up above the overlay, write the tutorials and do the same with all elements, at the end zindex everything back to it's original position
+
+    // Mana bar
+
+    // XP bar
+
+    // enemy bars
+
+    // initial stats on eache round
+
+    // attack button
+    // cost and effects, same for the other buttons
+
+    // magic button
+
+    // health button
+
+    // level up button
+
+    // round and score
+
+    // timer and turn
+
+    // enemy turn
 }
 
 function createOverlay() {
@@ -593,8 +621,7 @@ function score(value) {
     let scoreElement = document.getElementById("score-value");
     let currentScore = parseInt(scoreElement.textContent) || 0;
     let round = parseInt(document.getElementById("round-value").textContent) || 1;
-    let multiplier = 10;
-    let newScore = round * value * multiplier;
+    let newScore = round * value;
 
     currentScore += newScore;
     scoreElement.textContent = currentScore;
@@ -654,10 +681,10 @@ function damage(elementId, attack, type) {
         multiplier = 0; 
     } else if (randomFrequency < 0.15) {
         multiplier = 1.2; 
-    } else if (randomFrequency < 0.95) {
-        multiplier = 0.4 + Math.random() * (0.7 - 0.4); 
+    } else if (randomFrequency < 0.98) {
+        multiplier = 0.3 + Math.random() * (0.5 - 0.3); 
     } else {
-        multiplier = 1.0; 
+        multiplier = 0.8; 
     }
 
     let defense = currentStats[`${elementId === "hero" ? "hero" : "enemy"}`].currentStrength / 2;
