@@ -56,6 +56,7 @@ button {
 
 /* Start area */
 #start_area {
+    top: 10vh;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -141,8 +142,8 @@ button {
     align-items: center;
 }
 
-#game-over-screen .modal-content p,
-#pause-screen .modal-content p {
+#game-over-screen .modal-content h5,
+#pause-screen .modal-content h5 {
     margin-top: 0;
     margin-bottom: 5vh;
     font-size: larger;
@@ -227,7 +228,7 @@ button {
     font-weight: bold;
 }
 
-#enemy p {
+#enemy h5 {
     transform: scaleX(-1);
 }
 
