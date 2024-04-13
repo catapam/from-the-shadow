@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var inputName = heroNameInput.value;
         if (inputName) {
             heroNameInput.value = inputName.charAt(0).toUpperCase() + inputName.slice(1);
-            currentStats["hero"].name = heroNameInput.value;
+            currentStats.hero.name = heroNameInput.value;
         }
     });
 
@@ -298,7 +298,7 @@ function run(elementId, path, direction) {
         }
     }
     requestAnimationFrame(animate);
-};
+}
 
 function story() {
     document.getElementById("story_modal").style.display = "flex";
@@ -345,10 +345,10 @@ function story() {
             currentIndex++;
             storyParagraph.textContent = stories[currentIndex];
             if (currentIndex == 1) {
-                scream()
+                scream();
             }
             if (currentIndex == 2) {
-                enemyArrives()
+                enemyArrives();
             }
         } else {
             currentIndex++;
@@ -389,7 +389,7 @@ function tutorialMode(enable) {
                 }
                 document.getElementById('tutorial-text').innerHTML = formattedText;
                 element.classList.add("tutorial-clicked");
-            }
+            };
         });
     } else {
         document.getElementById('tutorial-modal').classList.add("hidden");
@@ -468,22 +468,22 @@ function scream() {
 function enemyArrives() {
     document.getElementById("enemy").style.display = "block";
     const enemies = character.filter(character => character.type === "enemy");
-    const enemy = enemies[Math.floor(Math.random() * enemies.length)]
+    const enemy = enemies[Math.floor(Math.random() * enemies.length)];
     const randomMana = Math.floor((Math.random() * 50)) + 1;
     const randomXP = Math.floor((Math.random() * 30)) + 1;
-    const level = currentStats["hero"].level;
+    const level = currentStats.hero.level;
     currentEnemy = enemy.path;
-    currentStats["enemy"].name = enemy.name;
-    currentStats["enemy"].health = 100;
-    currentStats["enemy"].mana = randomMana;
-    currentStats["enemy"].xp = randomXP;
-    currentStats["enemy"].level = level;
+    currentStats.enemy.name = enemy.name;
+    currentStats.enemy.health = 100;
+    currentStats.enemy.mana = randomMana;
+    currentStats.enemy.xp = randomXP;
+    currentStats.enemy.level = level;
 
     if (level !== 1) {
-        currentStats["enemy"].currentHealth = (growthFactor * level) * character.find(char => char.path === currentEnemy).health;
-        currentStats["enemy"].currentMana = (growthFactor ** level) * character.find(char => char.path === currentEnemy).mana;
-        currentStats["enemy"].currentXp = (1.5 ** (level - 1)) * character.find(char => char.path === currentEnemy).xp;
-        currentStats["enemy"].currentStrength = (growthFactor * level * 1.01) * character.find(char => char.path === currentEnemy).strength;
+        currentStats.enemy.currentHealth = (Math.pow(growthFactor, level)) * character.find(char => char.path === currentEnemy).health;
+        currentStats.enemy.currentMana = (Math.pow(growthFactor, level)) * character.find(char => char.path === currentEnemy).mana;
+        currentStats.enemy.currentXp = (Math.pow(1.5 , (level - 1))) * character.find(char => char.path === currentEnemy).xp;
+        currentStats.enemy.currentStrength = (growthFactor * level * 1.01) * character.find(char => char.path === currentEnemy).strength;
     }
 
     updateUI("enemy");
@@ -521,12 +521,13 @@ function magic(elementId, path) {
     var characterDiv = document.getElementById(elementId);
     var characterImage = characterDiv.querySelector("img");
     var cost = character.find(char => char.path === path).minManaCharge;
+    var attackType;
 
     if (elementId === "hero") {
-        var attackType = Math.random() < 0.5 ? "Fireball.gif" : "Flame_jet.gif";
+        attackType = Math.random() < 0.5 ? "Fireball.gif" : "Flame_jet.gif";
         mana(elementId, "decrease", cost / 100);
     } else {
-        var attackType = "Attack_3.gif";
+        attackType = "Attack_3.gif";
         mana(elementId, "decrease", cost / 100);
     }
 
@@ -547,7 +548,7 @@ function magic(elementId, path) {
         setTimeout(heroTurn, 1500);
     }
     damage(elementId, damageScore, "magic");
-};
+}
 
 function charge(elementId, path) {
     var characterObj = character.find(char => char.path === path);
@@ -574,14 +575,14 @@ function charge(elementId, path) {
         health(elementId, "add", 0.5);
         mana(elementId, "decrease", cost / 100);
     }
-};
+}
 
 function levelUp(elementId) {
     var characterPath = elementId === "hero" ? "hero" : currentEnemy;
     const level = currentStats[`${elementId}`].level;
-    currentStats[`${elementId}`].currentHealth = (growthFactor ** level) * character.find(char => char.path === characterPath).health;
-    currentStats[`${elementId}`].currentMana = (growthFactor ** level) * character.find(char => char.path === characterPath).mana;
-    currentStats[`${elementId}`].currentXp = (1.5 ** level) * character.find(char => char.path === characterPath).xp;
+    currentStats[`${elementId}`].currentHealth = (Math.pow(growthFactor, level)) * character.find(char => char.path === characterPath).health;
+    currentStats[`${elementId}`].currentMana = (Math.pow(growthFactor, level)) * character.find(char => char.path === characterPath).mana;
+    currentStats[`${elementId}`].currentXp = (Math.pow(1.5, level)) * character.find(char => char.path === characterPath).xp;
     currentStats[`${elementId}`].currentStrength = (growthFactor * 1.01 * level) * character.find(char => char.path === characterPath).strength;
 
     document.getElementById(elementId).classList.add('glow-once');
@@ -603,7 +604,7 @@ function levelUp(elementId) {
     } else if (elementId === "enemy") {
         setTimeout(heroTurn, 1500);
     }
-};
+}
 
 function score(value) {
     var scoreElement = document.getElementById("score-value");
@@ -613,7 +614,7 @@ function score(value) {
 
     currentScore += newScore;
     scoreElement.textContent = currentScore;
-};
+}
 
 function timer(type) {
     var totalTime = timeLeft;
@@ -668,7 +669,7 @@ function timer(type) {
             updateTimer();
         }, 1000);
     }
-};
+}
 
 function damage(elementId, attack, type) {
     var randomFrequency = Math.random();
@@ -715,67 +716,70 @@ function damage(elementId, attack, type) {
 
 function health(elementId, type, size) {
     var currentWidth = currentStats[elementId].health;
+    var newWidth;
 
     if (type === "add") {
-        var newWidth = currentWidth + (size * 100);
+        newWidth = currentWidth + (size * 100);
         if (newWidth > 100) {
             newWidth = 100;
         }
         currentStats[elementId].health = newWidth;
         updateUI(elementId);
     } else if (type === "decrease") {
-        var newWidth = (currentWidth - (size * 100)) > 0 ? (currentWidth - (size * 100)) : 0;
+        newWidth = (currentWidth - (size * 100)) > 0 ? (currentWidth - (size * 100)) : 0;
         currentStats[elementId].health = newWidth;
         updateUI(elementId);
         if (newWidth <= 0) {
             dead(elementId);
         }
     }
-};
+}
 
 function mana(elementId, type, size) {
     var currentWidth = currentStats[elementId].mana;
+    var newWidth;
 
     if (type === "add") {
-        var newWidth = currentWidth + (size * 100);
+        newWidth = currentWidth + (size * 100);
         if (newWidth > 100) {
             newWidth = 100;
         }
         currentStats[elementId].mana = newWidth;
         updateUI(elementId);
     } else if (type === "decrease") {
-        var newWidth = (currentWidth - (size * 100)) > 1 ? (currentWidth - (size * 100)) : 1;
+        newWidth = (currentWidth - (size * 100)) > 1 ? (currentWidth - (size * 100)) : 1;
         currentStats[elementId].mana = newWidth;
         updateUI(elementId);
     }
-};
+}
 
 function xp(elementId, type, size) {
     var currentWidth = currentStats[elementId].xp;
+    var newWidth;
 
     if (type === "add") {
-        var newWidth = currentWidth + (size * 100);
+        newWidth = currentWidth + (size * 100);
         if (newWidth > 100) {
             newWidth = 100;
         }
         currentStats[elementId].xp = newWidth;
         updateUI(elementId);
     } else if (type === "decrease") {
-        var newWidth = (currentWidth - (size * 100)) > 1 ? (currentWidth - (size * 100)) : 1;
+        newWidth = (currentWidth - (size * 100)) > 1 ? (currentWidth - (size * 100)) : 1;
         currentStats[elementId].xp = newWidth;
         updateUI(elementId);
     }
-};
+}
 
 function heroTurn() {
     Array.from(document.getElementsByClassName("tutorial")).forEach(el => el.classList.remove("tutorial-clicked"));
-    if (currentStats["hero"].health > 0) {
+    if (currentStats.hero.health > 0) {
         document.getElementById("control").style.display = "flex";
         timer("start");
     } else {
         gameOver();
     }
-};
+}
 
 function hurt(elementId, value) {
     var elementDiv = document.getElementById(elementId);
@@ -794,7 +798,7 @@ function hurt(elementId, value) {
     } else {
         health(elementId, "decrease", damageHealth);
     }
-};
+}
 
 function dead(elementId) {
     var elementDiv = document.getElementById(elementId);
@@ -815,14 +819,14 @@ function dead(elementId) {
         }, 1500);
     }
     document.getElementById("enemy").style.zIndex = "3";
-};
+}
 
 function preloadGifs(gifArray) {
     gifArray.forEach(gif => {
         const img = new Image();
         img.src = gif;
     });
-};
+}
 
 function updateUI(elementId) {
     document.getElementsByClassName("health")[elementId === "hero" ? 0 : 1].style.width = `${currentStats[elementId].health}%`;
@@ -862,7 +866,7 @@ function updateUI(elementId) {
         levelUpButton.disabled = true;
         levelUpButton.classList.add('button-disabled');
     }
-};
+}
 
 function gameOver() {
     document.getElementById("control").style.display = "none";
@@ -876,17 +880,17 @@ function gameOver() {
 
     document.getElementById("continue").addEventListener("click", function () {
         document.getElementById("game-over-screen").style.display = "none";
-        currentStats["hero"].health = 100;
+        currentStats.hero.health = 100;
         document.getElementById("hero").classList.add('glow-once');
         document.getElementById("hero").querySelector("img").src = `assets/images/hero/Idle.gif`;
         updatePosition("hero");
         updateUI("hero");
         heroTurn();
     });
-};
+}
 
 function enemyTurn() {
-    if (currentStats["enemy"].health > 0 && currentStats["hero"].health > 0) {
+    if (currentStats.enemy.health > 0 && currentStats.hero.health > 0) {
         document.getElementById("enemy").style.zIndex = "3";
         const action = AI();
 
@@ -909,7 +913,7 @@ function enemyTurn() {
 
         document.getElementById("enemy").style.zIndex = "1";
     }
-};
+}
 
 function AI() {
     const enemyHealth = currentStats.enemy.health;
