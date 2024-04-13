@@ -142,8 +142,8 @@ button {
     align-items: center;
 }
 
-#game-over-screen .modal-content h5,
-#pause-screen .modal-content h5 {
+#game-over-screen .modal-content h1,
+#pause-screen .modal-content h1 {
     margin-top: 0;
     margin-bottom: 5vh;
     font-size: larger;
@@ -228,7 +228,7 @@ button {
     font-weight: bold;
 }
 
-#enemy h5 {
+#enemy h1 {
     transform: scaleX(-1);
 }
 
