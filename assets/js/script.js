@@ -831,6 +831,8 @@ function updateUI(elementId) {
     document.getElementById(`${elementId}-name`).textContent = currentStats[elementId].name;
     let path = elementId === "hero" ? "hero" : currentEnemy;
 
+    Array.from(document.getElementsByClassName("tutorial")).forEach(el => el.classList.remove("tutorial-clicked"));
+
     const magicButton = document.getElementById('magic');
     if (currentStats.hero.mana >= character.find(char => char.path === path).minManaMagic) {
         magicButton.disabled = false;
@@ -970,10 +972,6 @@ function nextRound() {
     updateUI("enemy");
 };
 
-// would like:
-// review tutoril adding more info and details
-// add more enemies
 // comment codes
 // readme
 // optimize code execution and structure
-// check animations to see if they can be delayed starting to make more sense (Dead.Gif is fixed already
