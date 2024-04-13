@@ -201,7 +201,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document.getElementById("close-tutorial").addEventListener("click", function () {
-        ;
         tutorialMode(false);
     });
 });
@@ -374,23 +373,27 @@ function tutorialMode(enable) {
         document.getElementById('tutorial-modal').style.display = "flex";
         let formattedText = "<p>Click on an element to learn what it does...</p>";
         document.getElementById('tutorial-text').innerHTML = formattedText;
+        document.getElementById('level-up').disabled = false;
+        document.getElementById('level-up').classList.remove('button-disabled');
 
         Array.from(elements).forEach(element => {
             element.style.cursor = "pointer";
-            element.dataset.originalOnClick = element.onclick;
 
             element.onclick = function () {
+                Array.from(elements).forEach(el => el.classList.remove("tutorial-clicked"));
                 if (this.getAttribute('data-tutorial') !== null) {
                     formattedText = this.getAttribute('data-tutorial');
                 } else {
                     formattedText = "<p>Click on an element to learn what it does...</p>";
                 }
                 document.getElementById('tutorial-text').innerHTML = formattedText;
+                element.classList.add("tutorial-clicked");
             }
         });
     } else {
         document.getElementById('tutorial-modal').classList.add("hidden");
         document.getElementById('tutorial-modal').style.display = "none";
+        Array.from(elements).forEach(el => el.classList.remove("tutorial-clicked"));
 
         timerElement.addEventListener("click", function () {
             timer("pause");
@@ -415,6 +418,9 @@ function tutorialMode(enable) {
             document.getElementById("control").style.display = "none";
             levelUp("hero");
         });
+
+        updateUI("enemy");
+        updateUI("hero");
     }
 }
 
@@ -761,6 +767,7 @@ function xp(elementId, type, size) {
 };
 
 function heroTurn() {
+    Array.from(document.getElementsByClassName("tutorial")).forEach(el => el.classList.remove("tutorial-clicked"));
     if (currentStats["hero"].health > 0) {
         document.getElementById("control").style.display = "flex";
         timer("start");

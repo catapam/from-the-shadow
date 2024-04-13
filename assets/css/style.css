@@ -41,6 +41,11 @@ body {
     white-space: nowrap;
 }
 
+ul { 
+    list-style-type: none !important; 
+    font-size: small;
+}
+
 #start_area {
     height: 100vh;
     display: flex;
@@ -296,7 +301,7 @@ button {
 
 #timer{
     color: red;
-    border: 10px solid transparent;
+    border: 1px solid transparent;
     min-width: 60px; 
     cursor: pointer;
 }
@@ -441,14 +446,27 @@ button {
     margin-top: 30vh;
     max-width: 80vw;
     min-width: 50vw;
-    max-height: 45vh;
-    overflow: auto;
+    height: 40vh;
     padding: 20px;
     color: white;
+    position: relative;
+}
+
+#tutorial-text {
+    position: absolute;
+    overflow: auto;
+    bottom: 10vh;
+    top: 15vh;
+    width: calc(100% - 40px);
+    border: 1px solid rgb(57, 57, 57);
 }
 
 #tutorial-modal h2{
     padding-bottom: 5vh;
+    position: absolute;
+    top: 2vh;
+    left: 50%;
+    transform: translateX(-50%); 
 }
 
 #tutorial-btn{
@@ -460,6 +478,10 @@ button {
     color: white;
     font-weight: bold;
     justify-content: space-between;
+    position: absolute;
+    bottom: 10px;
+    margin: auto;
+    width: calc(100% - 40px);
 }
 
 #tutorial-btn span {
@@ -472,6 +494,14 @@ button {
     z-index: 301; 
 }
 
+.tutorial-element {
+    color: greenyellow;
+    text-decoration: underline yellowgreen;
+}
+
+.tutorial-clicked {
+    border-color: yellowgreen !important;
+}
 
 @media screen and (max-height: 500px) {
     .btn-fight{
