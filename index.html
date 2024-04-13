@@ -2,14 +2,23 @@
 <html lang="en">
 
 <head>
+    <!-- Basic page needs: encoding, viewport configuration -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Link to external CSS for styling -->
     <link rel="stylesheet" href="assets/css/style.css">
+    
+    <!-- SEO relevant tags for description and keywords -->
     <meta name="description"
-        content="From the shadow, the village is in danger due to a misterios black shadow bringing demons from the darkness, fight them to protect the world you know!">
+        content="From the shadow, the village is in danger due to a mysterious black shadow bringing demons from the darkness, fight them to protect the world you know!">
     <meta name="keywords"
-        content="game, medieval game, fight game, turn based game, misterious game, RPG">
+        content="game, medieval game, fight game, turn based game, mysterious game, RPG">
+    
+    <!-- Title of the web page -->
     <title>From the shadow</title>
+    
+    <!-- Favicon links for different sizes and the site manifest -->
     <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
@@ -17,13 +26,14 @@
 </head>
 
 <body>
+    <!-- Start area containing the game logo and start/info buttons -->
     <div id="start_area" class="centered">
         <img id="logo" src="assets/images/logo.webp" alt="logo image" class="centered">
         <button class="btn centered" id="start_button">Start</button>
         <button class="btn centered" id="info_button">info</button>
     </div>
 
-
+    <!-- Hidden section for entering hero's name -->
     <div id="name" class="centered hidden">
         <h1>Name:</h1>
         <div class="name-form centered">
@@ -33,25 +43,31 @@
         </div>
     </div>
 
+    <!-- Area for displaying the fight, initially hidden -->
     <div id="fight_area" class="hidden">
+        <!-- Hero section with damage and level display -->
         <div id="hero">
             <p class="centered" id="hero-damage">0</p>
             <img src="" alt="Hero character" id="hero-character">
             <p class="centered" id="hero-level">lvl <span id="hero-level-value">1</span></p>
         </div>
 
+        <!-- Enemy section with damage and level display -->
         <div id="enemy">
             <p class="centered" id="enemy-damage">0</p>
             <img src="" alt="Enemy character" id="enemy-character">
             <p class="centered" id="enemy-level">lvl <span id="enemy-level-value">1</span></p>
         </div>
 
+        <!-- Hidden stats section for health, mana, and experience -->
         <div id="stats" class="hidden">
             <div id="players-stats">
+                <!-- Health, mana, and XP bars for both hero and enemy -->
                 <div id="hero-bars">
+                    <!-- Detail explanations are provided in data-tutorial attributes for dynamic tutorial generation -->
                     <p id="hero-name">Name</p>
                     <div class="health-bar tutorial" id="hero-health"
-                        data-tutorial='<p class="tutorial-element">Hero health</p><br><ul><li>- Starts each round with 100%</li><li>- Level Up recovers 100%</li><li>- Health button recovers 50%</li><li>- Enemy attacks will reduce it according to strenght of the attack</li></ul>'>
+                        data-tutorial='<p class="tutorial-element">Hero health</p><br><ul><li>- Starts each round with 100%</li><li>- Level Up recovers 100%</li><li>- Health button recovers 50%</li><li>- Enemy attacks will reduce it according to strength of the attack</li></ul>'>
                         <div class="health" style="width: 100%"></div>
                     </div>
                     <div class="mana-bar tutorial" id="hero-mana"
@@ -59,14 +75,15 @@
                         <div class="mana" style="width: 100%"></div>
                     </div>
                     <div class="xp-bar tutorial" id="hero-xp"
-                        data-tutorial='<p class="tutorial-element">Hero experience (XP)</p><br><ul><li>- Starts each level with 1%</li><li>- Level Up will use 100% and it only becomes available if it is 100%</li><li>- Passing a round increases it in 20%</li><li>- Attacks, magic and defences will help adding to it</li></ul>'>
+                        data-tutorial='<p class="tutorial-element">Hero experience (XP)</p><br><ul><li>- Starts each level with 1%</li><li>- Level Up will use 100% and it only becomes available if it is 100%</li><li>- Passing a round increases it in 20%</li><li>- Attacks, magic and defenses will help adding to it</li></ul>'>
                         <div class="xp" style="width: 100%"></div>
                     </div>
                 </div>
                 <div id="enemy-bars">
+                    <!-- Similar setup for the enemy with dynamic health, mana, and XP bars -->
                     <p id="enemy-name">Name</p>
                     <div class="health-bar tutorial" id="enemy-health"
-                        data-tutorial='<p class="tutorial-element">Enemy health</p><br><ul><li>- Starts each round with 100%</li><li>- Level Up recovers 100%</li><li>- Health button recovers 50%</li><li>- Hero attacks will reduce it according to strenght of the attack</li></ul>'>
+                        data-tutorial='<p class="tutorial-element">Enemy health</p><br><ul><li>- Starts each round with 100%</li><li>- Level Up recovers 100%</li><li>- Health button recovers 50%</li><li>- Hero attacks will reduce it according to strength of the attack</li></ul>'>
                         <div class="health"></div>
                     </div>
                     <div class="mana-bar tutorial" id="enemy-mana"
@@ -74,15 +91,17 @@
                         <div class="mana"></div>
                     </div>
                     <div class="xp-bar tutorial" id="enemy-xp"
-                        data-tutorial='<p class="tutorial-element">Enemy experience (XP)</p><br><ul><li>- Starts each round with random amount</li><li>- Starts each level with 1%</li><li>- Level Up will use 100% and it only becomes available if it is 100%</li><li>- Passing a round increases it in 20%</li><li>- Attacks, magic and defences will help adding to it</li></ul>'>
+                        data-tutorial='<p class="tutorial-element">Enemy experience (XP)</p><br><ul><li>- Starts each round with random amount</li><li>- Starts each level with 1%</li><li>- Level Up will use 100% and it only becomes available if it is 100%</li><li>- Passing a round increases it in 20%</li><li>- Attacks, magic and defenses will help adding to it</li></ul>'>
                         <div class="xp"></div>
                     </div>
                 </div>
             </div>
+            <!-- Game stats including score and level -->
             <div id="game-stats" class="centered">
                 <div id="time" class="centered">
                     <p class="centered tutorial" id="score">score <span id="score-value"></span></p>
                     <p class="centered tutorial" id="level">round <span id="round-value">1</span></p>
+                    <!-- Timer also acts as a pause button -->
                     <h1 class="centered tutorial" id="timer" data-hover-text="||"
                         data-tutorial='<p class="tutorial-element">Timer and pause button</p><br><ul><li>- Starts each turn with 5s</li><li>- Starts each round with 5s but clock is stopped until hero takes first action</li><li>- When clicked it pauses the game</li><li>- When timed out, turn is passed to Enemy</li></ul>'>
                         5</h1>
@@ -91,18 +110,21 @@
         </div>
     </div>
 
+    <!-- Control area with action buttons -->
     <div id="control" class="hidden">
         <div class="btn-group" id="btn-group-left">
+            <!-- Buttons for attack and magic, with details in data-tutorial -->
             <button class="btn-fight tutorial" id="attack"
-                data-tutorial='<p class="tutorial-element">Attack button</p><br><ul><li>- A sword attack is initiated</li><li>- Strenght of attack will vary according to luck, level, round, strength and enemy defences</li><li>- Two different attacks will be performed randomly when clicking the button</li><li>- There is no cost on this action, except for the turn, which is passed</li></ul>'>
+                data-tutorial='<p class="tutorial-element">Attack button</p><br><ul><li>- A sword attack is initiated</li><li>- Strength of attack will vary according to luck, level, round, strength and enemy defenses</li><li>- Two different attacks will be performed randomly when clicking the button</li><li>- There is no cost on this action, except for the turn, which is passed</li></ul>'>
                 <img src="assets/images/icons/attack.webp" alt="Attack button">
             </button>
             <button class="btn-fight tutorial" id="magic"
-                data-tutorial='<p class="tutorial-element">Magic button</p><br><ul><li>- A magic fire attack is initiated</li><li>- It is stronger than a sword attack</li><li>- Strenght of attack will vary according to luck, level, round, strength and enemy defences</li><li>- Two different attacks will be performed randomly when clicking the button</li><li>- There is mana cost on this action of 35%</li><li>- Turn is passed</li></ul>'>
+                data-tutorial='<p class="tutorial-element">Magic button</p><br><ul><li>- A magic fire attack is initiated</li><li>- It is stronger than a sword attack</li><li>- Strength of attack will vary according to luck, level, round, strength and enemy defenses</li><li>- Two different attacks will be performed randomly when clicking the button</li><li>- There is mana cost on this action of 35%</li><li>- Turn is passed</li></ul>'>
                 <img src="assets/images/icons/magic.webp" alt="Magic button">
             </button>
         </div>
         <div class="btn-group" id="btn-group-right">
+            <!-- Charge and level-up buttons with similar tutorial details -->
             <button class="btn-fight tutorial" id="charge"
                 data-tutorial='<p class="tutorial-element">Health button</p><br><ul><li>- A magic fire recovers the hero health in 50%</li><li>- It costs 50% mana</li><li>- Turn is passed</li></ul>'>
                 <img src="assets/images/icons/recharge.webp" alt="Charge button">
@@ -114,22 +136,21 @@
         </div>
     </div>
 
-    <!-- Info Modal -->
+    <!-- Modal dialogs for additional information, pause, and game over states -->
     <div id="info_modal" class="modal hidden">
+        <!-- Info Modal with details about the game and creator -->
         <div class="modal-content">
             <span class="close">&times;</span>
             <p>This game was created by Matheus Andrade, check more details about the project on the repository: <a
                     href="https://github.com/catapam/from-the-shadow" target="_blank" alt="Github repository access"
                     id="github">GitHub</a>.</p>
             <br>
-            <!-- <p>The ranking is only stored locally, have fun competing with friends and family!</p>
-            <br> -->
             <p>A tutorial is offered at the start of the game.</p>
         </div>
     </div>
 
-    <!-- GameOver Modal -->
     <div id="game-over-screen" class="modal hidden">
+        <!-- Game Over Modal for restarting or continuing the game -->
         <div class="modal-content" class="centered">
             <p>Game Over</p>
             <div id="game-over-buttons">
@@ -139,8 +160,8 @@
         </div>
     </div>
 
-    <!-- Pause Modal -->
     <div id="pause-screen" class="modal hidden">
+        <!-- Pause Modal allowing the game to be paused or abandoned -->
         <div class="modal-content" class="centered">
             <p class="centered">Paused</p>
             <div id="pause-buttons">
@@ -150,20 +171,20 @@
         </div>
     </div>
 
-    <!-- Story Modal -->
     <div id="story_modal" class="hidden">
+        <!-- Story Modal to introduce narrative elements to the player -->
         <div class="modal-content hidden" id="story">
         </div>
     </div>
 
-    <!-- Tutorial Modal -->
     <div id="tutorial-modal" class="hidden">
+        <!-- Tutorial Modal to guide new players through the game mechanics -->
         <div class="modal-content" id="tutorial">
             <h2 id="tutorial-title" class="centered">Tutorial mode</h2>
             <div id="tutorial-text"></div>
             <div id="tutorial-btn">
                 <span id="game-rules" class="tutorial"
-                    data-tutorial='<p class="tutorial-element">Game rules</p><br><ul><li>- Hero always play 1st turn on each round</li><li>- Actions only become available when resources needed are enough</li><li>- Damage is converted into score points</li><li>- Sometimes you may miss an attack, not to worry that sort of things happens in the battlefield all the time, just try again next turn</li><li>- The enemy will always match hero level when first arriving</li><li>- Enemy may choose to execute same actions as hero, and actions are only available if enemy has the resources needed</li><li>- Enemy may execute those actions, it is their choice to do or not</li><li>- If hero does not execute any actions before the 5s expire, the turn will be passed to the enemy</li><li>- Round and score can be monitored at the top of the screen</li><li>- There is not level or round limit the shadow is an inifite source of demons, with no scientify explanation so far</li><li>- Enemies may vary in strenght and health</li><li>- Hero is protected by a divine light that can ressurect it as many times as possible</li><li>- The demon scream is a similar power as the fire magic that recovers health</li><br><li>Have fun saving the world!</li></ul>'>game
+                    data-tutorial='<p class="tutorial-element">Game rules</p><br><ul><li>- Hero always play 1st turn on each round</li><li>- Actions only become available when resources needed are enough</li><li>- Damage is converted into score points</li><li>- Sometimes you may miss an attack, not to worry that sort of things happens in the battlefield all the time, just try again next turn</li><li>- The enemy will always match hero level when first arriving</li><li>- Enemy may choose to execute same actions as hero, and actions are only available if enemy has the resources needed</li><li>- Enemy may execute those actions, it is their choice to do or not</li><li>- If hero does not execute any actions before the 5s expire, the turn will be passed to the enemy</li><li>- Round and score can be monitored at the top of the screen</li><li>- There is not level or round limit the shadow is an infinite source of demons, with no scientific explanation so far</li><li>- Enemies may vary in strength and health</li><li>- Hero is protected by a divine light that can resurrect it as many times as possible</li><li>- The demon scream is a similar power as the fire magic that recovers health</li><br><li>Have fun saving the world!</li></ul>'>game
                     rules</span>
                 <span id="close-tutorial">skip >></span>
             </div>
@@ -171,6 +192,7 @@
     </div>
 
     <div id="screen-overlay" class="hidden"></div>
+    <!-- JavaScript file link -->
     <script src="assets/js/script.js"></script>
 </body>
 
