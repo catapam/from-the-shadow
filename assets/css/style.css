@@ -103,6 +103,16 @@ button {
     overflow: auto;
 }
 
+#github {
+    cursor: pointer; 
+}
+
+#github:hover,
+#github:focus, #tutorial-btn span:hover, #tutorial-btn span:focus{
+    color: orange;
+    cursor: pointer;
+}
+
 #game-over-screen, #pause-screen{
     justify-content: center; 
     align-items: center;
@@ -144,11 +154,12 @@ button {
     float: right;
     font-size: 28px;
     font-weight: bold;
+    cursor: pointer; 
 }
 
 .close:hover,
 .close:focus {
-    color: white;
+    color: orange;
     text-decoration: none;
     cursor: pointer;
 }
@@ -214,7 +225,7 @@ button {
     height: 100%;
 }
 
-#tutorial_modal #story{
+#story_modal #story{
     position: fixed;
     display: flex;
     flex-direction: column;
@@ -292,6 +303,7 @@ button {
 
 #level, #score{
     font-size: medium;
+    border: 2px solid transparent;
 }
 
 .health-bar,.mana-bar,.xp-bar {
@@ -344,6 +356,10 @@ button {
     flex-direction: row;
     width: 100vw;
     justify-content: center;
+}
+
+#control, #stats {
+    z-index: 500;
 }
 
 .btn-group{
@@ -404,6 +420,56 @@ button {
     pointer-events: none;
     transition: opacity 0.5s ease-in-out;
     z-index: 200;
+}
+
+#tutorial-modal {
+    position: fixed;
+    z-index: 300;
+    top:0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+#tutorial-modal .modal-content {
+    display: block;
+    margin: auto;
+    margin-top: 30vh;
+    max-width: 80vw;
+    min-width: 50vw;
+    max-height: 45vh;
+    overflow: auto;
+    padding: 20px;
+    color: white;
+}
+
+#tutorial-modal h2{
+    padding-bottom: 5vh;
+}
+
+#tutorial-btn{
+    padding-top: 5vh;
+    display: flex; 
+    gap: 5vw;
+    flex-direction: row;
+    font-size: large;
+    color: white;
+    font-weight: bold;
+    justify-content: space-between;
+}
+
+#tutorial-btn span {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#control, #stats {
+    z-index: 301; 
 }
 
 

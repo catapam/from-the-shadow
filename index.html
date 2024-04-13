@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,14 +11,15 @@
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
     <link rel="manifest" href="assets/favicon/site.webmanifest">
 </head>
+
 <body>
     <div id="start_area" class="centered">
         <img id="logo" src="assets/images/logo.webp" alt="logo image" class="centered">
         <button class="btn centered" id="start_button">Start</button>
-        <button class="btn centered" id="ranking_button">Ranking</button>
+        <!-- <button class="btn centered" id="ranking_button">Ranking</button> -->
         <button class="btn centered" id="info_button">info</button>
     </div>
-    
+
 
     <div id="name" class="centered hidden">
         <h1>Name:</h1>
@@ -45,55 +47,54 @@
             <div id="players-stats">
                 <div id="hero-bars">
                     <p id="hero-name">Name</p>
-                    <div class="health-bar" id="hero-health">
+                    <div class="health-bar tutorial" id="hero-health"
+                        data-tutorial="<p>Hero health, starts each round with 100%</p><br><p>test</p>">
                         <div class="health" style="width: 100%"></div>
                     </div>
-                    <div class="mana-bar" id="hero-mana">
+                    <div class="mana-bar tutorial" id="hero-mana">
                         <div class="mana" style="width: 100%"></div>
                     </div>
-                    <div class="xp-bar" id="hero-xp">
+                    <div class="xp-bar tutorial" id="hero-xp">
                         <div class="xp" style="width: 100%"></div>
                     </div>
                 </div>
                 <div id="enemy-bars">
                     <p id="enemy-name">Name</p>
-                    <div class="health-bar" id="enemy-health">
+                    <div class="health-bar tutorial" id="enemy-health">
                         <div class="health"></div>
                     </div>
-                    <div class="mana-bar" id="enemy-mana">
+                    <div class="mana-bar tutorial" id="enemy-mana">
                         <div class="mana"></div>
-                    </div>  
-                    <div class="xp-bar" id="enemy-xp">
+                    </div>
+                    <div class="xp-bar tutorial" id="enemy-xp">
                         <div class="xp"></div>
                     </div>
-                </div> 
+                </div>
             </div>
             <div id="game-stats" class="centered">
                 <div id="time" class="centered">
-                    <p class="centered" id="score">score <span id="score-value"></span></p>
-                    <p class="centered" id="level">round <span id="round-value">1</span></p>
-                    <h1 class="centered" id="timer" data-hover-text="||"></h1>
-                </div>
-                <div id="next" class="centered hidden">
+                    <p class="centered tutorial" id="score">score <span id="score-value"></span></p>
+                    <p class="centered tutorial" id="level">round <span id="round-value">1</span></p>
+                    <h1 class="centered tutorial" id="timer" data-hover-text="||">5</h1>
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 
     <div id="control" class="hidden">
         <div class="btn-group" id="btn-group-left">
-            <button class="btn-fight" id="attack">
+            <button class="btn-fight tutorial" id="attack">
                 <img src="assets/images/icons/attack.webp" alt="Attack button">
             </button>
-            <button class="btn-fight" id="magic">
+            <button class="btn-fight tutorial" id="magic">
                 <img src="assets/images/icons/magic.webp" alt="Magic button">
             </button>
         </div>
         <div class="btn-group" id="btn-group-right">
-            <button class="btn-fight" id="charge">
+            <button class="btn-fight tutorial" id="charge">
                 <img src="assets/images/icons/recharge.webp" alt="Charge button">
             </button>
-            <button class="btn-fight" id="level-up">
+            <button class="btn-fight tutorial" id="level-up">
                 <img src="assets/images/icons/level-up.webp" alt="Level-up button">
             </button>
         </div>
@@ -103,7 +104,9 @@
     <div id="info_modal" class="modal hidden">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <p>This game was created by Matheus Andrade, check more details about the project on the repository: <a href="https://github.com/catapam/from-the-shadow" target="_blank">GitHub</a>.</p>
+            <p>This game was created by Matheus Andrade, check more details about the project on the repository: <a
+                    href="https://github.com/catapam/from-the-shadow" target="_blank" alt="Github repository access"
+                    id="github">GitHub</a>.</p>
             <br>
             <p>The ranking is only stored locally, have fun competing with friends and family!</p>
             <br>
@@ -133,16 +136,23 @@
         </div>
     </div>
 
-    <!-- Tutorial Modal -->
-    <div id="tutorial_modal" class="hidden">
+    <!-- Story Modal -->
+    <div id="story_modal" class="hidden">
         <div class="modal-content hidden" id="story">
-        </div>
-        <div class="modal-content hidden" id="tutorial">
-            <span class="close">skip >></span>
-            <div id="tutorial-content"></div>
         </div>
     </div>
 
+    <!-- Tutorial Modal -->
+    <div id="tutorial-modal" class="hidden">
+        <div class="modal-content" id="tutorial">
+            <h2 id="tutorial-title" class="centered">Tutorial mode</h2>
+            <div id="tutorial-text"></div>
+            <div id="tutorial-btn">
+                <span><< game rules</span>
+                <span id="close-tutorial">skip >></span>
+            </div>
+        </div>
+    </div>
 
     <!-- Ranking Modal -->
     <div id="ranking_modal" class="hidden">
@@ -153,4 +163,5 @@
     <div id="screen-overlay" class="hidden"></div>
     <script src="assets/js/script.js"></script>
 </body>
+
 </html>

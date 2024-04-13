@@ -10,10 +10,10 @@ let currentStats = {
         mana: 50,
         xp: 1,
         level: 1,
-        currentHealth:1000,
-        currentStrength:1000,
-        currentMana:1000,
-        currentXp:1000
+        currentHealth: 1000,
+        currentStrength: 1000,
+        currentMana: 1000,
+        currentXp: 1000
     },
     enemy: {
         name: "",
@@ -21,10 +21,10 @@ let currentStats = {
         mana: 1,
         xp: 1,
         level: 1,
-        currentHealth:1000,
-        currentStrength:1000,
-        currentMana:1000,
-        currentXp:1000
+        currentHealth: 1000,
+        currentStrength: 1000,
+        currentMana: 1000,
+        currentXp: 1000
     }
 };
 
@@ -33,7 +33,7 @@ let character = [{
     type: "hero",
     path: "hero",
     scream: "charge",
-    strength:1000,
+    strength: 1000,
     health: 1000,
     xp: 1000,
     mana: 1000,
@@ -53,7 +53,7 @@ let character = [{
     name: "Gotoku",
     type: "enemy",
     path: "gotoku",
-    strength:1000,
+    strength: 1000,
     health: 1000,
     xp: 1000,
     mana: 1000,
@@ -72,7 +72,7 @@ let character = [{
     name: "Onrei",
     type: "enemy",
     path: "onrei",
-    strength:1000,
+    strength: 1000,
     health: 1000,
     xp: 1000,
     mana: 1000,
@@ -91,7 +91,7 @@ let character = [{
     name: "Yurei",
     type: "enemy",
     path: "yurei",
-    strength:1000,
+    strength: 1000,
     health: 1000,
     xp: 1000,
     mana: 1000,
@@ -144,6 +144,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     window.addEventListener("click", function (event) {
+        if (event.target.tagName.toLowerCase() === 'a') {
+            return;
+        }
         event.preventDefault();
         if (event.target == modal) {
             modal.style.display = "none";
@@ -186,62 +189,20 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    document.getElementById("attack").addEventListener("click", function () {
-        attack("hero", "hero");
-        document.getElementById("control").style.display = "none";
-    });
-
-    document.getElementById("magic").addEventListener("click", function () {
-        document.getElementById("control").style.display = "none";
-        magic("hero", "hero");
-    });
-
-    document.getElementById("charge").addEventListener("click", function () {
-        document.getElementById("control").style.display = "none";
-        charge("hero", "hero");
-    });
-
-    document.getElementById("level-up").addEventListener("click", function () {
-        document.getElementById("control").style.display = "none";
-        levelUp("hero");
-    });
-
-    document.getElementById("restart").addEventListener("click", function () {
-        window.location.reload();
-    });
-
-    document.getElementById("continue").addEventListener("click", function () {
-        document.getElementById("game-over-screen").style.display = "none";
-        currentStats["hero"].health = 100;
-        document.getElementById("hero").classList.add('glow-once');
-        document.getElementById("hero").querySelector("img").src = `assets/images/hero/Idle.gif`;
-        updatePosition("hero");
-        updateUI("hero");
-        heroTurn();
-    });
-
     //pause function
-    timerElement.addEventListener('mouseenter', function() {
+    timerElement.addEventListener('mouseenter', function () {
         timerElement.classList.add('hovering');
-        timerElement.textContent = '||'; 
+        timerElement.textContent = '||';
     });
 
-    timerElement.addEventListener('mouseleave', function() {
+    timerElement.addEventListener('mouseleave', function () {
         timerElement.classList.remove('hovering');
         timerElement.textContent = timeLeft;
     });
 
-    timerElement.addEventListener("click", function() {
-        timer("pause");
-    });
-    
-    document.getElementById("unpause").addEventListener("click", function() {
-        document.getElementById("pause-screen").style.display = "none";
-        timer("resume");
-    });
-
-    document.getElementById("give-up").addEventListener("click", function() {
-        window.location.reload();
+    document.getElementById("close-tutorial").addEventListener("click", function () {
+        ;
+        tutorialMode(false);
     });
 });
 
@@ -340,7 +301,7 @@ function run(elementId, path, direction) {
 };
 
 function story() {
-    document.getElementById("tutorial_modal").style.display = "flex";
+    document.getElementById("story_modal").style.display = "flex";
     document.getElementById("round-value").textContent = 1;
 
     let stories = [
@@ -398,43 +359,63 @@ function story() {
                 document.getElementById("stats").style.display = "flex";
                 updateUI("hero");
                 document.getElementById("control").style.display = "flex";
-                tutorial();
+                tutorialMode(true);
             };
         }
     });
 }
 
-function tutorial (){
-    timerElement.classList.remove("hidden");
+function tutorialMode(enable) {
+    const elements = document.getElementsByClassName("tutorial");
 
-    // add close tutorial option
-    // you can skip tutorial from here ...
+    if (enable) {
+        timerElement.classList.remove("hidden");
+        document.getElementById('tutorial-modal').classList.remove("hidden");
+        document.getElementById('tutorial-modal').style.display = "flex";
+        let formattedText = "<p>Click on an element to learn what it does...</p>";
+        document.getElementById('tutorial-text').innerHTML = formattedText;
 
-    // Health bar
-    // zindex it all the way up above the overlay, write the tutorials and do the same with all elements, at the end zindex everything back to it's original position
+        Array.from(elements).forEach(element => {
+            element.style.cursor = "pointer";
+            element.dataset.originalOnClick = element.onclick;
 
-    // Mana bar
+            element.onclick = function () {
+                if (this.getAttribute('data-tutorial') !== null) {
+                    formattedText = this.getAttribute('data-tutorial');
+                } else {
+                    formattedText = "<p>Click on an element to learn what it does...</p>";
+                }
+                document.getElementById('tutorial-text').innerHTML = formattedText;
+            }
+        });
+    } else {
+        document.getElementById('tutorial-modal').classList.add("hidden");
+        document.getElementById('tutorial-modal').style.display = "none";
 
-    // XP bar
+        timerElement.addEventListener("click", function () {
+            timer("pause");
+        });
 
-    // enemy bars
+        document.getElementById("attack").addEventListener("click", function () {
+            attack("hero", "hero");
+            document.getElementById("control").style.display = "none";
+        });
 
-    // initial stats on eache round
+        document.getElementById("magic").addEventListener("click", function () {
+            document.getElementById("control").style.display = "none";
+            magic("hero", "hero");
+        });
 
-    // attack button
-    // cost and effects, same for the other buttons
+        document.getElementById("charge").addEventListener("click", function () {
+            document.getElementById("control").style.display = "none";
+            charge("hero", "hero");
+        });
 
-    // magic button
-
-    // health button
-
-    // level up button
-
-    // round and score
-
-    // timer and turn
-
-    // enemy turn
+        document.getElementById("level-up").addEventListener("click", function () {
+            document.getElementById("control").style.display = "none";
+            levelUp("hero");
+        });
+    }
 }
 
 function createOverlay() {
@@ -483,7 +464,7 @@ function enemyArrives() {
     const enemy = enemies[Math.floor(Math.random() * enemies.length)]
     const randomMana = Math.floor((Math.random() * 50)) + 1;
     const randomXP = Math.floor((Math.random() * 30)) + 1;
-    const level =  currentStats["hero"].level;
+    const level = currentStats["hero"].level;
     currentEnemy = enemy.path;
     currentStats["enemy"].name = enemy.name;
     currentStats["enemy"].health = 100;
@@ -491,10 +472,10 @@ function enemyArrives() {
     currentStats["enemy"].xp = randomXP;
     currentStats["enemy"].level = level;
 
-    if (level !==1 ){
+    if (level !== 1) {
         currentStats["enemy"].currentHealth = (growthFactor * level) * character.find(char => char.path === currentEnemy).health;
         currentStats["enemy"].currentMana = (growthFactor ** level) * character.find(char => char.path === currentEnemy).mana;
-        currentStats["enemy"].currentXp = (1.5 ** (level-1)) * character.find(char => char.path === currentEnemy).xp;
+        currentStats["enemy"].currentXp = (1.5 ** (level - 1)) * character.find(char => char.path === currentEnemy).xp;
         currentStats["enemy"].currentStrength = (growthFactor * level * 1.01) * character.find(char => char.path === currentEnemy).strength;
     }
 
@@ -590,12 +571,12 @@ function charge(elementId, path) {
 
 function levelUp(elementId) {
     let characterPath = elementId === "hero" ? "hero" : currentEnemy;
-    const level =  currentStats[`${elementId}`].level;
+    const level = currentStats[`${elementId}`].level;
     currentStats[`${elementId}`].currentHealth = (growthFactor ** level) * character.find(char => char.path === characterPath).health;
     currentStats[`${elementId}`].currentMana = (growthFactor ** level) * character.find(char => char.path === characterPath).mana;
     currentStats[`${elementId}`].currentXp = (1.5 ** level) * character.find(char => char.path === characterPath).xp;
     currentStats[`${elementId}`].currentStrength = (growthFactor * 1.01 * level) * character.find(char => char.path === characterPath).strength;
-    
+
     document.getElementById(elementId).classList.add('glow-once');
     document.getElementById(elementId).addEventListener('animationend', () => {
         document.getElementById(elementId).classList.remove('glow-once');
@@ -665,6 +646,15 @@ function timer(type) {
         clearInterval(timerInterval);
         document.getElementById("pause-screen").style.display = "flex";
         timerElement.textContent = timeLeft;
+
+        document.getElementById("unpause").addEventListener("click", function () {
+            document.getElementById("pause-screen").style.display = "none";
+            timer("resume");
+        });
+
+        document.getElementById("give-up").addEventListener("click", function () {
+            window.location.reload();
+        });
     } else if (type === "resume") {
         timerInterval = setInterval(() => {
             timeLeft--;
@@ -678,13 +668,13 @@ function damage(elementId, attack, type) {
     let multiplier;
 
     if (randomFrequency < 0.10) {
-        multiplier = 0; 
+        multiplier = 0;
     } else if (randomFrequency < 0.15) {
-        multiplier = 1.2; 
+        multiplier = 1.2;
     } else if (randomFrequency < 0.98) {
-        multiplier = 0.3 + Math.random() * (0.5 - 0.3); 
+        multiplier = 0.3 + Math.random() * (0.5 - 0.3);
     } else {
-        multiplier = 0.8; 
+        multiplier = 0.8;
     }
 
     let defense = currentStats[`${elementId === "hero" ? "hero" : "enemy"}`].currentStrength / 2;
@@ -697,17 +687,17 @@ function damage(elementId, attack, type) {
 
     hurt(elementId === "hero" ? "enemy" : "hero", totalDamage);
 
-    let xpGainForAttacker = ((totalDamage*(totalDamage/currentStats[`${elementId === "hero" ? "enemy" : "hero"}`].currentStrength))/currentStats[`${elementId === "hero" ? "hero" : "enemy"}`].currentHealth)/2; 
-    let xpGainForDefender = xpGainForAttacker / 2; 
+    let xpGainForAttacker = ((totalDamage * (totalDamage / currentStats[`${elementId === "hero" ? "enemy" : "hero"}`].currentStrength)) / currentStats[`${elementId === "hero" ? "hero" : "enemy"}`].currentHealth) / 2;
+    let xpGainForDefender = xpGainForAttacker / 2;
 
     xp(elementId, "add", xpGainForAttacker);
-    xp(elementId === "hero" ? "enemy" : "hero", "add", xpGainForDefender); 
+    xp(elementId === "hero" ? "enemy" : "hero", "add", xpGainForDefender);
 
     if (type === "attack") {
-        mana(elementId, "add", (totalDamage / currentStats[`${elementId === "hero" ? "hero" : "enemy"}`].currentHealth)/2);
+        mana(elementId, "add", (totalDamage / currentStats[`${elementId === "hero" ? "hero" : "enemy"}`].currentHealth) / 2);
     }
 
-    if (elementId === "hero"){
+    if (elementId === "hero") {
         score(totalDamage);
     }
 
@@ -869,6 +859,20 @@ function gameOver() {
 
     const gameOverScreen = document.getElementById("game-over-screen");
     gameOverScreen.style.display = "flex";
+
+    document.getElementById("restart").addEventListener("click", function () {
+        window.location.reload();
+    });
+
+    document.getElementById("continue").addEventListener("click", function () {
+        document.getElementById("game-over-screen").style.display = "none";
+        currentStats["hero"].health = 100;
+        document.getElementById("hero").classList.add('glow-once');
+        document.getElementById("hero").querySelector("img").src = `assets/images/hero/Idle.gif`;
+        updatePosition("hero");
+        updateUI("hero");
+        heroTurn();
+    });
 };
 
 function enemyTurn() {
