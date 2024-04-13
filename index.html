@@ -5,19 +5,18 @@
     <!-- Basic page needs: encoding, viewport configuration -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- Link to external CSS for styling -->
     <link rel="stylesheet" href="assets/css/style.css">
-    
+
     <!-- SEO relevant tags for description and keywords -->
     <meta name="description"
         content="From the shadow, the village is in danger due to a mysterious black shadow bringing demons from the darkness, fight them to protect the world you know!">
-    <meta name="keywords"
-        content="game, medieval game, fight game, turn based game, mysterious game, RPG">
-    
+    <meta name="keywords" content="game, medieval game, fight game, turn based game, mysterious game, RPG">
+
     <!-- Title of the web page -->
     <title>From the shadow</title>
-    
+
     <!-- Favicon links for different sizes and the site manifest -->
     <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
@@ -48,14 +47,14 @@
         <!-- Hero section with damage and level display -->
         <div id="hero">
             <p class="centered" id="hero-damage">0</p>
-            <img src="" alt="Hero character" id="hero-character">
+            <img src="assets/images/hero/Idle.gif" alt="Hero character" id="hero-character">
             <p class="centered" id="hero-level">lvl <span id="hero-level-value">1</span></p>
         </div>
 
         <!-- Enemy section with damage and level display -->
         <div id="enemy">
             <p class="centered" id="enemy-damage">0</p>
-            <img src="" alt="Enemy character" id="enemy-character">
+            <img src="assets/images/onrei/Idle.gif" alt="Enemy character" id="enemy-character">
             <p class="centered" id="enemy-level">lvl <span id="enemy-level-value">1</span></p>
         </div>
 
@@ -142,8 +141,7 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <p>This game was created by Matheus Andrade, check more details about the project on the repository: <a
-                    href="https://github.com/catapam/from-the-shadow" target="_blank" alt="Github repository access"
-                    id="github">GitHub</a>.</p>
+                    href="https://github.com/catapam/from-the-shadow" target="_blank" id="github">GitHub</a>.</p>
             <br>
             <p>A tutorial is offered at the start of the game.</p>
         </div>
@@ -151,7 +149,7 @@
 
     <div id="game-over-screen" class="modal hidden">
         <!-- Game Over Modal for restarting or continuing the game -->
-        <div class="modal-content" class="centered">
+        <div class="modal-content centered">
             <p>Game Over</p>
             <div id="game-over-buttons">
                 <button id="restart">Restart</button>
@@ -162,7 +160,7 @@
 
     <div id="pause-screen" class="modal hidden">
         <!-- Pause Modal allowing the game to be paused or abandoned -->
-        <div class="modal-content" class="centered">
+        <div class="modal-content centered">
             <p class="centered">Paused</p>
             <div id="pause-buttons">
                 <button id="give-up">Give up</button>
