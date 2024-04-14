@@ -228,7 +228,7 @@ button {
     font-weight: bold;
 }
 
-#enemy h1 {
+#enemy h1, #enemy p {
     transform: scaleX(-1);
 }
 
