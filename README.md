@@ -8,6 +8,32 @@ Welcome to "From the Shadow," a thrilling medieval-themed turn-based RPG where y
 
 # Table of Contents
 
+* [Description](#description)
+* [User Experience](#user-experience)
+* [Design](#design)
+    * [Colors](#colors)
+    * [Typography](#typography)
+    * [Scenario](#scenario)
+    * [Characters](#characters)
+    * [Wireframes](#characters)
+* [Features](#features)
+    * [Existing features](#existing-features)
+    * [Future features](#future-features)
+* [How to play](#how-to-play)
+* [Technology used](#technology-used)
+    * [Language](#language)
+    * [Frameworks, Libraries and Programs](#frameworks-libraries--programs)
+* [Deployment](#deployment)
+* [Testing](#testing)
+    * [Manual testing](#manual-testing)
+        * [Mobile, vertical screen](#mobile-vertical-screen)
+        * [Mobile, horizontal screen](#mobile-horizontal-screen)
+        * [Desktop screen size](#desktop-screen-size)
+* [Credits](#credits)
+    * [Code](#code)
+    * [Content](#content)
+* [Acknowledgements](#acknowledgements)
+
 # Description
 
 In "From the Shadow," the village is under siege by supernatural forces emanating from an enigmatic darkness. As a hero, you are tasked with defending the realm using your strategic skills in turn-based combat. With each round, face increasingly formidable demons, level up your character, and ensure the safety of your world.
