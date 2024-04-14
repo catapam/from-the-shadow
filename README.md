@@ -48,13 +48,37 @@ By focusing on a user-centered design approach, From the Shadow aims to deliver 
 
 ## Colors
 
+* The thematic is medieval and dark, so colors chosen were Black and green for main background and logo elements.
+* White texts to contrast with those dark colors
+* Buttons are generally White in dialog screens, but orange on game controls to stand out from the screen as part of the game interaction
+* Vivid green is used in tutorials to stand out which elements are being checked at the moment
+
+![coolors screenshot](documentation/colors.png)
+
 ## Typography 
+
+* The font chosen had to be something gamy: Comic Sans MS
 
 ## Scenario
 
+* The game can randomly send the player to one of the 8 background scenarios available 
+
+![Backgrounds](documentation/backgrounds.png)
+
 ## Characters
 
+* At the moment there are 4 characters, 1 hero and 3 enemies:
+
+![Characters](documentation/characters.png)
+
 ## Wireframes
+
+- Mobile:
+
+![Wireframe mobile](documentation/wireframe-mobile.png)
+- Desktop:
+
+![Wireframe desktop](documentation/wireframe-desktop.png)
 
 # Features
 
@@ -98,12 +122,11 @@ This could become a big game full of features, to list some:
 * HTML
 
 ## Frameworks, Libraries & Programs
-* [Balsamiq](https://balsamiq.com/wireframes/) was used to create the wireframes to plan out the website.te
 * [Git](https://git-scm.com/) was used for version control
 * [Gitpod](https://gitpod.io/) was used to write the code
 * [GitHub](https://github.com/) was used to deploy the site code
 * [AmIResponsive](https://ui.dev/amiresponsive) was used to create the cross device responsivity images
-* [Canva](https://www.canva.com/) was used for images edition
+* [Canva](https://www.canva.com/) was used for images edition, including wireframes and buttons
 * [ChatGPT](https://chat.openai.com/) was used for logo creation, text reviews, copywritting and to study new approaches and similar solutions when trying to resolve bugs
 * [Craftpix](https://craftpix.net) was used for backgrounds, effects and characters, great source of free game content. The available libraries were what inspired the initial idea for the project too
 * [Piskel](https://www.piskelapp.com/) was used for GIF and animation creation
@@ -123,17 +146,39 @@ GitHub pages was used to deploy this site:
 
 - Testing was mainly made using Google Chrome Developer Tools, including the mobile and responsive views.
 - Lighthouse tab of developer tools was used to score the site regarding Performance, Acessibility and SEO.
-- The game was tested on other devices using Edge, Firefox and Safari. When testing on desktops with OS: Mac iOS and Windows 11. And on mobile OS: Android and iOS.
+- The game was broadly tested on other devices using Edge, Firefox and Safari. When testing on desktops with OS: Mac iOS and Windows 11. And on mobile OS: Android and iOS.
 
-The W3C Markup Validator, W3C CSS Validator, Wave accesibility, Lighthouse from Chrome, and Jshint Services were used to validate the project to ensure there were no syntax errors in the project.
-- [Jshint](https://jshint.com/)
-- [W3C CSS Validator](https://jigsaw.w3.org/css-validator/validator?uri=https%3A%2F%2Fcatapam.github.io%2Fsocks-in-a-box%2Findex.html&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en-US)
-- [W3C Markup Validator](https://validator.w3.org/nu/?doc=https%3A%2F%2Fcatapam.github.io%2Fsocks-in-a-box%2Findex.html)
-- [Wave Accessiblity result](https://wave.webaim.org/report#/https://catapam.github.io/socks-in-a-box/index.html)
+The Jshint, W3C CSS Validator, W3C Markup Validator, Wave accesibility and Lighthouse from Chrome were used to validate the project to ensure there were no syntax errors in the project.
+- [Jshint ES6](https://jshint.com/)
+- [W3C CSS Validator](https://jigsaw.w3.org/css-validator/validator?uri=https%3A%2F%2Fcatapam.github.io%2Ffrom-the-shadow%2F&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=pt-BR)
+- [W3C Markup Validator](https://validator.w3.org/nu/?doc=https%3A%2F%2Fcatapam.github.io%2Ffrom-the-shadow%2F)
+- [Wave Accessiblity result](https://wave.webaim.org/report#/https://catapam.github.io/from-the-shadow/)
 - Lighthouse result for mobile version:
 <br>
 
-![Home performance test mobile screenshot](documentation/home-mobile.png)
+![Performance test mobile screenshot](documentation/lighthouse/mobile.png)
+- Lighthouse result for desktop version:
+<br>
+
+![Performance test desktop screenshot](documentation/lighthouse/desktop.png)
+
+## Manual testing
+* Manual testing of each feature of the site was made on Chrome.
+
+### Mobile, vertical screen
+| **Feature** | **Action** | **Expected Result** | **Actual Result** |
+|-------------|------------|---------------------|-------------------|
+|  |  |  | Works as expected |
+
+### Mobile, horizontal screen
+| **Feature** | **Action** | **Expected Result** | **Actual Result** |
+|-------------|------------|---------------------|-------------------|
+|  |  |  | Works as expected |
+
+### Desktop screen size
+| **Feature** | **Action** | **Expected Result** | **Actual Result** |
+|-------------|------------|---------------------|-------------------|
+|  |  |  | Works as expected |
 
 # Credits
 ## Code
