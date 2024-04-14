@@ -26,7 +26,7 @@
 
 <body>
     <!-- Start area containing the game logo and menus -->
-    <header role="banner">
+    <header>
         <div id="start_area" class="centered">
             <img id="logo" src="assets/images/logo.webp" alt="From the shadow game logo" class="centered">
             <button class="btn centered" id="start_button">Start</button>
@@ -35,7 +35,7 @@
     </header>
 
     <!-- Main section, start and game -->
-    <main role="main" class="centered">
+    <main class="centered">
         <!-- Hidden section for entering hero's name -->
         <div id="name" class="centered hidden">
             <h1>Name:</h1>
@@ -141,7 +141,7 @@
     </main>
 
     <!-- Info Modal with details about the game and creator -->
-    <footer role="contentinfo">
+    <footer>
         <div id="info_modal" class="modal hidden">
             <div class="modal-content">
                 <span class="close">&times;</span>
@@ -158,7 +158,7 @@
         <div id="game-over-screen" class="modal hidden">
             <!-- Game Over Modal for restarting or continuing the game -->
             <div class="modal-content centered">
-                <h1>Game Over</h1>
+                <h2>Game Over</h2>
                 <div id="game-over-buttons">
                     <button id="restart">Restart</button>
                     <button id="continue">Continue</button>
@@ -169,7 +169,7 @@
         <div id="pause-screen" class="modal hidden">
             <!-- Pause Modal allowing the game to be paused or abandoned -->
             <div class="modal-content centered">
-                <h1 class="centered">Paused</h1>
+                <h2 class="centered">Paused</h2>
                 <div id="pause-buttons">
                     <button id="give-up">Give up</button>
                     <button id="unpause">Continue</button>

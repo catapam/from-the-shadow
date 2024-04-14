@@ -44,11 +44,15 @@ By focusing on a user-centered design approach, From the Shadow aims to deliver 
 * Difficulty increases as rounds and levels are going by;
 * The hero is 'illuminated' and can be revived by a divine light that is seen also when the hero recharges health;
 * The hero runs out of the screen to next round while the screen gets darker when an enemy is defeated, engaging the player to check what comes next;
-* Next turn will random enemies and backgrounds, enter in depth in the story and universe;
+* Next turn will bring new random enemies and backgrounds, enter in depth in the story and universe;
 
 ## Colors
 
 ## Typography 
+
+## Scenario
+
+## Characters
 
 ## Wireframes
 
@@ -101,7 +105,8 @@ This could become a big game full of features, to list some:
 * [AmIResponsive](https://ui.dev/amiresponsive) was used to create the cross device responsivity images
 * [Canva](https://www.canva.com/) was used for images edition
 * [ChatGPT](https://chat.openai.com/) was used for logo creation, text reviews, copywritting and to study new approaches and similar solutions when trying to resolve bugs
-* [Craftpix](https://craftpix.net) was used for backgrounds, effects and characters
+* [Craftpix](https://craftpix.net) was used for backgrounds, effects and characters, great source of free game content. The available libraries were what inspired the initial idea for the project too
+* [Piskel](https://www.piskelapp.com/) was used for GIF and animation creation
 
 # Deployment
 
@@ -115,6 +120,20 @@ GitHub pages was used to deploy this site:
 6. The site has been deployed on clicking save, this can take a few moments to generate the live link at the top of the settings page.
 
 # Testing
+
+- Testing was mainly made using Google Chrome Developer Tools, including the mobile and responsive views.
+- Lighthouse tab of developer tools was used to score the site regarding Performance, Acessibility and SEO.
+- The game was tested on other devices using Edge, Firefox and Safari. When testing on desktops with OS: Mac iOS and Windows 11. And on mobile OS: Android and iOS.
+
+The W3C Markup Validator, W3C CSS Validator, Wave accesibility, Lighthouse from Chrome, and Jshint Services were used to validate the project to ensure there were no syntax errors in the project.
+- [Jshint](https://jshint.com/)
+- [W3C CSS Validator](https://jigsaw.w3.org/css-validator/validator?uri=https%3A%2F%2Fcatapam.github.io%2Fsocks-in-a-box%2Findex.html&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en-US)
+- [W3C Markup Validator](https://validator.w3.org/nu/?doc=https%3A%2F%2Fcatapam.github.io%2Fsocks-in-a-box%2Findex.html)
+- [Wave Accessiblity result](https://wave.webaim.org/report#/https://catapam.github.io/socks-in-a-box/index.html)
+- Lighthouse result for mobile version:
+<br>
+
+![Home performance test mobile screenshot](documentation/home-mobile.png)
 
 # Credits
 ## Code
