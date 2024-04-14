@@ -26,9 +26,6 @@ Welcome to "From the Shadow," a thrilling medieval-themed turn-based RPG where y
 * [Deployment](#deployment)
 * [Testing](#testing)
     * [Manual testing](#manual-testing)
-        * [Mobile, vertical screen](#mobile-vertical-screen)
-        * [Mobile, horizontal screen](#mobile-horizontal-screen)
-        * [Desktop screen size](#desktop-screen-size)
 * [Credits](#credits)
     * [Code](#code)
     * [Content](#content)
@@ -189,22 +186,27 @@ The Jshint, W3C CSS Validator, W3C Markup Validator, Wave accesibility and Light
 ![Performance test desktop screenshot](documentation/lighthouse/desktop.png)
 
 ## Manual testing
-* Manual testing of each feature of the site was made on Chrome.
+* Manual testing of each feature of the site was made on Chrome inspector, and the screen size tested were: Mobile vertical position, Mobile horizontal position, Tablet, Desktop. And responsive views in between each of them
 
-### Mobile, vertical screen
 | **Feature** | **Action** | **Expected Result** | **Actual Result** |
 |-------------|------------|---------------------|-------------------|
-|  |  |  | Works as expected |
-
-### Mobile, horizontal screen
-| **Feature** | **Action** | **Expected Result** | **Actual Result** |
-|-------------|------------|---------------------|-------------------|
-|  |  |  | Works as expected |
-
-### Desktop screen size
-| **Feature** | **Action** | **Expected Result** | **Actual Result** |
-|-------------|------------|---------------------|-------------------|
-|  |  |  | Works as expected |
+| Info button | Test info button, close and github link | Info should open a pop-up, where a github link opens in another tab and a close button changes to orange when hovered over. A click ouside the popup, also closes it | Works as expected |
+| Start button | Click start button | The page layout should change to accomodate a name input form and a fight button | Works as expected |
+| Fight button | Click fight button | The story mode is initiated contextualizing the game | Works as expected |
+| Story mode | Navigate through the story using the next button | The story should trigger scream animations and bring the enemy into the game, once close button is clicked the tutorial mode should be triggered, the story box does not cover characters at any point | Works as expected |
+| Tutorial mode | Initial pop-up should bring instructions | Clicking elements and allow skipping, all clicable elements should be clicked and test if pop-up content gets updated, also action buttons should not perform the action, but only update the content. The pop-up adds a shade layer to the whole screen and stays always centralized. Content within the popup is scrollable, while header and buttons are fixed. The content area has a border to differentiate it from the pop-up body. Skipping initiates the Combat mode | Works as expected |
+| Combat/fight mode | Layout check | Stats bars should populate at the top of the screen, score, round and timer will adjust according to screen size and positioning. Controls are at the bottom of the screen, and gets pushed to each lateral when playing on a small horizontal screen, making it a better experience as the device is holded and buttons are reacheable with thumbs | Works as expected |
+| Combat/fight mode | Action buttons check | Click all 4 buttons and the timer (to test pause), action buttons should perform the desired action and return the character animation + change of stats | Works as expected |
+| Enemy generation | Check if it's random | Enemies should come with same level as hero, but random character, mana and xp stats, while full health | Works as expected |
+| Enemy AI | Check if it's random and if actions are only triggered if resources are available | Cure and magic should only be triggered if mana is available. The enemy magic is a strong attack with no magic envolved, the animation differs though. Level up should only be triggered if XP is full. None of the stats should go above 100%, or below 0. Mana and XP always restart bar with 1, while health can go to 0 and die. Attacks are always avialble, as options become available enemy will choose randomly between available options, options are weighted based on current hero and enemy stats, so enemy takes more realistic but still random decision | Works as expected |
+| Enemy turn | Check if it always take actions and pass turn | Once hero takes action enemy turn is automatically initiated, the enemy should take action almost instantly and send the turn back to hero | Works as expected |
+| Damage | Perform attacks/magic | Damage should have an average of strenght but still some chance of miss or perform a really strong attack (critical attack), the % of miss and critical are around 5-10% | Works as expected |
+| Game over | Die | When the hero dies a game over pop-up shows up with option to continue or restart. Continue revives the hero on the same level, full health. While restart sends back to start page | Works as expected |
+| Pause dialog box | Click timer | Clicking timer should stop the timer and open a dialog box with option to continue or give up. Continue will resume the timer and turn, while give-up sends back to start page | Works as expected |
+| Kill/Die | Check animations | Dying is triggered the same way as hurt is. So a damage that kills the opponent, should trigger hurt first and then die. If the hero dies the dead body remains there until you select an option on the game over dialog. The enemy dies and vanishes, opening the screen for the Next round animation | Works as expected |
+| Next round | Check animations and round generation | Background has 8 different options that randomly are used on round generations, notice the change, same background shouldn't repeat too many times in sequence. Round number changes on the stats, and score accumulation increases | Works as expected |
+| Fight balance | Difficulty check | A game cannot be too easy or too hard, otherwise no-one would play it. The player should be able to progress both in level and round after getting used to the mechanics. Enemy also levels up, pushing up if the user doesn't level up for too long | Works as expected |
+| Progression | Round and level up is achievable | Knowing the mechanics and planning ahead allows the user pass rounds without any game over, however at first is normal to die quite a few times until practice build up | Works as expected |
 
 # Credits
 ## Code
