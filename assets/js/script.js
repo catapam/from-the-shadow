@@ -3,7 +3,7 @@
 let timerInterval;
 let timeLeft = 5;
 let timerElement = document.getElementById("timer");
-let growthFactor = 1.25;
+let growthFactor = 1.2;
 let currentEnemy;
 
 /* Character stats and configurations */
@@ -259,6 +259,7 @@ function setupEventListeners() {
  * Update all character stats and location accordingly
  */
 function updateUI(elementId) {
+    console.log(currentStats);
     document.getElementsByClassName("health")[elementId === "hero" ? 0 : 1].style.width = `${currentStats[elementId].health}%`;
     document.getElementsByClassName("mana")[elementId === "hero" ? 0 : 1].style.width = `${currentStats[elementId].mana}%`;
     document.getElementsByClassName("xp")[elementId === "hero" ? 0 : 1].style.width = `${currentStats[elementId].xp}%`;
@@ -501,7 +502,6 @@ function tutorialMode(enable) {
     const elements = document.getElementsByClassName("tutorial");
 
     if (enable) {
-        console.log("tutorial mode on");
         timerElement.classList.remove("hidden");
         document.getElementById('tutorial-modal').classList.remove("hidden");
         document.getElementById('tutorial-modal').style.display = "flex";
@@ -524,7 +524,6 @@ function tutorialMode(enable) {
             };
         });
     } else {
-        console.log("tutorial mode off");
         document.getElementById('tutorial-modal').classList.add("hidden");
         document.getElementById('tutorial-modal').style.display = "none";
         Array.from(elements).forEach(element => {
@@ -606,8 +605,8 @@ function enemyArrives() {
     if (level !== 1) {
         currentStats.enemy.currentHealth = (Math.pow(growthFactor, level)) * character.find(char => char.path === currentEnemy).health;
         currentStats.enemy.currentMana = (Math.pow(growthFactor, level)) * character.find(char => char.path === currentEnemy).mana;
-        currentStats.enemy.currentXp = (Math.pow(1.5, (level - 1))) * character.find(char => char.path === currentEnemy).xp;
-        currentStats.enemy.currentStrength = (growthFactor * level * 1.01) * character.find(char => char.path === currentEnemy).strength;
+        currentStats.enemy.currentXp = (Math.pow(1.5, level)) * character.find(char => char.path === currentEnemy).xp;
+        currentStats.enemy.currentStrength = (Math.pow(growthFactor, level)*1.05) * character.find(char => char.path === currentEnemy).strength;
     }
 
     updateUI("enemy");
@@ -726,11 +725,12 @@ function charge(elementId, path) {
  */
 function levelUp(elementId) {
     let characterPath = elementId === "hero" ? "hero" : currentEnemy;
+    currentStats[`${elementId}`].level += 1;
     const level = currentStats[`${elementId}`].level;
     currentStats[`${elementId}`].currentHealth = (Math.pow(growthFactor, level)) * character.find(char => char.path === characterPath).health;
     currentStats[`${elementId}`].currentMana = (Math.pow(growthFactor, level)) * character.find(char => char.path === characterPath).mana;
     currentStats[`${elementId}`].currentXp = (Math.pow(1.5, level)) * character.find(char => char.path === characterPath).xp;
-    currentStats[`${elementId}`].currentStrength = (growthFactor * 1.01 * level) * character.find(char => char.path === characterPath).strength;
+    currentStats[`${elementId}`].currentStrength = (Math.pow(growthFactor, level)*1.05) * character.find(char => char.path === characterPath).strength;
 
     document.getElementById(elementId).classList.add('glow-once');
     document.getElementById(elementId).addEventListener('animationend', () => {
@@ -738,7 +738,6 @@ function levelUp(elementId) {
     });
 
     currentStats[elementId].health = currentStats[elementId].health >= 50 ? 100 : currentStats[elementId].health + 50;
-    currentStats[elementId].level += 1;
     if (currentStats[elementId].mana <= 50) {
         currentStats[elementId].mana = 50;
     }
@@ -966,15 +965,15 @@ function damage(elementId, attack, type) {
 
     if (randomFrequency < 0.02) {
         multiplier = 0;
-    } else if (randomFrequency < 0.5) {
-        multiplier = 0.8;
-    } else if (randomFrequency < 0.95) {
-        multiplier = 0.3 + (Math.random() * 0.2);
+    } else if (randomFrequency < 0.3) {
+        multiplier = 0.7;
+    } else if (randomFrequency < 0.9) {
+        multiplier = 0.4 + (Math.random() * 0.1);
     } else {
-        multiplier = 0.65;
+        multiplier = 0.6;
     }
 
-    let defense = currentStats[`${elementId === "hero" ? "enemy" : "hero"}`].currentStrength / 2;
+    let defense = (currentStats[`${elementId === "hero" ? "enemy" : "hero"}`].currentStrength) * multiplier;
     let rawDamage = attack - defense;
     let totalDamage = rawDamage > 0 ? Math.round(rawDamage * multiplier) : 0;
 
