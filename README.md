@@ -41,7 +41,7 @@ From the Shadow is crafted to ensure a seamless and engaging user experience. Be
 
 * Intuitive Interface: The game features an easy-to-navigate interface, with clear and accessible controls. Each button and control is intuitively placed to ensure a smooth gameplay experience without unnecessary complexity.
 
-* Responsive Design: The game's design is responsive and optimized for various devices and screen sizes, ensuring that players can enjoy the game on desktops, tablets, and mobile devices with equal functionality and aesthetic appeal.
+* Responsive Design: The game's design is responsive and optimized for various devices and screen sizes, ensuring that players can enjoy the game on desktops, tablets, and mobile devices, both portrait and landscape format with equal functionality and aesthetic appeal.
 
 * Engaging Visuals: Employing a dark, medieval theme with vivid animations and detailed character designs, the game offers a visually stimulating experience. The use of high-quality animations and consistent graphic themes immerses players in a fantastical world.
 
@@ -117,6 +117,7 @@ By focusing on a user-centered design approach, From the Shadow aims to deliver 
 
 This could become a big game full of features, to list some:
 * Ranking of highest scores locally
+* Sound effects
 * Boss levels
 * Usable items, like potions for mana, food for health
 * Collectionable items

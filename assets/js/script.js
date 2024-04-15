@@ -1,13 +1,13 @@
 /*jshint esversion: 6 */
 /* Global Variables Definition */
-var timerInterval;
-var timeLeft = 5;
-var timerElement = document.getElementById("timer");
-var growthFactor = 1.1;
-var currentEnemy;
+let timerInterval;
+let timeLeft = 5;
+let timerElement = document.getElementById("timer");
+let growthFactor = 1.25;
+let currentEnemy;
 
 /* Character stats and configurations */
-var currentStats = {
+let currentStats = {
     hero: {
         name: "",
         health: 100,
@@ -33,7 +33,7 @@ var currentStats = {
 };
 
 /* Game characters and animation configurations */
-var character = [{
+const character = [{
     name: "Hero",
     type: "hero",
     path: "hero",
@@ -112,7 +112,7 @@ var character = [{
     }
 }];
 
-var gifArray = ["assets/images/gotoku/Run.gif", "assets/images/gotoku/Idle.gif", "assets/images/hero/Run.gif", "assets/images/hero/Idle.gif", "assets/images/onrei/Run.gif", "assets/images/onrei/Idle.gif", "assets/images/yurei/Run.gif", "assets/images/yurei/Idle.gif"];
+let gifArray = ["assets/images/gotoku/Run.gif", "assets/images/gotoku/Idle.gif", "assets/images/hero/Run.gif", "assets/images/hero/Idle.gif", "assets/images/onrei/Run.gif", "assets/images/onrei/Idle.gif", "assets/images/yurei/Run.gif", "assets/images/yurei/Idle.gif"];
 
 /* Add all gifs to gif array */
 character.forEach(char => {
@@ -173,16 +173,16 @@ function setupEventListeners() {
     });
 
     document.addEventListener("DOMContentLoaded", function () {
-        var infoButton = document.getElementById("info_button");
-        var modal = document.getElementById("info_modal");
-        var closeButton = document.getElementsByClassName("close")[0];
-        var startButton = document.getElementById("start_button");
-        var startArea = document.getElementById("start_area");
-        var nameArea = document.getElementById("name");
-        var body = document.body;
-        var heroNameInput = document.getElementById("id");
-        var fightButton = document.getElementById("fight_button");
-        var actionButton = document.getElementsByClassName("btn-fight");
+        let infoButton = document.getElementById("info_button");
+        let modal = document.getElementById("info_modal");
+        let closeButton = document.getElementsByClassName("close")[0];
+        let startButton = document.getElementById("start_button");
+        let startArea = document.getElementById("start_area");
+        let nameArea = document.getElementById("name");
+        let body = document.body;
+        let heroNameInput = document.getElementById("id");
+        let fightButton = document.getElementById("fight_button");
+        let actionButton = document.getElementsByClassName("btn-fight");
 
         infoButton.addEventListener("click", function () {
             modal.style.display = "flex";
@@ -210,7 +210,7 @@ function setupEventListeners() {
         });
 
         heroNameInput.addEventListener("blur", function () {
-            var inputName = heroNameInput.value;
+            let inputName = heroNameInput.value;
             if (inputName) {
                 heroNameInput.value = inputName.charAt(0).toUpperCase() + inputName.slice(1);
                 currentStats.hero.name = heroNameInput.value;
@@ -264,7 +264,7 @@ function updateUI(elementId) {
     document.getElementsByClassName("xp")[elementId === "hero" ? 0 : 1].style.width = `${currentStats[elementId].xp}%`;
     document.getElementById(`${elementId}-level-value`).textContent = currentStats[elementId].level;
     document.getElementById(`${elementId}-name`).textContent = currentStats[elementId].name;
-    var path = elementId === "hero" ? "hero" : currentEnemy;
+    let path = elementId === "hero" ? "hero" : currentEnemy;
 
     Array.from(document.getElementsByClassName("tutorial")).forEach(el => el.classList.remove("tutorial-clicked"));
 
@@ -325,13 +325,13 @@ function start() {
  * - direction = "in" or "out"
  */
 function run(elementId, path, direction) {
-    var characterDiv = document.getElementById(elementId);
-    var characterImage = characterDiv.querySelector("img");
-    var viewportWidth = window.innerWidth;
-    var elementWidth = characterDiv.offsetWidth;
+    let characterDiv = document.getElementById(elementId);
+    let characterImage = characterDiv.querySelector("img");
+    let viewportWidth = window.innerWidth;
+    let elementWidth = characterDiv.offsetWidth;
     characterImage.src = `assets/images/${path}/Run.gif`;
-    var screenOverlay = document.getElementById('screen-overlay');
-    var finalPosition, startPosition, duration = 1000;
+    let screenOverlay = document.getElementById('screen-overlay');
+    let finalPosition, startPosition, duration = 1000;
 
     if (direction === "in") {
         finalPosition = ((viewportWidth / 2) - (elementWidth / 4));
@@ -346,15 +346,15 @@ function run(elementId, path, direction) {
         setTimeout(() => animate(), 0);
     }
 
-    var start = null;
+    let start = null;
 
     function animate(timestamp) {
         if (!start) start = timestamp;
         const progress = timestamp - start;
         const timeFraction = progress / duration;
         const easeOut = 1 - Math.pow(1 - timeFraction, 2);
-        var distance = finalPosition - (startPosition - viewportWidth) + (elementWidth / 4);
-        var currentPos = easeOut * distance;
+        let distance = finalPosition - (startPosition - viewportWidth) + (elementWidth / 4);
+        let currentPos = easeOut * distance;
 
         if (elementId === "hero") {
             characterDiv.style.right = `${startPosition - currentPos}px`;
@@ -403,10 +403,10 @@ function createOverlay() {
  */
 function scream() {
     const overlay = createOverlay();
-    var opacity = 0;
+    let opacity = 0;
     const step = 0.001;
     const maxOpacity = 0.1;
-    var increasing = true;
+    let increasing = true;
 
     const intervalId = setInterval(() => {
         if (increasing) {
@@ -434,21 +434,21 @@ function story() {
     document.getElementById("story_modal").style.display = "flex";
     document.getElementById("round-value").textContent = 1;
 
-    var stories = [
+    let stories = [
         "Wow! What is that big round shadow?",
         "Did you hear that scream?",
         "What is that coming out of the shadow?",
         "This is bad, I will have to protect the village!"
     ];
-    var currentIndex = 0;
+    let currentIndex = 0;
 
     document.getElementById("story").style.display = "flex";
 
-    var heroNameInput = document.getElementById("id");
+    let heroNameInput = document.getElementById("id");
 
-    var player = document.createElement("h4");
-    var storyParagraph = document.createElement("p");
-    var nextButton = document.createElement("button");
+    let player = document.createElement("h4");
+    let storyParagraph = document.createElement("p");
+    let nextButton = document.createElement("button");
     nextButton.className = "close btn-next";
     nextButton.id = "next";
     nextButton.textContent = ">>";
@@ -464,7 +464,7 @@ function story() {
 
     storyParagraph.textContent = stories[currentIndex];
 
-    var storyContainer = document.getElementById("story");
+    let storyContainer = document.getElementById("story");
     storyContainer.innerHTML = "";
     storyContainer.appendChild(player);
     storyContainer.appendChild(storyParagraph);
@@ -506,7 +506,7 @@ function tutorialMode(enable) {
         timerElement.classList.remove("hidden");
         document.getElementById('tutorial-modal').classList.remove("hidden");
         document.getElementById('tutorial-modal').style.display = "flex";
-        var formattedText = "<p>Click on an element to learn what it does...</p>";
+        let formattedText = "<p>Click on an element to learn what it does...</p>";
         document.getElementById('tutorial-text').innerHTML = formattedText;
         document.getElementById('level-up').disabled = false;
         document.getElementById('level-up').classList.remove('button-disabled');
@@ -619,15 +619,15 @@ function enemyArrives() {
  * - path = character.path of selected character
  */
 function attack(elementId, path) {
-    var characterObj = character.find(char => char.path === path);
-    var characterDiv = document.getElementById(elementId);
-    var characterImage = characterDiv.querySelector("img");
-    var attackType = Math.random() < 0.5 ? "Attack_1.gif" : "Attack_2.gif";
+    let characterObj = character.find(char => char.path === path);
+    let characterDiv = document.getElementById(elementId);
+    let characterImage = characterDiv.querySelector("img");
+    let attackType = Math.random() < 0.5 ? "Attack_1.gif" : "Attack_2.gif";
     characterImage.src = `assets/images/${characterObj.path}/${attackType}`;
-    var gifDuration = characterObj.gifDuration[attackType];
-    var strength = currentStats[`${elementId}`].currentStrength;
-    var multiplier = attackType === "Attack_1.gif" ? 1 : 1.2;
-    var damageScore = multiplier * strength;
+    let gifDuration = characterObj.gifDuration[attackType];
+    let strength = currentStats[`${elementId}`].currentStrength;
+    let multiplier = attackType === "Attack_1.gif" ? 1 : 1.1;
+    let damageScore = multiplier * strength;
 
     setTimeout(() => {
         characterImage.src = `assets/images/${characterObj.path}/Idle.gif`;
@@ -651,11 +651,11 @@ function attack(elementId, path) {
  * - path = character.path of selected character
  */
 function magic(elementId, path) {
-    var characterObj = character.find(char => char.path === path);
-    var characterDiv = document.getElementById(elementId);
-    var characterImage = characterDiv.querySelector("img");
-    var cost = character.find(char => char.path === path).minManaCharge;
-    var attackType;
+    let characterObj = character.find(char => char.path === path);
+    let characterDiv = document.getElementById(elementId);
+    let characterImage = characterDiv.querySelector("img");
+    let cost = character.find(char => char.path === path).minManaCharge;
+    let attackType;
 
     if (elementId === "hero") {
         attackType = Math.random() < 0.5 ? "Fireball.gif" : "Flame_jet.gif";
@@ -666,10 +666,10 @@ function magic(elementId, path) {
     }
 
     characterImage.src = `assets/images/${characterObj.path}/${attackType}`;
-    var gifDuration = characterObj.gifDuration[attackType];
-    var strength = currentStats[`${elementId}`].currentStrength;
-    var multiplier = (attackType === "Fireball.gif" ? 1.3 : 1.35);
-    var damageScore = multiplier * strength;
+    let gifDuration = characterObj.gifDuration[attackType];
+    let strength = currentStats[`${elementId}`].currentStrength;
+    let multiplier = (attackType === "Fireball.gif" ? 1.25 : 1.35);
+    let damageScore = multiplier * strength;
 
     setTimeout(() => {
         characterImage.src = `assets/images/${characterObj.path}/Idle.gif`;
@@ -691,14 +691,14 @@ function magic(elementId, path) {
  * - path = character.path of selected character
  */
 function charge(elementId, path) {
-    var characterObj = character.find(char => char.path === path);
-    var characterDiv = document.getElementById(elementId);
-    var characterImage = characterDiv.querySelector("img");
-    var fileName = elementId === "hero" ? "Charge.gif" : "Scream.gif";
-    var cost = character.find(char => char.path === path).minManaCharge;
+    let characterObj = character.find(char => char.path === path);
+    let characterDiv = document.getElementById(elementId);
+    let characterImage = characterDiv.querySelector("img");
+    let fileName = elementId === "hero" ? "Charge.gif" : "Scream.gif";
+    let cost = character.find(char => char.path === path).minManaCharge;
 
     characterImage.src = `assets/images/${characterObj.path}/${fileName}`;
-    var gifDuration = characterObj.gifDuration[fileName];
+    let gifDuration = characterObj.gifDuration[fileName];
 
     setTimeout(() => {
         characterImage.src = `assets/images/${characterObj.path}/Idle.gif`;
@@ -723,7 +723,7 @@ function charge(elementId, path) {
  * - elementId = "hero" or "enemy"
  */
 function levelUp(elementId) {
-    var characterPath = elementId === "hero" ? "hero" : currentEnemy;
+    let characterPath = elementId === "hero" ? "hero" : currentEnemy;
     const level = currentStats[`${elementId}`].level;
     currentStats[`${elementId}`].currentHealth = (Math.pow(growthFactor, level)) * character.find(char => char.path === characterPath).health;
     currentStats[`${elementId}`].currentMana = (Math.pow(growthFactor, level)) * character.find(char => char.path === characterPath).mana;
@@ -800,12 +800,12 @@ function enemyTurn() {
  * - value = value of damage received
  */
 function hurt(elementId, value) {
-    var elementDiv = document.getElementById(elementId);
-    var elementImage = elementDiv.querySelector("img");
-    var path = elementId === "hero" ? "hero" : currentEnemy;
-    var opponent = elementId === "enemy" ? "hero" : "enemy";
-    var totalHealth = (character.find(char => char.path === path).health * currentStats[opponent].level);
-    var damageHealth = value / totalHealth;
+    let elementDiv = document.getElementById(elementId);
+    let elementImage = elementDiv.querySelector("img");
+    let path = elementId === "hero" ? "hero" : currentEnemy;
+    let opponent = elementId === "enemy" ? "hero" : "enemy";
+    let totalHealth = (character.find(char => char.path === path).health * currentStats[opponent].level);
+    let damageHealth = value / totalHealth;
 
     if (damageHealth < currentStats[elementId].health) {
         elementImage.src = `assets/images/${path}/Hurt.gif`;
@@ -824,9 +824,9 @@ function hurt(elementId, value) {
  * - elementId = "hero" or "enemy"
  */
 function dead(elementId) {
-    var elementDiv = document.getElementById(elementId);
-    var elementImage = elementDiv.querySelector("img");
-    var path = elementId === "hero" ? "hero" : currentEnemy;
+    let elementDiv = document.getElementById(elementId);
+    let elementImage = elementDiv.querySelector("img");
+    let path = elementId === "hero" ? "hero" : currentEnemy;
 
     elementImage.src = `assets/images/${path}/Dead.gif`;
     timer("stop");
@@ -853,11 +853,11 @@ function nextRound() {
     run("hero", "hero", "out");
     currentStats.hero.health = 100;
     currentStats.hero.xp = (currentStats.hero.xp += 20) > 100 ? 100 : (currentStats.hero.xp += 20);
-    var round = parseInt(document.getElementById("round-value").textContent) + 1;
+    let round = parseInt(document.getElementById("round-value").textContent) + 1;
     document.getElementById("round-value").textContent = round;
 
-    var randomBackgroundNumber = Math.floor(Math.random() * 8) + 1;
-    var newBackgroundImage = `assets/images/scenario/backgrounds/game_background_${randomBackgroundNumber}.webp`;
+    let randomBackgroundNumber = Math.floor(Math.random() * 8) + 1;
+    let newBackgroundImage = `assets/images/scenario/backgrounds/game_background_${randomBackgroundNumber}.webp`;
 
     setTimeout(() => {
         document.body.style.backgroundImage = `radial-gradient(circle at 85vw 35vh, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%), url(${newBackgroundImage})`;
@@ -882,10 +882,10 @@ function nextRound() {
  * - value = value of damage caused
  */
 function score(value) {
-    var scoreElement = document.getElementById("score-value");
-    var currentScore = parseInt(scoreElement.textContent) || 0;
-    var round = parseInt(document.getElementById("round-value").textContent) || 1;
-    var newScore = round * value;
+    let scoreElement = document.getElementById("score-value");
+    let currentScore = parseInt(scoreElement.textContent) || 0;
+    let round = parseInt(document.getElementById("round-value").textContent) || 1;
+    let newScore = round * value;
 
     currentScore += newScore;
     scoreElement.textContent = currentScore;
@@ -897,7 +897,7 @@ function score(value) {
  * - type = "start", "stop", "pause", "resume"
  */
 function timer(type) {
-    var totalTime = timeLeft;
+    let totalTime = timeLeft;
 
     function updateTimer() {
         if (timeLeft <= 0) {
@@ -960,8 +960,8 @@ function timer(type) {
  * - type = "attack" or "magic"
  */
 function damage(elementId, attack, type) {
-    var randomFrequency = Math.random();
-    var multiplier;
+    let randomFrequency = Math.random();
+    let multiplier;
 
     if (randomFrequency < 0.10) {
         multiplier = 0;
@@ -973,18 +973,18 @@ function damage(elementId, attack, type) {
         multiplier = 0.8;
     }
 
-    var defense = currentStats[`${elementId === "hero" ? "enemy" : "hero"}`].currentStrength / 2;
-    var rawDamage = attack - defense;
-    var totalDamage = rawDamage > 0 ? Math.round(rawDamage * multiplier) : 0;
+    let defense = currentStats[`${elementId === "hero" ? "enemy" : "hero"}`].currentStrength / 2;
+    let rawDamage = attack - defense;
+    let totalDamage = rawDamage > 0 ? Math.round(rawDamage * multiplier) : 0;
 
-    var p = document.getElementById(elementId === "hero" ? "enemy-damage" : "hero-damage");
+    let p = document.getElementById(elementId === "hero" ? "enemy-damage" : "hero-damage");
     p.style.opacity = 1;
     p.textContent = totalDamage > 0 ? totalDamage : "miss";
 
     hurt(elementId === "hero" ? "enemy" : "hero", totalDamage);
 
-    var xpGainForAttacker = ((totalDamage * (totalDamage / currentStats[`${elementId === "hero" ? "enemy" : "hero"}`].currentStrength)) / currentStats[`${elementId === "hero" ? "hero" : "enemy"}`].currentHealth) / 2;
-    var xpGainForDefender = xpGainForAttacker / 2;
+    let xpGainForAttacker = ((totalDamage * (totalDamage / currentStats[`${elementId === "hero" ? "enemy" : "hero"}`].currentStrength)) / currentStats[`${elementId === "hero" ? "hero" : "enemy"}`].currentHealth) / 2;
+    let xpGainForDefender = xpGainForAttacker / 2;
 
     xp(elementId, "add", xpGainForAttacker);
     xp(elementId === "hero" ? "enemy" : "hero", "add", xpGainForDefender);
@@ -1010,8 +1010,8 @@ function damage(elementId, attack, type) {
  * - size = between 0 and 1 (it will be multipled by 100 for %)
  */
 function health(elementId, type, size) {
-    var currentWidth = currentStats[elementId].health;
-    var newWidth;
+    let currentWidth = currentStats[elementId].health;
+    let newWidth;
 
     if (type === "add") {
         newWidth = currentWidth + (size * 100);
@@ -1038,8 +1038,8 @@ function health(elementId, type, size) {
  * - size = between 0 and 1 (it will be multipled by 100 for %)
  */
 function mana(elementId, type, size) {
-    var currentWidth = currentStats[elementId].mana;
-    var newWidth;
+    let currentWidth = currentStats[elementId].mana;
+    let newWidth;
 
     if (type === "add") {
         newWidth = currentWidth + (size * 100);
@@ -1063,8 +1063,8 @@ function mana(elementId, type, size) {
  * - size = between 0 and 1 (it will be multipled by 100 for %)
  */
 function xp(elementId, type, size) {
-    var currentWidth = currentStats[elementId].xp;
-    var newWidth;
+    let currentWidth = currentStats[elementId].xp;
+    let newWidth;
 
     if (type === "add") {
         newWidth = currentWidth + (size * 100);
@@ -1087,7 +1087,7 @@ function AI() {
     const enemyHealth = currentStats.enemy.health;
     const enemyMana = currentStats.enemy.mana;
     const heroHealth = currentStats.hero.health;
-    var availableActions = ['attack', 'attack', 'attack', 'attack', 'attack', 'attack'];
+    let availableActions = ['attack', 'attack', 'attack', 'attack', 'attack', 'attack'];
 
     if (currentStats.enemy.xp >= 100) {
         availableActions.push('levelUp', 'levelUp', 'levelUp', 'levelUp');
