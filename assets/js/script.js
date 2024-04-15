@@ -528,7 +528,7 @@ function tutorialMode(enable) {
         document.getElementById('tutorial-modal').style.display = "none";
         Array.from(elements).forEach(element => {
             element.onclick = null;
-            element.classList.remove("tutorial-clicked", "pointer")
+            element.classList.remove("tutorial-clicked", "pointer");
         });
 
         timerElement.addEventListener("click", function () {
