@@ -266,8 +266,6 @@ function updateUI(elementId) {
     document.getElementById(`${elementId}-name`).textContent = currentStats[elementId].name;
     let path = elementId === "hero" ? "hero" : currentEnemy;
 
-    Array.from(document.getElementsByClassName("tutorial")).forEach(el => el.classList.remove("tutorial-clicked"));
-
     const magicButton = document.getElementById('magic');
     if (currentStats.hero.mana >= character.find(char => char.path === path).minManaMagic) {
         magicButton.disabled = false;
@@ -503,6 +501,7 @@ function tutorialMode(enable) {
     const elements = document.getElementsByClassName("tutorial");
 
     if (enable) {
+        console.log("tutorial mode on");
         timerElement.classList.remove("hidden");
         document.getElementById('tutorial-modal').classList.remove("hidden");
         document.getElementById('tutorial-modal').style.display = "flex";
@@ -512,8 +511,7 @@ function tutorialMode(enable) {
         document.getElementById('level-up').classList.remove('button-disabled');
 
         Array.from(elements).forEach(element => {
-            element.style.cursor = "pointer";
-
+            element.classList.add("pointer");
             element.onclick = function () {
                 Array.from(elements).forEach(el => el.classList.remove("tutorial-clicked"));
                 if (this.getAttribute('data-tutorial') !== null) {
@@ -526,9 +524,13 @@ function tutorialMode(enable) {
             };
         });
     } else {
+        console.log("tutorial mode off");
         document.getElementById('tutorial-modal').classList.add("hidden");
         document.getElementById('tutorial-modal').style.display = "none";
-        Array.from(elements).forEach(el => el.classList.remove("tutorial-clicked"));
+        Array.from(elements).forEach(element => {
+            element.onclick = null;
+            element.classList.remove("tutorial-clicked", "pointer")
+        });
 
         timerElement.addEventListener("click", function () {
             timer("pause");
@@ -755,7 +757,6 @@ function levelUp(elementId) {
  * Initiates hero turn
  */
 function heroTurn() {
-    Array.from(document.getElementsByClassName("tutorial")).forEach(el => el.classList.remove("tutorial-clicked"));
     if (currentStats.hero.health > 0) {
         document.getElementById("control").style.display = "flex";
         timer("start");
@@ -963,14 +964,14 @@ function damage(elementId, attack, type) {
     let randomFrequency = Math.random();
     let multiplier;
 
-    if (randomFrequency < 0.10) {
+    if (randomFrequency < 0.02) {
         multiplier = 0;
-    } else if (randomFrequency < 0.15) {
-        multiplier = 1.2;
-    } else if (randomFrequency < 0.98) {
-        multiplier = 0.3 + Math.random() * (0.5 - 0.3);
-    } else {
+    } else if (randomFrequency < 0.5) {
         multiplier = 0.8;
+    } else if (randomFrequency < 0.95) {
+        multiplier = 0.3 + (Math.random() * 0.2);
+    } else {
+        multiplier = 0.65;
     }
 
     let defense = currentStats[`${elementId === "hero" ? "enemy" : "hero"}`].currentStrength / 2;

@@ -140,6 +140,7 @@ button {
 #pause-screen {
     justify-content: center;
     align-items: center;
+    z-index: 1000;
 }
 
 #game-over-screen .modal-content h1,
@@ -500,6 +501,10 @@ button {
 /* Effects */
 .btn-clicked {
     background-color: greenyellow !important;
+}
+
+.pointer {
+    cursor: pointer;
 }
 
 .button-disabled {
