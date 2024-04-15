@@ -259,7 +259,6 @@ function setupEventListeners() {
  * Update all character stats and location accordingly
  */
 function updateUI(elementId) {
-    console.log(currentStats);
     document.getElementsByClassName("health")[elementId === "hero" ? 0 : 1].style.width = `${currentStats[elementId].health}%`;
     document.getElementsByClassName("mana")[elementId === "hero" ? 0 : 1].style.width = `${currentStats[elementId].mana}%`;
     document.getElementsByClassName("xp")[elementId === "hero" ? 0 : 1].style.width = `${currentStats[elementId].xp}%`;
@@ -606,7 +605,7 @@ function enemyArrives() {
         currentStats.enemy.currentHealth = (Math.pow(growthFactor, level)) * character.find(char => char.path === currentEnemy).health;
         currentStats.enemy.currentMana = (Math.pow(growthFactor, level)) * character.find(char => char.path === currentEnemy).mana;
         currentStats.enemy.currentXp = (Math.pow(1.5, level)) * character.find(char => char.path === currentEnemy).xp;
-        currentStats.enemy.currentStrength = (Math.pow(growthFactor, level)*1.05) * character.find(char => char.path === currentEnemy).strength;
+        currentStats.enemy.currentStrength = (Math.pow(growthFactor, level) * 1.05) * character.find(char => char.path === currentEnemy).strength;
     }
 
     updateUI("enemy");
@@ -730,7 +729,7 @@ function levelUp(elementId) {
     currentStats[`${elementId}`].currentHealth = (Math.pow(growthFactor, level)) * character.find(char => char.path === characterPath).health;
     currentStats[`${elementId}`].currentMana = (Math.pow(growthFactor, level)) * character.find(char => char.path === characterPath).mana;
     currentStats[`${elementId}`].currentXp = (Math.pow(1.5, level)) * character.find(char => char.path === characterPath).xp;
-    currentStats[`${elementId}`].currentStrength = (Math.pow(growthFactor, level)*1.05) * character.find(char => char.path === characterPath).strength;
+    currentStats[`${elementId}`].currentStrength = (Math.pow(growthFactor, level) * 1.05) * character.find(char => char.path === characterPath).strength;
 
     document.getElementById(elementId).classList.add('glow-once');
     document.getElementById(elementId).addEventListener('animationend', () => {
@@ -860,7 +859,9 @@ function nextRound() {
     let newBackgroundImage = `assets/images/scenario/backgrounds/game_background_${randomBackgroundNumber}.webp`;
 
     setTimeout(() => {
-        document.body.style.backgroundImage = `radial-gradient(circle at 85vw 35vh, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%), url(${newBackgroundImage})`;
+        newBackgroundImage.onload = function () {
+            document.body.style.backgroundImage = `radial-gradient(circle at 85vw 35vh, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.50) 100%), url(${newBackgroundImage})`;
+        };
         document.getElementById('screen-overlay').style.display = "none";
         setTimeout(() => {
             start();
